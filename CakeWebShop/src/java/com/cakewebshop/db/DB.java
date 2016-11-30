@@ -1,4 +1,4 @@
-package dataaccess;
+package com.cakewebshop.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author Thomas Hartmann - tha@cphbusiness.dk created on Nov 16, 2016 
- */
 public class DB {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/cakeWebShop";
@@ -28,16 +24,4 @@ public class DB {
         }
         return conn;
     }
-    
-//    public static void main(String[] args) throws SQLException {
-//        Statement stmt = getConnection().createStatement();
-//        ResultSet rs = stmt.executeQuery("SELECT * FROM usertable");
-//        while(rs.next()){
-//            int id = rs.getInt("id");
-//            String username = rs.getString("username");
-//            String password = rs.getString("password");
-//            System.out.println(id+":"+username+":"+password);
-//        }
-//    }
-    
 }

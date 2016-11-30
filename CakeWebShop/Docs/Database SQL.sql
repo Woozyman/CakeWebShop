@@ -28,6 +28,7 @@ create table shopItems
 (
 	itemid int(5) primary key auto_increment,
     itemName varchar(150) not null,
+    itemPichure varchar(50),
     itemPrice double(3,2) not null
 );
 

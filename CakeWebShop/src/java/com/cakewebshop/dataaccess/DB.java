@@ -1,4 +1,4 @@
-package com.cakewebshop.db;
+package com.cakewebshop.dataaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

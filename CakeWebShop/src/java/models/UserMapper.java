@@ -18,26 +18,27 @@ import java.util.HashSet;
  * @author Michael
  */
 public class UserMapper {
+
     private static DB db;
-    
-    public UserMapper(){
+
+    public UserMapper() {
         this.db = new DB();
     }
-            
-    public static void createUser(User user){
-        try {           
+
+    public static void createUser(User user) {
+        try {
             String firstname = user.getFirstname();
             String lastname = user.getLastname();
             String email = user.getEmail();
             String phone = user.getPhone();
             String address = user.getAddress();
             String zip = user.getZip();
-            String password = user.getPassword();         
-            
-            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password)" + 
-                            "VALUES (?,?,?,?,?,?,?)";
-            
-            PreparedStatement ps = db.getConnection().prepareStatement(query); 
+            String password = user.getPassword();
+
+            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password)"
+                    + "VALUES (?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, firstname);
             ps.setString(2, lastname);
             ps.setString(3, email);
@@ -45,25 +46,71 @@ public class UserMapper {
             ps.setString(5, address);
             ps.setString(6, zip);
             ps.setString(7, password);
-            
+
             ps.executeUpdate();
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public User getUserById(int id){
-        return null;
+
+    public User getUserById(int id) {
+        User user = null;
+        try {
+            String query = "SELECT id, email, password FROM user WHERE id = ?";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                user = new User(email, password);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return user;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList();
+        try {
+            String query = "SELECT id, email, password FROM user";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                User user = new User(email, password);
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return users;
     }
     
-    public List<User> getAllUsers(){
-        return null;
+     public boolean authenticate(String email, String password){
+        try {
+            String query = "SELECT id, email, password FROM user WHERE name = ?";
+            PreparedStatement pstmt = DB.getConnection().prepareStatement(query);
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                if(rs.getString("password").equals(password)){
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return false;
     }
-    
-    public static void main(String[] args){ // right click and select "run file" to insert data
+
+    public static void main(String[] args) { // right click and select "run file" to insert data
         User user = new User();
-        
+
         user.setFirstname("Frey");
         user.setLastname("Clante");
         user.setEmail("fclante@gmail.com");
@@ -71,7 +118,7 @@ public class UserMapper {
         user.setAddress("Amagerfælledvej 47");
         user.setZip("2300");
         user.setPassword("pass123");
-        
+
         createUser(user);
     }
 }

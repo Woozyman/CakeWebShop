@@ -46,7 +46,7 @@ public class UserMapper {
             ps.setString(6, zip);
             ps.setString(7, password);
             
-            int result = ps.executeUpdate();
+            ps.executeUpdate();
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -61,16 +61,16 @@ public class UserMapper {
         return null;
     }
     
-    public static void main(String[] args){
+    public static void main(String[] args){ // right click and select "run file" to insert data
         User user = new User();
         
-        user.setFirstname("Jens");
-        user.setLastname("Kolby");
-        user.setEmail("tjkolby@hotmail.com");
-        user.setPhone("56869563");
-        user.setAddress("NoNameStreet 45");
-        user.setZip("2365");
-        user.setPassword("password123");
+        user.setFirstname("Frey");
+        user.setLastname("Clante");
+        user.setEmail("fclante@gmail.com");
+        user.setPhone("50565150");
+        user.setAddress("Amagerfælledvej 47");
+        user.setZip("2300");
+        user.setPassword("pass123");
         
         createUser(user);
     }

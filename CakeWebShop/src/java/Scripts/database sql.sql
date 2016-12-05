@@ -14,7 +14,7 @@ use cakeWebShop;
 
 create table users
 (
-	userid int(5) primary key auto_increment,
+    userid int(5) primary key auto_increment,
     firstname varchar(30) not null,
     lastname varchar(30) not null,
     email  varchar(50) not null,
@@ -28,7 +28,7 @@ SELECT * FROM users;
 
 create table shopItems
 (
-	itemid int(5) primary key auto_increment,
+    itemid int(5) primary key auto_increment,
     itemName varchar(150) not null,
     itemPichure varchar(50),
     itemPrice double(3,2) not null

@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="models.User" %> <!- Remember page directive to Use types in jsp. -->
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <form class="navbar-form navbar-left" action="Login" method="POST">
@@ -17,7 +19,7 @@
         <ul class="nav navbar-nav navbar-right">
             <%if(request.getAttribute("user")!=null){
                 User user = (User)request.getAttribute("user");
-                out.print("<li><a>Logged in as: "+user.getName()+"</a></li>");
+                out.print("<li><a>Logged in as: "+user.getFirstname()+"</a></li>");
             }%>
         </ul>
     </div>

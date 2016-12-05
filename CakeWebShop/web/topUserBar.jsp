@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="models.User" %> <!- Remember page directive to Use types in jsp. -->
+<%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">

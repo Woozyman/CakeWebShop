@@ -67,9 +67,9 @@ public class UserMapper {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
-                String zip = rs.getString("zip");        
+                String zip = rs.getString("zip");
                 String password = rs.getString("password");
-                
+
                 user = new User(firstname, lastname, email, phone, address, zip, password);
             }
         } catch (SQLException ex) {
@@ -78,19 +78,19 @@ public class UserMapper {
         return user;
     }
 
-    public List<User> getAllUsers() {
+    public static List<User> getAllUsers() {
         List<User> users = new ArrayList();
         try {
-            String query = "SELECT id, email, password FROM user";
+            String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
-                String zip = rs.getString("zip");        
+                String zip = rs.getString("zip");
                 String password = rs.getString("password");
                 User user = new User(firstname, lastname, email, phone, address, zip, password);
                 users.add(user);
@@ -100,15 +100,15 @@ public class UserMapper {
         }
         return users;
     }
-    
-     public boolean authenticateUser(String email, String password){
+
+    public boolean authenticateUser(String email, String password) {
         try {
             String query = "SELECT id, email, password FROM user WHERE name = ?";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                if(rs.getString("password").equals(password)){
+            if (rs.next()) {
+                if (rs.getString("password").equals(password)) {
                     return true;
                 }
             }
@@ -131,9 +131,18 @@ public class UserMapper {
 //        user.setPassword("pass123");
 //
 //        createUser(user);
-
         user = getUserById(2);
-        
+
+        System.out.println("Printing single User: ");
         System.out.println(user.getFirstname());
+        System.out.println("");
+
+        List<User> users = getAllUsers();
+        System.out.println("");
+        System.out.println("Printing all Users: ");
+
+        users.forEach(item -> {
+            System.out.println(item.getFirstname());
+        });
     }
 }

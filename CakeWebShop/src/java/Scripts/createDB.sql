@@ -24,14 +24,17 @@ create table users
     password varchar(40) not null				# 40 fordi SHA1 er 40 char lang 
 );
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakeWebShop.com', '23374263', 'adressen 4a,', '2300', 'admin123');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','fclante@gmail.com','50565150','Amagerfælledvej 47','2300','pass123');
 SELECT * FROM users;
 
 create table shopItems
 (
     itemid int(5) primary key auto_increment,
     itemName varchar(150) not null,
-    itemPichure varchar(50),
-    itemPrice double(3,2) not null
+    itemDescription varchar(150) not null,
+    itemPicture varchar(50),
+    itemPrice double(3,2) not null,
+    discontinuedDate datetime
 );
 
 create table orders
@@ -39,8 +42,8 @@ create table orders
 	orderid int(5) primary key auto_increment,
     userid int(5),								# referere til users(userid)
     FOREIGN KEY (userid) REFERENCES users(userid),
-    orderStatus int(1),							# 0=ikke behandlet 1=sendt
     orderDate datetime,
+    orderCakeCompletedDate datetime,
     orderDeliveryDate datetime
 );
 
@@ -49,7 +52,7 @@ create table orderLines
 	orderLineid int(10) primary key auto_increment,
     orderid int(5),
     FOREIGN KEY (orderid) REFERENCES orders(orderid),
-    shopItem int(5),
-    FOREIGN KEY (shopItem) REFERENCES shopItems(itemid),
+    shopItemid int(5),
+    FOREIGN KEY (shopItemid) REFERENCES shopItems(itemid),
     itemPrice double(3,2) not null				# ikke foreign key af historiske orsager.
 );

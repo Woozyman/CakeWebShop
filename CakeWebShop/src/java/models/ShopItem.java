@@ -16,16 +16,27 @@ public class ShopItem {
     private int itemId;
     private String itemName;
     private String itemPicture;
+    private String itemDescription;
     private double itemPrice;
-    private Date discontinuedDate;
+    private Date discontinuedDate = null;
 
     public ShopItem(){}
 
-    public ShopItem(String name, String picture, double price) {
+    public ShopItem(String name, String picture, String description, double price, Date discontinued) {
         this.itemName = name;
         this.itemPicture = picture;
+        this.itemDescription = description;
         this.itemPrice = price;
+        this.discontinuedDate = discontinued;
     }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }    
 
     public Date getDiscontinuedDate() {
         return discontinuedDate;

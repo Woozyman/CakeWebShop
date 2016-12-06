@@ -13,6 +13,8 @@ import java.sql.Date;
  */
 public class Order {
     
+    private int orderId;
+    
     private int userId;
     private int orderStatus;
     private Date orderDate;
@@ -25,6 +27,10 @@ public class Order {
         this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.orderDeliveryDate = orderDeliveryDate;
+    }
+    
+    public int getOrderId() {
+        return orderId;
     }
 
     public int getUserId() {

@@ -8,6 +8,7 @@ package models;
 import dataaccess.DB;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -48,23 +49,66 @@ public class OrderMapper {
         }
     }
 
-    public static void main(String[] args) {
-        Order order = new Order();
+    public static void updateOrderStatus(Order order, int status) {
 
-        order.setUserId(2);
-        order.setOrderStatus(0);
-        
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        order.setOrderStatus(status);
+
         try {
-            Date orderDate = new Date(formatter.parse("05-12-2016").getTime());
-            order.setOrderDate(orderDate);
-            Date orderDeliveryDate = new Date(formatter.parse("07-12-2016").getTime());
-            order.setOrderDeliveryDate(orderDeliveryDate);
-        } catch (ParseException e) {
+            String query = "SET orderStatus=1 WHERE orderId = ?";
+
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, order.getOrderId());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
-        createOrder(order);
+    public static boolean existingOrder(int orderId) {
+        try {
+            String query = "SELECT orderId FROM orders WHERE orderId = ?";
+
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            
+            ps.setInt(1, orderId);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (!rs.next()) {
+                System.out.println("No  Elements in resultset!");
+                return false;
+            }else{
+                System.out.println("OrderId: " + orderId + " Found!");
+                return true;
+            }
+                     
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+//        Order order = new Order();
+//
+//        order.setUserId(2);
+//        order.setOrderStatus(1);
+//
+//        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+//        try {
+//            Date orderDate = new Date(formatter.parse("05-12-2016").getTime());
+//            order.setOrderDate(orderDate);
+//            Date orderDeliveryDate = new Date(formatter.parse("07-12-2016").getTime());
+//            order.setOrderDeliveryDate(orderDeliveryDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        createOrder(order);
+
+        System.out.println(existingOrder(1));
+
     }
 
 }

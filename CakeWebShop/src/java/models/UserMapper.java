@@ -131,7 +131,7 @@ public class UserMapper {
 //        user.setPassword("pass123");
 //
 //        createUser(user);
-        user = getUserById(2);
+        user = getUserById(1);
 
         System.out.println("Printing single User: ");
         System.out.println(user.getFirstname());

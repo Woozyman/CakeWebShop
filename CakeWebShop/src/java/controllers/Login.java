@@ -5,10 +5,14 @@
  */
 package controllers;
 
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
 /**
  *
  * @author Michael
  */
-public class Login {
+@WebServlet(name="Login", urlPatterns={"/Login"})
+public class Login extends HttpServlet {
     
 }

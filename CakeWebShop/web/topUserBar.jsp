@@ -11,16 +11,19 @@
     <div class="container-fluid">
         <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="User name">
+                <input type="text" class="form-control" placeholder="E-mail">
                 <input type="text" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-            <%if(request.getAttribute("user")!=null){
-                User user = (User)request.getAttribute("user");
+            <%if(request.getAttribute("firstname")!=null){
+                User user = (User)request.getAttribute("firstname");
                 out.print("<li><a>Logged in as: "+user.getFirstname()+"</a></li>");
-            }%>
+            }else{
+                out.print("<li><a href='#'>Welcome visitor</a></li>");
+            }
+            %>
         </ul>
     </div>
 </nav>

@@ -23,6 +23,24 @@ public class OrderLineMapper {
     public OrderLineMapper() {
         this.db = new DB();
     }
+    
+    public void addOrderLine(OrderLine orderLine, int orderId){
+        
+        try {
+            String query = "INSERT into orderlines orderid, shopItemid, itemPrice"
+                + "VALUES (?,?,?)";
+            
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, orderId);
+            ps.setInt(2, orderLine.getShopItemId());
+            ps.setDouble(3, orderLine.getItemPrice());
+            
+            ps.executeUpdate();
+            db.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<OrderLine> getOrderLines(int orderId) {
         List<OrderLine> orderLines = new ArrayList();

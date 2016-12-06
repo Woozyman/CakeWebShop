@@ -34,7 +34,7 @@ public class OrderMapper {
             Date orderDeliveryDate = order.getOrderDeliveryDate();
 
             String query = "INSERT INTO orders (userId, orderStatus, orderDate, orderDeliveryDate)"
-                    + "VALUES(?,?,?,?)";
+                    + "VALUES(?,?,?,?)"; //The integers below corresponds to these '?' parameters.
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, userId);
@@ -43,6 +43,7 @@ public class OrderMapper {
             ps.setDate(4, orderDeliveryDate);
 
             ps.executeUpdate();
+            db.closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +59,9 @@ public class OrderMapper {
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, order.getOrderId());
+            
             ps.executeUpdate();
+            db.closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +77,7 @@ public class OrderMapper {
             ps.setInt(1, orderId);
             
             ResultSet rs = ps.executeQuery();
+            db.closeConnection();
             
             if (!rs.next()) {
                 System.out.println("No  Elements in resultset!");

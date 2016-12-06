@@ -34,7 +34,7 @@ public class DB {
         return conn;
     }
 
-    public static void closeConnection(Connection conn) {
+    public static void closeConnection() {
         try {
             if (conn != null) {
                 conn.close();

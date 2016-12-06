@@ -50,7 +50,7 @@ public class UserMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+           e.printStackTrace();
         }
     }
 
@@ -101,9 +101,9 @@ public class UserMapper {
         return users;
     }
 
-    public boolean authenticateUser(String email, String password) {
+    public static boolean authenticateUser(String email, String password) {
         try {
-            String query = "SELECT id, email, password FROM user WHERE name = ?";
+            String query = "SELECT email, password FROM users WHERE email = ?";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -131,7 +131,7 @@ public class UserMapper {
 //        user.setPassword("pass123");
 //
 //        createUser(user);
-        user = getUserById(1);
+        user = getUserById(2);
 
         System.out.println("Printing single User: ");
         System.out.println(user.getFirstname());
@@ -140,9 +140,22 @@ public class UserMapper {
         List<User> users = getAllUsers();
         System.out.println("");
         System.out.println("Printing all Users: ");
+        System.out.println("");
 
         users.forEach(item -> {
             System.out.println(item.getFirstname());
+            System.out.println(item.getLastname());
+            System.out.println(item.getEmail());
+            System.out.println("");
         });
+        
+        System.out.println("Attempting to authenticate User");
+        System.out.println("");
+        
+        boolean result = authenticateUser(user.getEmail(), user.getPassword());
+        
+        if (result) {
+            System.out.println("User Authenticated!");
+        }
     }
 }

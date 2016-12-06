@@ -20,8 +20,14 @@ public class User {
     
     public User(){}
     
-    public User(String email, String password){
+    public User(String firstname, String lastname, String email, String phone,
+                String address, String zip, String password){
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.zip = zip;
         this.password = password;
     }
 

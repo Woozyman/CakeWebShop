@@ -54,17 +54,23 @@ public class UserMapper {
         }
     }
 
-    public User getUserById(int id) {
+    public static User getUserById(int id) {
         User user = null;
         try {
-            String query = "SELECT id, email, password FROM user WHERE id = ?";
+            String query = "SELECT userid, firstname, lastname, email, phone, address, zip, password FROM users WHERE userid = ?";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
                 String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String zip = rs.getString("zip");        
                 String password = rs.getString("password");
-                user = new User(email, password);
+                
+                user = new User(firstname, lastname, email, phone, address, zip, password);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -79,9 +85,14 @@ public class UserMapper {
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
+                String firstname = rs.getString("firstname");
+                String lastname = rs.getString("lastname");
                 String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String zip = rs.getString("zip");        
                 String password = rs.getString("password");
-                User user = new User(email, password);
+                User user = new User(firstname, lastname, email, phone, address, zip, password);
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -90,12 +101,12 @@ public class UserMapper {
         return users;
     }
     
-     public boolean authenticate(String email, String password){
+     public boolean authenticateUser(String email, String password){
         try {
             String query = "SELECT id, email, password FROM user WHERE name = ?";
-            PreparedStatement pstmt = DB.getConnection().prepareStatement(query);
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 if(rs.getString("password").equals(password)){
                     return true;
@@ -111,14 +122,18 @@ public class UserMapper {
     public static void main(String[] args) { // right click and select "run file" to insert data
         User user = new User();
 
-        user.setFirstname("Frey");
-        user.setLastname("Clante");
-        user.setEmail("fclante@gmail.com");
-        user.setPhone("50565150");
-        user.setAddress("Amagerfælledvej 47");
-        user.setZip("2300");
-        user.setPassword("pass123");
+//        user.setFirstname("Frey");
+//        user.setLastname("Clante");
+//        user.setEmail("fclante@gmail.com");
+//        user.setPhone("50565150");
+//        user.setAddress("Amagerfælledvej 47");
+//        user.setZip("2300");
+//        user.setPassword("pass123");
+//
+//        createUser(user);
 
-        createUser(user);
+        user = getUserById(2);
+        
+        System.out.println(user.getFirstname());
     }
 }

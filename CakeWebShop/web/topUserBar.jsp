@@ -9,13 +9,14 @@
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <ul class="nav navbar-nav navbar-right">
+        <div class="nav navbar-nav navbar-right">
             <%if(session.getAttribute("userObj")!=null){
                 User user = (User)session.getAttribute("userObj");
-                out.print("<li>Logged in as: "+user.getFirstname()+"</li>");
-                out.print("");
-                out.print("<button type='submit' action='Login' method='POST' name='origin' value='logout'>Logout</button>"); 
-            }else{ %>
+                out.print("<p>Logged in as: "+user.getFirstname()+"</p>");%>
+            <form action='Login' method='POST'>
+            <input type='hidden' name='origin' value='logout'>
+            <input type='submit' value='Logout'>
+            <% }else{ %>
             
         <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
@@ -25,9 +26,9 @@
             <button type="submit" class="btn btn-default">Log in</button>
         </form>
             <%
-                out.print("<li><a href='#'>Welcome visitor</a></li>");
+                out.print("<p>Welcome visitor</p>");
             }
             %>
-        </ul>
+        </div>
     </div>
 </nav>

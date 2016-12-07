@@ -66,7 +66,8 @@ public class Login extends HttpServlet {
                 ex.printStackTrace();
             }
         } else {
-            response.getWriter().print("du er ikke logget ind");
+            //response.getWriter().print("du er ikke logget ind");
+            response.sendRedirect("index.jsp");
         }
         String origin = request.getParameter("origin");
         if (origin != null) {

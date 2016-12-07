@@ -18,7 +18,7 @@
     </head>
     <body>
         <%@include file="topUserBar.jsp"%>
-        <h1>Hello User!</h1>
+        <h1>Kager</h1>
         <p>See the best cakes in the world.</p>
     </body>
 </html>

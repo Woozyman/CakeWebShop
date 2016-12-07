@@ -25,7 +25,6 @@ create table users
 );
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '23374263', 'adressen 4a,', '2300', 'admin123');
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','fclante@gmail.com','50565150','Amagerfælledvej 47','2300','pass123');
-SELECT * FROM users;
 
 create table shopItems
 (
@@ -33,13 +32,15 @@ create table shopItems
     itemName varchar(150) not null,
     itemDescription varchar(150) not null,
     itemPicture varchar(50),
-    itemPrice double(3,2) not null,
+    itemPrice double(5,2) not null,
     discontinuedDate datetime
 );
+INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Lagkage','Vanillie/Banan','/pic/lagkage.jpg',149.5);
+INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Chokoladekage','Chokolade','/pic/chokoladekage.jpg',49.5);
 
 create table orders
 (
-    orderid int(5) primary key auto_increment,
+	orderid int(5) primary key auto_increment,
     userid int(5),								# referere til users(userid)
     FOREIGN KEY (userid) REFERENCES users(userid),
     orderDate datetime,
@@ -49,7 +50,7 @@ create table orders
 
 create table orderLines
 (
-    orderLineid int(10) primary key auto_increment,
+	orderLineid int(10) primary key auto_increment,
     orderid int(5),
     FOREIGN KEY (orderid) REFERENCES orders(orderid),
     shopItemid int(5),

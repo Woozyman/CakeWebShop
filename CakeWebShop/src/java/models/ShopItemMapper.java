@@ -119,7 +119,7 @@ public class ShopItemMapper {
 
         try {
             String query = "SELECT itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems"
-                    + "WHERE discontinuedDate = null";
+                    ;
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();          

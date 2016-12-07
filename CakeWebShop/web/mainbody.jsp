@@ -13,7 +13,8 @@
                 <th>Name</th>
                 <th>Price</th>
             </tr>
-            <%List<ShopItem> cakes = (ArrayList) session.getAttribute("cakeList");
+            <%List<ShopItem> cakes = new ArrayList();
+                cakes = (ArrayList) session.getAttribute("cakeList");
                 for (ShopItem cake : cakes) {
             %>
                 <tr>
@@ -23,9 +24,7 @@
                 </tr>
             <%
                     }
-                }
+                
             %>
 
         </table>
-
-%>

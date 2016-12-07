@@ -20,8 +20,8 @@
             
         <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
-                <input type="text" name="email" class="form-control" placeholder="E-mail">
-                <input type="text" name="password" class="form-control" placeholder="Password">
+                <input type="text" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">
+                <input type="text" name="password" class="form-control" placeholder="Password" value="admin123">
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
         </form>

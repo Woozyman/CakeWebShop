@@ -110,7 +110,7 @@ public class UserMapper {
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+          //  db.closeConnection();
             if (rs.next()) {
                 if (rs.getString("password").equals(password)) {
                     return true;
@@ -135,7 +135,7 @@ public class UserMapper {
 //        user.setPassword("pass123");
 //
 //        createUser(user);
-        user = getUserById(2);
+        user = getUserById(1);
 
         System.out.println("Printing single User: ");
         System.out.println(user.getFirstname());

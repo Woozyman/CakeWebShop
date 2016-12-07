@@ -7,11 +7,15 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.UserMapper;
 
 /**
  *
@@ -20,21 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-      
-    }
-
+   
+   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -47,9 +38,8 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -61,7 +51,32 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        UserMapper um = new UserMapper();
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        boolean isAuthenticated = um.authenticateUser(email, password);
+        if(isAuthenticated){
+            try {                     
+                HttpSession session = request.getSession();
+                session.setAttribute("email", email);
+                response.sendRedirect("index.jsp");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }else{
+            response.getWriter().print("du er ikke logget ind");
+        }
+        String origin = request.getParameter("origin");
+        if(origin != null){
+            if(origin.equals("logout"))
+            logout(request);
+        }
+       
+    }
+    
+     private void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
     /**

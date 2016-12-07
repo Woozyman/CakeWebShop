@@ -11,8 +11,8 @@
     <div class="container-fluid">
         <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="E-mail">
-                <input type="text" class="form-control" placeholder="Password">
+                <input type="text" name="email" class="form-control" placeholder="E-mail">
+                <input type="text" name="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
         </form>

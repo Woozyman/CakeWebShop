@@ -18,6 +18,16 @@
 </form>
 <%
     } else {
-        out.print("<p>ingen vare er valgt</p>");
+        out.print("<p>ingen vare er valgt så der oprettes en vare</p>");%>
+
+<form action="#" method="POST">
+    <input type="text" name="itemName" placeholder="Kagenavn"/>
+    <input type="text" name="itemDescription" placeholder="Beskrivelse"/>
+    <input type="text" name="itemPicture" placeholder="Billede sti"/>
+    <input type="text" name="itemPrice" placeholder="Pris"/>
+    <input type="submit" value="Opret"/>
+</form>
+
+<%
     }
 %>

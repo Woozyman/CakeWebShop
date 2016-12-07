@@ -11,6 +11,6 @@
     </jsp:attribute>
   
     <jsp:body>
-        
+        <jsp:include page="mainbody.jsp"/>
     </jsp:body>
 </t:mainpage>

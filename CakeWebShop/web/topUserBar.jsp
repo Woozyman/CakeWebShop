@@ -9,18 +9,18 @@
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <form class="navbar-form navbar-left" action="Login" method="POST">
+        <ul class="nav navbar-nav navbar-right">
+            <%if(session.getAttribute("userObj")!=null){
+                User user = (User)session.getAttribute("userObj");
+                out.print("<li><a action='Login' method='POST' name='origin' alt='logout'>Logged in as: "+user.getFirstname()+"</a></li>");
+            }else{ %>
+                <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail">
                 <input type="text" name="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-            <%if(session.getAttribute("userObj")!=null){
-                User user = (User)session.getAttribute("userObj");
-                out.print("<li><a action='Login' method='POST' name='origin' alt='logout'>Logged in as: "+user.getFirstname()+"</a></li>");
-            }else{
+        </form> <%
                 out.print("<li><a href='#'>Welcome visitor</a></li>");
             }
             %>

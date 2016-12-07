@@ -48,7 +48,7 @@ public class UserMapper {
             ps.setString(7, password);
 
             ps.executeUpdate();
-            db.closeConnection();
+          
 
         } catch (SQLException e) {
            e.printStackTrace();
@@ -62,7 +62,7 @@ public class UserMapper {
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+            
             if (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -86,7 +86,7 @@ public class UserMapper {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+           
             while (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -110,7 +110,7 @@ public class UserMapper {
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-          //  db.closeConnection();
+        
             if (rs.next()) {
                 if (rs.getString("password").equals(password)) {
                     return true;

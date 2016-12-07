@@ -39,7 +39,7 @@ create table shopItems
 
 create table orders
 (
-	orderid int(5) primary key auto_increment,
+    orderid int(5) primary key auto_increment,
     userid int(5),								# referere til users(userid)
     FOREIGN KEY (userid) REFERENCES users(userid),
     orderDate datetime,
@@ -49,7 +49,7 @@ create table orders
 
 create table orderLines
 (
-	orderLineid int(10) primary key auto_increment,
+    orderLineid int(10) primary key auto_increment,
     orderid int(5),
     FOREIGN KEY (orderid) REFERENCES orders(orderid),
     shopItemid int(5),

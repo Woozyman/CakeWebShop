@@ -13,8 +13,9 @@
             <%if(session.getAttribute("userObj")!=null){
                 User user = (User)session.getAttribute("userObj");
                 out.print("<li>Logged in as: "+user.getFirstname()+"</li>");
-                //<a action='Login' method='POST' name='origin' alt='logout'>
-                out.print("<button action='Login' method='POST' name='origin' value='logout'>Logout</button>"); 
+                out.print("<form action='Login' method='POST'>"); 
+                out.print("<input type='hidden' name='origin' value='logout'>");
+                out.print("<input type='submit' value='Logout'>");
             }else{ %>
             
         <form class="navbar-form navbar-left" action="Login" method="POST">

@@ -12,15 +12,19 @@
         <ul class="nav navbar-nav navbar-right">
             <%if(session.getAttribute("userObj")!=null){
                 User user = (User)session.getAttribute("userObj");
-                out.print("<li><a action='Login' method='POST' name='origin' alt='logout'>Logged in as: "+user.getFirstname()+"</a></li>");
+                out.print("<li>Logged in as: "+user.getFirstname()+"</li>");
+                //<a action='Login' method='POST' name='origin' alt='logout'>
+                out.print("<button action='Login' method='POST' name='origin' value='logout'>Logout</button>"); 
             }else{ %>
-                <form class="navbar-form navbar-left" action="Login" method="POST">
+            
+        <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail">
                 <input type="text" name="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
-        </form> <%
+        </form>
+            <%
                 out.print("<li><a href='#'>Welcome visitor</a></li>");
             }
             %>

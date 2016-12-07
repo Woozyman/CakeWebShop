@@ -43,7 +43,7 @@ public class OrderMapper {
             ps.setDate(4, orderDeliveryDate);
 
             ps.executeUpdate();
-            db.closeConnection();
+            
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class OrderMapper {
             ps.setInt(1, order.getOrderId());
             
             ps.executeUpdate();
-            db.closeConnection();
+           
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class OrderMapper {
             ps.setInt(1, orderId);
             
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+          
             
             if (!rs.next()) {
                 System.out.println("No  Elements in resultset!");

@@ -48,9 +48,11 @@ public class RouteController extends HttpServlet {
 
             HttpSession session = request.getSession();
 
-            session.setAttribute("cakeList", si);          
-                 
+            session.setAttribute("cakeList", si);                 
 
+        }
+        else if(action.equals("/CakeWebShop/Register")){
+            
         }
         request.getRequestDispatcher("/mainbody.jsp").include(request, response);
     }

@@ -55,24 +55,24 @@ public class UserMapper {
         }
     }
 
-    public static User getUserById(int id) {
+    public static User getUserByEmail(String email) {
         User user = null;
         try {
-            String query = "SELECT userid, firstname, lastname, email, phone, address, zip, password FROM users WHERE userid = ?";
+            String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users WHERE email = ?";
             PreparedStatement ps = DB.getConnection().prepareStatement(query);
-            ps.setInt(1, id);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             db.closeConnection();
             if (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
-                String email = rs.getString("email");
+                String emailAddr = rs.getString("email");
                 String phone = rs.getString("phone");
                 String address = rs.getString("address");
                 String zip = rs.getString("zip");
                 String password = rs.getString("password");
 
-                user = new User(firstname, lastname, email, phone, address, zip, password);
+                user = new User(firstname, lastname, emailAddr, phone, address, zip, password);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -124,42 +124,7 @@ public class UserMapper {
     }
 
     public static void main(String[] args) { // right click and select "run file" to insert data
-        User user = new User();
-
-//        user.setFirstname("Frey");
-//        user.setLastname("Clante");
-//        user.setEmail("fclante@gmail.com");
-//        user.setPhone("50565150");
-//        user.setAddress("Amagerfælledvej 47");
-//        user.setZip("2300");
-//        user.setPassword("pass123");
-//
-//        createUser(user);
-        user = getUserById(1);
-
-        System.out.println("Printing single User: ");
-        System.out.println(user.getFirstname());
-        System.out.println("");
-
-        List<User> users = getAllUsers();
-        System.out.println("");
-        System.out.println("Printing all Users: ");
-        System.out.println("");
-
-        users.forEach(item -> {
-            System.out.println(item.getFirstname());
-            System.out.println(item.getLastname());
-            System.out.println(item.getEmail());
-            System.out.println("");
-        });
-        
-        System.out.println("Attempting to authenticate User");
-        System.out.println("");
-        
-        boolean result = authenticateUser(user.getEmail(), user.getPassword());
-        
-        if (result) {
-            System.out.println("User Authenticated!");
-        }
+       
+      
     }
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.User;
 import models.UserMapper;
 
 /**
@@ -24,8 +25,6 @@ import models.UserMapper;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
-   
-   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -38,8 +37,9 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -51,31 +51,33 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         UserMapper um = new UserMapper();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         boolean isAuthenticated = um.authenticateUser(email, password);
-        if(isAuthenticated){
-            try {                     
+        if (isAuthenticated) {
+            try {
+                User user = um.getUserByEmail(email);
                 HttpSession session = request.getSession();
-                session.setAttribute("email", email);
+                session.setAttribute("userObj", user);
                 response.sendRedirect("index.jsp");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }else{
+        } else {
             response.getWriter().print("du er ikke logget ind");
         }
         String origin = request.getParameter("origin");
-        if(origin != null){
-            if(origin.equals("logout"))
-            logout(request);
+        if (origin != null) {
+            if (origin.equals("logout")) {
+                logout(request);
+            }
         }
-       
+
     }
-    
-     private void logout(HttpServletRequest request) {
+
+    private void logout(HttpServletRequest request) {
         request.getSession().invalidate();
     }
 

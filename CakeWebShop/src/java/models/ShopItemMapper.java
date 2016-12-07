@@ -43,7 +43,7 @@ public class ShopItemMapper {
             ps.setDouble(3, price);
 
             ps.execute();
-            db.closeConnection();
+           
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class ShopItemMapper {
                 ps.setInt(2, item.getItemId());
 
                 int result = ps.executeUpdate();
-                db.closeConnection();
+                             
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -81,7 +81,7 @@ public class ShopItemMapper {
             ps.setInt(1, item.getItemId());
 
             int result = ps.executeUpdate();
-            db.closeConnection();
+           
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class ShopItemMapper {
             ps.setInt(1, id);
 
             boolean result = ps.execute(); //Returns true if result is a ResultSet and false if no result
-            db.closeConnection();
+            
 
             if (result) {
                 ResultSet rs = ps.getResultSet();
@@ -122,7 +122,7 @@ public class ShopItemMapper {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+          
 
             while (rs.next()) {
                 String name = rs.getString("itemName");

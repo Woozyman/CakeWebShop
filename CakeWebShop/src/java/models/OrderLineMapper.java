@@ -36,7 +36,7 @@ public class OrderLineMapper {
             ps.setDouble(3, orderLine.getItemPrice());
             
             ps.executeUpdate();
-            db.closeConnection();
+           
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class OrderLineMapper {
             ps.setInt(1, orderId);
 
             ResultSet rs = ps.executeQuery();
-            db.closeConnection();
+           
 
             while (rs.next()) {
                 int orderIdNum = rs.getInt("orderid");

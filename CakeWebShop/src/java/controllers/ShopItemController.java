@@ -7,17 +7,11 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.tagext.JspFragment;
-import javax.swing.text.html.HTML;
-import javax.websocket.Session;
 import models.ShopItem;
 import models.ShopItemMapper;
 
@@ -25,8 +19,8 @@ import models.ShopItemMapper;
  *
  * @author freyb
  */
-@WebServlet(name = "RouteController", urlPatterns = {"/"})
-public class RouteController extends HttpServlet {
+@WebServlet(name = "ShopItemController", urlPatterns = {"/ShopItemController"})
+public class ShopItemController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -40,19 +34,7 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String mainPage = request.getContextPath();
-        String action = request.getParameter("action");
 
-        if (mainPage.equals("/CakeWebShop")) {
-            ShopItemMapper sim = new ShopItemMapper();
-            List<ShopItem> si = sim.getAllItems();
-
-            HttpSession session = request.getSession();
-
-            session.setAttribute("cakeList", si);
-        }
-
-        request.getRequestDispatcher("/mainbody.jsp").include(request, response);
     }
 
     /**
@@ -66,17 +48,25 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String action = request.getParameter("action");
         String page = null;
-        if (action.equals("register")) {
-            page = "/Register.jsp";
-        } else if (action.equals("edit")) {
-            page = "/ShopItemController";           
+        ShopItemMapper sim = new ShopItemMapper();
+        
+
+        if (action.equals(("edit"))) {
+            ShopItem item = (ShopItem) request.getAttribute("edit");
+            ShopItem itemToSave = new ShopItem();
+            itemToSave.setItemName(item.getItemName());
+            itemToSave.setItemDescription(item.getItemDescription());
+            itemToSave.setItemPicture(item.getItemPicture());
+            itemToSave.setItemPrice(item.getItemPrice());
+            itemToSave.setDiscontinuedDate(item.getDiscontinuedDate());
+                    
+            sim.updateItem(itemToSave);
         } else if (action.equals("create")) {
-            page = "/ShopItemController";            
+            ShopItem item = (ShopItem) request.getAttribute("create");
+            
         }
-            request.getRequestDispatcher(page).forward(request, response);
     }
 
     /**

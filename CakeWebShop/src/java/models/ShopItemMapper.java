@@ -49,6 +49,33 @@ public class ShopItemMapper {
             e.printStackTrace();
         }
     }
+    
+    public void updateItem(ShopItem item){
+        String name = item.getItemName();
+        String descrip = item.getItemDescription();
+        String pic = item.getItemPicture();
+        Double price = item.getItemPrice();
+        Date disDate = item.getDiscontinuedDate();
+        int itemId = item.getItemId();
+        
+        try {
+            String query = "UPDATE shopitems SET itemName=?, itemDescription=?, itemPicture=?, "
+                + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
+        
+        PreparedStatement ps = db.getConnection().prepareStatement(query);
+        ps.setString(1,name);
+        ps.setString(2, descrip);
+        ps.setString(3, pic);
+        ps.setDouble(4, price);
+        ps.setDate(5, disDate);
+        ps.setInt(6, itemId);
+        
+        ps.executeUpdate();
+        
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setDiscontinuedDate(ShopItem item, String date) {
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");

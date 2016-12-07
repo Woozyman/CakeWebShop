@@ -118,11 +118,11 @@ public class ShopItemMapper {
         List<ShopItem> shopItems = new ArrayList();
 
         try {
-            String query = "SELECT itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems";
+            String query = "SELECT itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems"
+                    + "WHERE discontinuedDate = null";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
-            ResultSet rs = ps.executeQuery();
-          
+            ResultSet rs = ps.executeQuery();          
 
             while (rs.next()) {
                 String name = rs.getString("itemName");

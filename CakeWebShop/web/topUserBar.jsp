@@ -17,8 +17,8 @@
             <button type="submit" class="btn btn-default">Log in</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-            <%if(request.getAttribute("firstname")!=null){
-                User user = (User)request.getAttribute("firstname");
+            <%if(request.getAttribute("user")!=null){
+                User user = (User)request.getAttribute("user");
                 out.print("<li><a action='Login' method='POST' name='origin' alt='logout'>Logged in as: "+user.getFirstname()+"</a></li>");
             }else{
                 out.print("<li><a href='#'>Welcome visitor</a></li>");

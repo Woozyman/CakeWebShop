@@ -23,7 +23,7 @@ import models.ShopItemMapper;
  *
  * @author freyb
  */
-@WebServlet(name = "RouteController", urlPatterns = {"/RouteController"})
+@WebServlet(name = "RouteController", urlPatterns = {"/"})
 public class RouteController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -40,16 +40,16 @@ public class RouteController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getContextPath();
 
-        if (action == "CakeWebShop") {
+        if (action.equals("/CakeWebShop")) {
             ShopItemMapper sim = new ShopItemMapper();
             List<ShopItem> si = sim.getAllItems();
 
             HttpSession session = request.getSession();
 
             session.setAttribute("cakeList", si);
-            response.sendRedirect("index.jsp");
-        }
 
+        }
+        getServletContext().getRequestDispatcher("/mainbody.jsp").forward(request, response);
     }
 
     /**

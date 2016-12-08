@@ -21,7 +21,7 @@
                         cakes = (ArrayList) session.getAttribute("cakeList");
                         for (ShopItem cake : cakes) {
             %>
-                            <form action="/formEditShopItem" method="POST"> 
+                            <form action="/RouteController" method="POST"> 
                                 <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
                                 <tr>
                                     <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>

@@ -49,23 +49,28 @@ public class ShopItemController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        int id = Integer.parseInt(request.getParameter("id"));
         String page = null;
         ShopItemMapper sim = new ShopItemMapper();
-        
 
         if (action.equals(("edit"))) {
-            ShopItem item = (ShopItem) request.getAttribute("edit");
-            ShopItem itemToSave = new ShopItem();
-            itemToSave.setItemName(item.getItemName());
-            itemToSave.setItemDescription(item.getItemDescription());
-            itemToSave.setItemPicture(item.getItemPicture());
-            itemToSave.setItemPrice(item.getItemPrice());
-            itemToSave.setDiscontinuedDate(item.getDiscontinuedDate());
-                    
-            sim.updateItem(itemToSave);
-        } else if (action.equals("create")) {
-            ShopItem item = (ShopItem) request.getAttribute("create");
             
+            ShopItem item = sim.getItem(id);            
+            request.setAttribute("shopItem", item);
+            
+            request.getRequestDispatcher("/formEditShopItem.jsp").forward(request, response);
+          
+        } else if (action.equals("create")) {
+           
+            ShopItem item = new ShopItem();            
+            item.setItemName((String)request.getAttribute("itemName"));
+            item.setItemDescription((String)request.getAttribute("itemDescription"));
+            item.setItemPicture((String)request.getAttribute("itemPicture"));
+            item.setItemPrice((Double)request.getAttribute("itemPrice"));
+            
+            sim.addItem(item);
+            
+            response.sendRedirect("/mainbody.jsp");
         }
     }
 

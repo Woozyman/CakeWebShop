@@ -5,8 +5,11 @@
 --%>
 
 <%@page import="models.ShopItem"%>
-<%if (request.getAttribute("shopItem") != null) {
-        ShopItem item = (ShopItem) request.getAttribute("shopItem");
+
+<%
+    ShopItem item = (ShopItem) request.getAttribute("shopItem");
+    if (item != null) {
+        
 %>
 <form action="/CakeWebShop?action=edit" method="POST">
     <input type="text" name="itemName" value="<%= item.getItemName()%>"/>

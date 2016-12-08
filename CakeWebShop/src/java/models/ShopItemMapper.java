@@ -129,6 +129,7 @@ public class ShopItemMapper {
 
             if (result) {
                 ResultSet rs = ps.getResultSet();
+                rs.next();
                 item = new ShopItem(rs.getInt("itemid"), rs.getString("itemName"), rs.getString("itemPicture"),
                         rs.getString("itemDescription"), rs.getDouble("itemPrice"), rs.getDate("discontinuedDate"));
             } else {

@@ -68,11 +68,12 @@ public class RouteController extends HttpServlet {
             throws ServletException, IOException {
             response.getWriter().print("Test");
         String action = request.getParameter("action");
+        String id = request.getParameter("id");
         String page = null;
         if (action.equals("register")) {
             page = "/Register.jsp";
         } else if (action.equals("edit")) {
-            page = "/ShopItemController";           
+            page = "/ShopItemController?id="+id;           
         } else if (action.equals("create")) {
             page = "/ShopItemController";            
         }

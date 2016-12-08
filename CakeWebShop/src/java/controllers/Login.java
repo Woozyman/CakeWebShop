@@ -64,7 +64,7 @@ public class Login extends HttpServlet {
                 response.sendRedirect("index.jsp");
             } catch (Exception ex) {
                 ex.printStackTrace();
-            }
+            }            
         } else {
             //response.getWriter().print("du er ikke logget ind");
             response.sendRedirect("index.jsp");

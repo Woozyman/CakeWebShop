@@ -22,7 +22,8 @@ public class ShopItem {
 
     public ShopItem(){}
 
-    public ShopItem(String name, String picture, String description, double price, Date discontinued) {
+    public ShopItem(int itemid, String name, String picture, String description, double price, Date discontinued) {
+        this.itemId = itemid;
         this.itemName = name;
         this.itemPicture = picture;
         this.itemDescription = description;

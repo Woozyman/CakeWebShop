@@ -35,16 +35,33 @@
             }else{
                 List<ShopItem> cakes = new ArrayList();
                 cakes = (ArrayList) session.getAttribute("cakeList");
-                for (ShopItem cake : cakes) {%>
-            
-                    <tr>
-                        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
-                        <td><%= cake.getItemName()%></td>
-                        <td><%= cake.getItemPrice()%></td>
-                    </tr>
-            <%
-                }
-            }
-            %>
+                for (ShopItem cake : cakes) {
+    %>
+    <tr>
+        <td>
+            <form action="/CakeWebShop/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
+                <a href="#"><img src="<%= cake.getItemPicture()%>"></a>
+                    <%= cake.getItemName()%>
+                    <%= cake.getItemPrice()%>
+                <input type="submit" value="Rediger vare">
+            </form>
+        </td>
+    </tr>
+    <%          }
+        }
+    } else {
+        List<ShopItem> cakes = new ArrayList();
+        cakes = (ArrayList) session.getAttribute("cakeList");
+        for (ShopItem cake : cakes) {%>
 
-        </table>
+    <tr>
+        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><%= cake.getItemName()%></td>
+        <td><%= cake.getItemPrice()%></td>
+    </tr>
+    <%
+            }
+        }
+    %>
+
+</table>

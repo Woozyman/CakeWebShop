@@ -13,9 +13,10 @@
             <%if(session.getAttribute("userObj")!=null){
                 User user = (User)session.getAttribute("userObj");
                 out.print("<p>Logged in as: "+user.getFirstname()+"</p>");%>
-            <form action='Login' method='POST'>
-            <input type='hidden' name='origin' value='logout'>
-            <input type='submit' value='Logout'>
+            <form action="CakeWebShop/Login" method="POST">
+            <input type="hidden" name="origin" value="logout">
+            <input type="submit" value="Logout">
+            </form>
             <% }else{ %>
             
         <form class="navbar-form navbar-left" action="Login" method="POST">

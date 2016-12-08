@@ -117,7 +117,7 @@ public class ShopItemMapper {
     public ShopItem getItem(int id) {
         ShopItem item = null;
 
-        String query = "SELECT itemName, itemPicture, itemPrice, itemDescription, discontinuedDate FROM shopitems "
+        String query = "SELECT itemid, itemName, itemPicture, itemPrice, itemDescription, discontinuedDate FROM shopitems "
                 + "WHERE itemid = ? ";
 
         try {
@@ -129,7 +129,7 @@ public class ShopItemMapper {
 
             if (result) {
                 ResultSet rs = ps.getResultSet();
-                item = new ShopItem(rs.getString("itemName"), rs.getString("itemPicture"),
+                item = new ShopItem(rs.getInt("itemid"), rs.getString("itemName"), rs.getString("itemPicture"),
                         rs.getString("itemDescription"), rs.getDouble("itemPrice"), rs.getDate("discontinuedDate"));
             } else {
                 return null;
@@ -145,20 +145,21 @@ public class ShopItemMapper {
         List<ShopItem> shopItems = new ArrayList();
 
         try {
-            String query = "SELECT itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems"
+            String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems"
                     ;
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();          
 
             while (rs.next()) {
+                int itemid = rs.getInt("itemid");
                 String name = rs.getString("itemName");
                 String picture = rs.getString("itemPicture");
                 String description = rs.getString("itemDescription");
                 double price = rs.getDouble("itemPrice");
                 Date discontinued = rs.getDate("discontinuedDate");
 
-                ShopItem item = new ShopItem(name, picture, description, price, discontinued);
+                ShopItem item = new ShopItem(itemid ,name, picture, description, price, discontinued);
                 shopItems.add(item);
             }
 

@@ -25,7 +25,7 @@ import models.ShopItemMapper;
  *
  * @author freyb
  */
-@WebServlet(name = "RouteController", urlPatterns = {"/"})
+@WebServlet(name = "RouteController", urlPatterns = {"/", "/CakeWebShop/RouteController"})
 public class RouteController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,7 +66,7 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+            response.getWriter().print("Test");
         String action = request.getParameter("action");
         String page = null;
         if (action.equals("register")) {

@@ -1,4 +1,4 @@
-<%-- 
+    <%-- 
     Document   : mainbody
     Created on : 07-12-2016, 14:42:32
     Author     : Michael
@@ -21,7 +21,7 @@
                         cakes = (ArrayList) session.getAttribute("cakeList");
                         for (ShopItem cake : cakes) {
             %>
-                            <form action="/RouteController" method="POST"> 
+                            <form action="/CakeWebShop/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
                                 <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
                                 <tr>
                                     <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
@@ -35,33 +35,15 @@
             }else{
                 List<ShopItem> cakes = new ArrayList();
                 cakes = (ArrayList) session.getAttribute("cakeList");
-                for (ShopItem cake : cakes) {
-    %>
-    <tr>
-        <td>
-            <form action="/CakeWebShop/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
-                <a href="#"><img src="<%= cake.getItemPicture()%>"></a>
-                    <%= cake.getItemName()%>
-                    <%= cake.getItemPrice()%>
-                <input type="submit" value="Rediger vare">
-            </form>
-        </td>
-    </tr>
-    <%          }
-        }
-    } else {
-        List<ShopItem> cakes = new ArrayList();
-        cakes = (ArrayList) session.getAttribute("cakeList");
-        for (ShopItem cake : cakes) {%>
-
-    <tr>
-        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
-        <td><%= cake.getItemName()%></td>
-        <td><%= cake.getItemPrice()%></td>
-    </tr>
-    <%
+                for (ShopItem cake : cakes) {%>
+                    <tr>
+                        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
+                        <td><%= cake.getItemName()%></td>
+                        <td><%= cake.getItemPrice()%></td>
+                    </tr>
+            <%
+                }
             }
-        }
-    %>
+            %>
 
-</table>
+        </table>

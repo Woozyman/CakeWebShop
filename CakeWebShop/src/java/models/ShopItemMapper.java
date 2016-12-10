@@ -50,13 +50,12 @@ public class ShopItemMapper {
         }
     }
     
-    public void updateItem(ShopItem item){
+    public void updateItem(ShopItem item,int id){
         String name = item.getItemName();
         String descrip = item.getItemDescription();
         String pic = item.getItemPicture();
         Double price = item.getItemPrice();
-        Date disDate = item.getDiscontinuedDate();
-        int itemId = item.getItemId();
+        Date disDate = item.getDiscontinuedDate();       
         
         try {
             String query = "UPDATE shopitems SET itemName=?, itemDescription=?, itemPicture=?, "
@@ -68,7 +67,7 @@ public class ShopItemMapper {
         ps.setString(3, pic);
         ps.setDouble(4, price);
         ps.setDate(5, disDate);
-        ps.setInt(6, itemId);
+        ps.setInt(6, id);
         
         ps.executeUpdate();
         

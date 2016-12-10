@@ -7,6 +7,9 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,25 +55,41 @@ public class ShopItemController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String page = null;
         ShopItemMapper sim = new ShopItemMapper();
-
+        ShopItem item = sim.getItem(id);
         if (action.equals(("edit"))) {
-            
-            ShopItem item = sim.getItem(id);            
+
+            // ShopItem item = sim.getItem(id);
             request.setAttribute("shopItem", item);
-            
+
             request.getRequestDispatcher("/formEditShopItem.jsp").forward(request, response);
-          
+
         } else if (action.equals("create")) {
-           
-            ShopItem item = new ShopItem();            
-            item.setItemName((String)request.getAttribute("itemName"));
-            item.setItemDescription((String)request.getAttribute("itemDescription"));
-            item.setItemPicture((String)request.getAttribute("itemPicture"));
-            item.setItemPrice((Double)request.getAttribute("itemPrice"));
-            
+
+            //  ShopItem item = new ShopItem();
+            item.setItemName((String) request.getAttribute("itemName"));
+            item.setItemDescription((String) request.getAttribute("itemDescription"));
+            item.setItemPicture((String) request.getAttribute("itemPicture"));
+            item.setItemPrice((Double) request.getAttribute("itemPrice"));
+
             sim.addItem(item);
-            
-            response.sendRedirect("/mainbody.jsp");
+
+            response.sendRedirect("/home.jsp");
+        } else if (action.equals("updateitem")) {
+
+            String name = (String) request.getParameter("itemName");
+            String desc = (String) request.getParameter("itemDescription");
+            String pic = (String) request.getParameter("itemPicture");
+            Double price = Double.parseDouble(request.getParameter("itemPrice"));
+            Date date = (Date) request.getAttribute("discontinuedDate");   
+
+            item.setItemName(name);
+            item.setItemDescription(desc);
+            item.setItemPicture(pic);
+            item.setItemPrice(price);
+            if (date != null) {
+                 item.setDiscontinuedDate(date);
+            }                 
+            sim.updateItem(item, id);
         }
     }
 

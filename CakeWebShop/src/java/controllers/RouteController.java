@@ -52,7 +52,7 @@ public class RouteController extends HttpServlet {
             session.setAttribute("cakeList", si);
         }
 
-        request.getRequestDispatcher("/mainbody.jsp").include(request, response);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     /**

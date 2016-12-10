@@ -23,7 +23,7 @@ import models.UserMapper;
  * @author freyb
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+public class LoginController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -61,13 +61,13 @@ public class Login extends HttpServlet {
                 User user = um.getUserByEmail(email);
                 HttpSession session = request.getSession();
                 session.setAttribute("userObj", user);
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("home.jsp");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }            
         } else {
             //response.getWriter().print("du er ikke logget ind");
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("home.jsp");
         }
         String origin = request.getParameter("origin");
         if (origin != null) {

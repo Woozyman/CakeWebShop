@@ -4,8 +4,9 @@
     Author     : Michael
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="models.ShopItem"%>
-
+<c:import url="header.jsp"></c:import>
 <%
     ShopItem item = (ShopItem) request.getAttribute("shopItem");
     if (item != null) {
@@ -34,3 +35,4 @@
 <%
     }
 %>
+<c:import url="footer.jsp"></c:import>

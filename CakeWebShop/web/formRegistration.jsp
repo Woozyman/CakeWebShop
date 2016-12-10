@@ -13,7 +13,7 @@
         <title>Registration Form JSP</title>
     </head>
     <body>
-        <form action="#" method="POST">
+        <form action="Registration" method="POST">
             <fieldset class="box">
                 <legend>Email and password</legend>
                 <div>

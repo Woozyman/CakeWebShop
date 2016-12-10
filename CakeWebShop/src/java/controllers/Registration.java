@@ -7,24 +7,45 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.User;
 import models.UserMapper;
-
+import models.PasswordStorage;
 /**
  *
- * @author freyb
+ * @author Jens
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Registration", urlPatterns = {"/Registration"})
+public class Registration extends HttpServlet {
+    UserMapper um = new UserMapper();
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Registration</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Registration at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,7 +59,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
 
     /**
@@ -52,39 +73,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        UserMapper um = new UserMapper();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        boolean isAuthenticated = um.authenticateUser(email, password);
-        if (isAuthenticated) {
-            try {
-                User user = um.getUserByEmail(email);
-                HttpSession session = request.getSession();
-                session.setAttribute("userObj", user);
-                session.setMaxInactiveInterval(15*60); /**session expires after 15 min **/
-               /** Cookie userName = new Cookie("user", user); if we want to use Cookies too**/
-                response.sendRedirect("index.jsp");
-               /** response.sendRedirect("LoginSucces.jsp"); ToDO **/
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }            
-        } else {
-            //response.getWriter().print("du er ikke logget ind");
-            response.sendRedirect("index.jsp");/** will be loginSucces.jsp later**/
-        }
-         {
-        String origin = request.getParameter("origin");
-        if (origin != null) {
-            if (origin.equals("logout")) {
-                logout(request);
-            }
-        }
-                }
-    }
-
-    private void logout(HttpServletRequest request) {
-        request.getSession().invalidate();
+        processRequest(request, response);
     }
 
     /**

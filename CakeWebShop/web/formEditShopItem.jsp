@@ -4,23 +4,28 @@
     Author     : Michael
 --%>
 
+<%@page import="java.sql.Date"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="models.ShopItem"%>
-<%if (request.getAttribute("shopItem") != null) {
-        ShopItem item = (ShopItem) request.getAttribute("shopItem");
+<c:import url="header.jsp"></c:import>
+<%
+    ShopItem item = (ShopItem) request.getAttribute("shopItem");
+    if (item != null) {
+        
 %>
-<form action="/CakeWebShop?action=edit" method="POST">
+<form action="/CakeWebShop/ShopItemController?action=updateitem&id=<%= item.getItemId()%>" method="POST">
     <input type="text" name="itemName" value="<%= item.getItemName()%>"/>
     <input type="text" name="itemDescription" value="<%= item.getItemDescription()%>"/>
     <input type="text" name="itemPicture" value="<%= item.getItemPicture()%>"/>
     <input type="text" name="itemPrice" value="<%= item.getItemPrice()%>"/>
     <input type="date" name="discontinuedDate" value="<%= item.getDiscontinuedDate()%>"/>
-    <input type="submit" name="edit" value="Update"/>
+    <input type="submit" name="updateItem" value="Update"/>
 </form>
 <%
     } else {
         out.print("<p>ingen vare er valgt så der oprettes en vare</p>");%>
 
-<form action="/CakeWebShop?action=create" method="POST">
+<form action="/CakeWebShop/ShopItemController?action=create" method="POST">
     <input type="text" name="itemName" placeholder="Kagenavn"/>
     <input type="text" name="itemDescription" placeholder="Beskrivelse"/>
     <input type="text" name="itemPicture" placeholder="Billede sti"/>
@@ -31,3 +36,4 @@
 <%
     }
 %>
+<c:import url="footer.jsp"></c:import>

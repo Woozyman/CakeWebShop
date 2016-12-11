@@ -20,6 +20,5 @@
         <%@include file="topUserBar.jsp"%>
         <h1>Hello User!</h1>
         <p>See the best cakes in the world.</p>
-        <%--<%@include file="mainbody.jsp" %>--%>
     </body>
 </html>

@@ -80,7 +80,7 @@ public class ShopItemController extends HttpServlet {
             String desc = (String) request.getParameter("itemDescription");
             String pic = (String) request.getParameter("itemPicture");
             Double price = Double.parseDouble(request.getParameter("itemPrice"));
-            Date date = (Date) request.getAttribute("discontinuedDate");   
+            String date = (String)request.getParameter("discontinuedDate");   
 
             item.setItemName(name);
             item.setItemDescription(desc);

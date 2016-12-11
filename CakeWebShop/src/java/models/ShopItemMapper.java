@@ -43,44 +43,43 @@ public class ShopItemMapper {
             ps.setDouble(3, price);
 
             ps.execute();
-           
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    public void updateItem(ShopItem item,int id){
+
+    public void updateItem(ShopItem item, int id) {
         String name = item.getItemName();
         String descrip = item.getItemDescription();
         String pic = item.getItemPicture();
         Double price = item.getItemPrice();
-        Date disDate = item.getDiscontinuedDate();       
-        
+        Date disDate = item.getDiscontinuedDate();
+
         try {
             String query = "UPDATE shopitems SET itemName=?, itemDescription=?, itemPicture=?, "
-                + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
-        
-        PreparedStatement ps = db.getConnection().prepareStatement(query);
-        ps.setString(1,name);
-        ps.setString(2, descrip);
-        ps.setString(3, pic);
-        ps.setDouble(4, price);
-        ps.setDate(5, disDate);
-        ps.setInt(6, id);
-        
-        ps.executeUpdate();
-        
+                    + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
+
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, descrip);
+            ps.setString(3, pic);
+            ps.setDouble(4, price);
+            ps.setDate(5, disDate);
+            ps.setInt(6, id);
+
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void setDiscontinuedDate(ShopItem item, String date) {
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date discontinuedDate = new Date(formatter.parse(date).getTime());
-            item.setDiscontinuedDate(discontinuedDate);
+            item.setDiscontinuedDate(date);
 
             try {
                 String query = "SET discontinueDate=? WHERE itemid = ? ";
@@ -90,7 +89,7 @@ public class ShopItemMapper {
                 ps.setInt(2, item.getItemId());
 
                 int result = ps.executeUpdate();
-                             
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -107,7 +106,7 @@ public class ShopItemMapper {
             ps.setInt(1, item.getItemId());
 
             int result = ps.executeUpdate();
-           
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,13 +123,12 @@ public class ShopItemMapper {
             ps.setInt(1, id);
 
             boolean result = ps.execute(); //Returns true if result is a ResultSet and false if no result
-            
 
             if (result) {
                 ResultSet rs = ps.getResultSet();
                 rs.next();
                 item = new ShopItem(rs.getInt("itemid"), rs.getString("itemName"), rs.getString("itemPicture"),
-                        rs.getString("itemDescription"), rs.getDouble("itemPrice"), rs.getDate("discontinuedDate"));
+                        rs.getString("itemDescription"), rs.getDouble("itemPrice"), rs.getString("discontinuedDate"));
             } else {
                 return null;
             }
@@ -148,7 +146,7 @@ public class ShopItemMapper {
             String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
-            ResultSet rs = ps.executeQuery();          
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 int itemid = rs.getInt("itemid");
@@ -156,9 +154,15 @@ public class ShopItemMapper {
                 String picture = rs.getString("itemPicture");
                 String description = rs.getString("itemDescription");
                 double price = rs.getDouble("itemPrice");
-                Date discontinued = rs.getDate("discontinuedDate");
+                String discontinued = null;
+                try {
+                    discontinued = rs.getDate("discontinuedDate").toString();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } finally {
 
-                ShopItem item = new ShopItem(itemid ,name, picture, description, price, discontinued);
+                }
+                ShopItem item = new ShopItem(itemid, name, picture, description, price, discontinued);
                 shopItems.add(item);
             }
 

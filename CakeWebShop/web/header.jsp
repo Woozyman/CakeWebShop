@@ -22,17 +22,17 @@
     <%if(session.getAttribute("userObj")!=null){
         User user = (User)session.getAttribute("userObj");%>
                 
-        <form class="navbar-form navbar-right" action="Login" method="POST">
+        <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
             <%-- <input type="hidden" name="origin" value="logout"> --%>
                 <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (0)</button>
-                <button type="submit" name="origin" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
+                <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
             </div>
         </form>
             
      <% } else { %>
             
-        <form class="navbar-form navbar-left" action="Login" method="POST">
+        <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">
                 <input type="text" name="password" class="form-control" placeholder="Password" value="admin123">

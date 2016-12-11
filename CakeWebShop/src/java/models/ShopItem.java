@@ -6,6 +6,9 @@
 package models;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -18,11 +21,12 @@ public class ShopItem {
     private String itemPicture;
     private String itemDescription;
     private double itemPrice;
-    private Date discontinuedDate = null;
+    private String discontinuedDate = null;
 
-    public ShopItem(){}
+    public ShopItem() {
+    }
 
-    public ShopItem(int itemid, String name, String picture, String description, double price, Date discontinued) {
+    public ShopItem(int itemid, String name, String picture, String description, double price, String discontinued) {
         this.itemId = itemid;
         this.itemName = name;
         this.itemPicture = picture;
@@ -37,13 +41,23 @@ public class ShopItem {
 
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
-    }    
+    }
 
     public Date getDiscontinuedDate() {
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date discontinuedDate = null;
+        try {
+            discontinuedDate = new Date(formatter.parse(this.discontinuedDate).getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return discontinuedDate;
     }
 
-    public void setDiscontinuedDate(Date discontinuedDate) {
+    public void setDiscontinuedDate(String discontinuedDate) {
         this.discontinuedDate = discontinuedDate;
     }
 

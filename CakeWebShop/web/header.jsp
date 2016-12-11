@@ -26,6 +26,7 @@
             </div>
             <button type="submit" class="btn btn-default">Log in</button>
         </form>
+            <a href="${pageContext.servletContext.contextPath}/formRegistration.jsp">Register</a>
             <%
                 out.print("<p>Welcome visitor</p>");
             }

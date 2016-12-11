@@ -4,6 +4,7 @@
     Author     : Jens
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,7 @@
         <title>Registration Form JSP</title>
     </head>
     <body>
+        <c:import url="header.jsp"></c:import>
         <form action="#" method="POST">
             <fieldset class="box">
                 <legend>Email and password</legend>
@@ -20,7 +22,7 @@
                     <p>
                         <label class="textlabel" for="emailInput">Email</label>
                         <input id="emailInput" placeholder="Enter valid email address" title="email" name="Email"   type="email"
-                               requered="required" class="textinput" maxlength="50" autofocus="autofocus"/>                                                      
+                               required="required" class="textinput" maxlength="50" autofocus="autofocus"/>                                                      
                     </p>   
                     <p>
                         <label class="textlabel" for="passwordInput1">Password</label>
@@ -70,5 +72,6 @@
             
           
         </form>
+        <c:import url="footer.jsp"></c:import>
     </body>
 </html>

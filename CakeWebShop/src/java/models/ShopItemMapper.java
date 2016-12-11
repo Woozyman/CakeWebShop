@@ -145,8 +145,7 @@ public class ShopItemMapper {
         List<ShopItem> shopItems = new ArrayList();
 
         try {
-            String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems"
-                    ;
+            String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();          

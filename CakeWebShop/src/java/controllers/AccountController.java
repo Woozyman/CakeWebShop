@@ -22,8 +22,8 @@ import models.UserMapper;
  *
  * @author freyb
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "Login", urlPatterns = {"/AccountController"})
+public class AccountController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -52,29 +52,37 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        UserMapper um = new UserMapper();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        boolean isAuthenticated = um.authenticateUser(email, password);
-        if (isAuthenticated) {
-            try {
-                User user = um.getUserByEmail(email);
-                HttpSession session = request.getSession();
-                session.setAttribute("userObj", user);
+        String action = request.getParameter("action");
+
+        if (action.equals("login")) {
+            UserMapper um = new UserMapper();
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            boolean isAuthenticated = um.authenticateUser(email, password);
+            if (isAuthenticated) {
+                try {
+                    User user = um.getUserByEmail(email);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userObj", user);
+                    response.sendRedirect("home.jsp");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                //response.getWriter().print("du er ikke logget ind");
                 response.sendRedirect("home.jsp");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }            
-        } else {
-            //response.getWriter().print("du er ikke logget ind");
-            response.sendRedirect("home.jsp");
-        }
-        String origin = request.getParameter("origin");
-        if (origin != null) {
-            if (origin.equals("logout")) {
-                logout(request);
             }
+        }else if(action.equals("logout")){
+            logout(request);
+            response.sendRedirect("/CakeWebShop");
         }
+
+//        String origin = request.getParameter("origin");
+//        if (origin != null) {
+//            if (origin.equals("logout")) {
+//                logout(request);
+//            }
+//        }
 
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package models;
 
 import dataaccess.DB;
@@ -12,10 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author freyb
- */
 public class OrderLineMapper {
 
     private DB db;
@@ -27,13 +18,14 @@ public class OrderLineMapper {
     public void addOrderLine(OrderLine orderLine, int orderId){
         
         try {
-            String query = "INSERT into orderlines orderid, shopItemid, itemPrice"
-                + "VALUES (?,?,?)";
+            String query = "INSERT into orderlines orderid, shopItemid, numberOfItems, itemPrice"
+                + "VALUES (?,?,?,?)";
             
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, orderId);
             ps.setInt(2, orderLine.getShopItemId());
-            ps.setDouble(3, orderLine.getItemPrice());
+            ps.setInt(3, orderLine.getNumberOfItems());
+            ps.setDouble(4, orderLine.getItemPrice());
             
             ps.executeUpdate();
            
@@ -46,7 +38,7 @@ public class OrderLineMapper {
         List<OrderLine> orderLines = new ArrayList();
 
         try {
-            String query = "SELECT orderid, shopItemid, itemPrice FROM orderlines"
+            String query = "SELECT orderid, shopItemid, numberOfItems, itemPrice FROM orderlines"
                     + "WHERE orderid = ? ";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, orderId);
@@ -57,9 +49,10 @@ public class OrderLineMapper {
             while (rs.next()) {
                 int orderIdNum = rs.getInt("orderid");
                 int shopItemId = rs.getInt("shopItemid");
+                int numberOfItems = rs.getInt("numberOfItems");
                 double itemPrice = rs.getDouble("itemPrice");
 
-                OrderLine orderLine = new OrderLine(orderIdNum, shopItemId, itemPrice);
+                OrderLine orderLine = new OrderLine(orderIdNum, shopItemId, numberOfItems, itemPrice);
                 orderLines.add(orderLine);
             }
 
@@ -69,5 +62,4 @@ public class OrderLineMapper {
 
         return orderLines;
     }
-
 }

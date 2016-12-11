@@ -6,31 +6,40 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
-
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="nav navbar-nav navbar-right">
-            <%if(session.getAttribute("userObj")!=null){
-                User user = (User)session.getAttribute("userObj");
-                out.print("<p>Logged in as: "+user.getFirstname()+"</p>");%>
-            <form action="CakeWebShop/Login" method="POST">
-            <input type="hidden" name="origin" value="logout">
-            <input type="submit" value="Logout">
-            </form>
-            <% }else{ %>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CakeWebShop</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">CakeWebshop</a>
+    </div>
+     
+    <%if(session.getAttribute("userObj")!=null){
+        User user = (User)session.getAttribute("userObj");%>
+                
+        <form class="navbar-form navbar-right" action="Login" method="POST">
+            <div class="form-group">
+            <%-- <input type="hidden" name="origin" value="logout"> --%>
+                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (0)</button>
+                <button type="submit" name="origin" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
+            </div>
+        </form>
+            
+     <% } else { %>
             
         <form class="navbar-form navbar-left" action="Login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">
                 <input type="text" name="password" class="form-control" placeholder="Password" value="admin123">
             </div>
-            <button type="submit" class="btn btn-default">Log in</button>
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Log in</button>
         </form>
-            <a href="${pageContext.servletContext.contextPath}/formRegistration.jsp">Register</a>
-            <%
-                out.print("<p>Welcome visitor</p>");
-            }
-            %>
-        </div>
-    </div>
+        <button class="btn navbar-btn"><a href="${pageContext.servletContext.contextPath}/formRegistration.jsp"><span class="glyphicon glyphicon-user"></span> Register</a></button>
+     <% } %>     
+  </div>
 </nav>

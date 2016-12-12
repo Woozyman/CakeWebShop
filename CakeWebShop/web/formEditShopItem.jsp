@@ -1,9 +1,3 @@
-<%-- 
-    Document   : formEditShopItem
-    Created on : 07-12-2016, 17:11:58
-    Author     : Michael
---%>
-
 <%@page import="java.sql.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="models.ShopItem"%>

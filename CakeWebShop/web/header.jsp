@@ -1,9 +1,3 @@
-<%-- 
-    Document   : header
-    Created on : 03-12-2016, 08:23:53
-    Author     : Michael
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
 <%@page import="models.Cart" %>

@@ -14,6 +14,7 @@ create table users
     password varchar(40) not null				# 40 fordi SHA1 er 40 char lang 
 );
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '23374263', 'adressen 4a,', '2300', 'admin123');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'guest123');
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','fclante@gmail.com','50565150','Amagerfælledvej 47','2300','pass123');
 
 create table shopItems
@@ -35,10 +36,12 @@ create table orders
     FOREIGN KEY (userid) REFERENCES users(userid),
     orderDate datetime,
     orderCakeCompletedDate datetime,
-    orderDeliveryDate datetime
+    orderDeliveryDate datetime,
+    orderInShoppingCart TINYINT
 );
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate) VALUES (2, '2016-12-10 10:15:00', NULL, '2016-12-20 12:00:00');
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate) VALUES (2, '2016-12-11 12:05:00', NULL, '2016-12-22 12:00:00');
+INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (3, '2016-12-10 10:15:00', NULL, '2016-12-20 12:00:00', 0);
+INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (3, '2016-12-11 12:05:00', NULL, '2016-12-22 12:00:00', 0);
+INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (2, NULL, NULL, NULL, 1);
 
 create table orderLines
 (

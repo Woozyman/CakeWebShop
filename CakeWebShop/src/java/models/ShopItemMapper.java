@@ -5,7 +5,7 @@
  */
 package models;
 
-import dataaccess.DB;
+import dataaccess.DB_local;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class ShopItemMapper {
 
-    private DB db;
+    private DB_local db;
 
     public ShopItemMapper() {
-        this.db = new DB();
+        this.db = new DB_local();
     }
 
     public void addItem(ShopItem item) {

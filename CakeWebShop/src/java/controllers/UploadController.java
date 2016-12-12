@@ -94,7 +94,7 @@ public class UploadController extends HttpServlet {
 
                 for (int i = 0; i < fileTypes.length; i++) {
                     if (contentType.equals(fileTypes[i])) {
-                        File uploadDir = new File("C:\\Users\\freyb\\Pictures\\uploaded"); //Alter to local path to test on localhost
+                        File uploadDir = new File("/home/pi/ImageUpload"); //Alter to local path to test on localhost
                         File file = File.createTempFile("img", "."+contentType.substring(6), uploadDir);                            
                     
                         item.write(file);

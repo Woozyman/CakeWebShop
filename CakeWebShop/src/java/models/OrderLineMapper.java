@@ -1,6 +1,6 @@
 package models;
 
-import dataaccess.DB;
+import dataaccess.DB_local;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +9,10 @@ import java.util.List;
 
 public class OrderLineMapper {
 
-    private DB db;
+    private DB_local db;
 
     public OrderLineMapper() {
-        this.db = new DB();
+        this.db = new DB_local();
     }
     
     public void addOrderLine(OrderLine orderLine, int orderId){

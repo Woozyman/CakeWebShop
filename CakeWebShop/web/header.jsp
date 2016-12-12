@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
+<%@page import="models.Cart" %>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>CakeWebShop</title>
@@ -18,14 +19,14 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="#">CakeWebshop</a>
     </div>
-     
+    <% Cart cart = (Cart) session.getAttribute("cart");%> 
     <%if(session.getAttribute("userObj")!=null){
         User user = (User)session.getAttribute("userObj");%>
                 
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
             <%-- <input type="hidden" name="origin" value="logout"> --%>
-                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (0)</button>
+            <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
                 <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
             </div>
         </form>

@@ -5,7 +5,7 @@
  */
 package models;
 
-import dataaccess.DB;
+import dataaccess.DB_local;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,10 +20,10 @@ import java.text.SimpleDateFormat;
  */
 public class OrderMapper {
 
-    private static DB db;
+    private static DB_local db;
 
     public OrderMapper() {
-        this.db = new DB();
+        this.db = new DB_local();
     }
 
     public static void createOrder(Order order) {

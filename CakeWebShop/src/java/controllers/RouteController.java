@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.swing.text.html.HTML;
 import javax.websocket.Session;
+import models.Cart;
+import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
 
@@ -44,12 +46,18 @@ public class RouteController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (mainPage.equals("/CakeWebShop")) {
+            
             ShopItemMapper sim = new ShopItemMapper();
-            List<ShopItem> si = sim.getAllItems();
+            List<ShopItem> si = sim.getAllItems();            
+            
+            Cart cart = new Cart();
+            //Test Test Test Uncomment line below to simulate items in basket
+           // cart.addItemToCart(new ShopItem());
 
             HttpSession session = request.getSession();
-
+            //Sets The ShopItems and the Cart objects on the session
             session.setAttribute("cakeList", si);
+            session.setAttribute("cart", cart);
         }
 
         request.getRequestDispatcher("/home.jsp").forward(request, response);

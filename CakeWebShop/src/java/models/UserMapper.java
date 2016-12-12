@@ -5,7 +5,7 @@
  */
 package models;
 
-import dataaccess.DB;
+import dataaccess.DB_local;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,10 +19,10 @@ import java.util.HashSet;
  */
 public class UserMapper {
 
-    private static DB db;
+    private static DB_local db;
 
     public UserMapper() {
-        this.db = new DB();
+        this.db = new DB_local();
     }
 
     public static void createUser(User user) {
@@ -59,7 +59,7 @@ public class UserMapper {
         User user = null;
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             
@@ -84,7 +84,7 @@ public class UserMapper {
         List<User> users = new ArrayList();
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
-            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
            
             while (rs.next()) {
@@ -107,7 +107,7 @@ public class UserMapper {
     public static boolean authenticateUser(String email, String password) {
         try {
             String query = "SELECT email, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
         

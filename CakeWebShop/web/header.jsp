@@ -41,6 +41,7 @@
                 <input type="text" name="password" class="form-control" placeholder="Password" value="admin123">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Log in</button>
+            <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
         </form>
         <button class="btn navbar-btn"><a href="${pageContext.servletContext.contextPath}/formRegistration.jsp"><span class="glyphicon glyphicon-user"></span> Register</a></button>
      <% } %>     

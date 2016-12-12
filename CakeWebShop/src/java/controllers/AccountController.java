@@ -68,13 +68,13 @@ public class AccountController extends HttpServlet {
             response.sendRedirect("/CakeWebShop");
         }
          else if(action.equals("register")){
-            String email = (String)request.getAttribute("Email");
-            String password = (String)request.getAttribute("Password");
-            String firstname = (String)request.getAttribute("FirstName");
-            String lastname = (String)request.getAttribute("LastName");
-            String phonenumber = (String)request.getAttribute("PhoneNumber");
-            String address = (String)request.getAttribute("Address");
-            String zip = (String)request.getAttribute("Zip");    
+            String email = (String)request.getParameter("Email");
+            String password = (String)request.getParameter("Password1");
+            String firstname = (String)request.getParameter("FirstName");
+            String lastname = (String)request.getParameter("LastName");
+            String phonenumber = (String)request.getParameter("PhoneNumber");
+            String address = (String)request.getParameter("Address");
+            String zip = (String)request.getParameter("Zip");    
         
     
          User user = new User (firstname, lastname, email, phonenumber, address, zip, password);
@@ -82,12 +82,6 @@ public class AccountController extends HttpServlet {
          response.sendRedirect("home.jsp");
                 
          }
-//        String origin = request.getParameter("origin");
-//        if (origin != null) {
-//            if (origin.equals("logout")) {
-//                logout(request);
-//            }
-//        }
 
     }
 

@@ -22,7 +22,7 @@
                 <div>
                     <p>
                         <label class="textlabel" for="emailInput">Email</label>
-                        <input id="emailInput" placeholder="Enter valid email address" title="email" name="Email"   type="email"
+                        <input id="emailInput" placeholder="Enter valid email address" title="email" name="Email"   type="text"
                                required="required" class="textinput" maxlength="50" autofocus="autofocus"/>                                                      
                     </p>   
                     <p>
@@ -54,7 +54,7 @@
                     </p>
                      <p>
                         <label class="textlabel" for="phoneInput">Phone Number</label>
-                        <input id="phoneInput" placeholder="Enter a 8 digit phone number" title="Phone number" name="PhoneNumber" type="phone" required="required"  
+                        <input id="phoneInput" placeholder="Enter a 8 digit phone number" title="Phone number" name="PhoneNumber" type="text" required="required"  
                                class="textinput" maxlength="8" />                         
                     </p>
                      <p>

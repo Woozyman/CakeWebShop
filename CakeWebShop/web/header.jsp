@@ -17,14 +17,14 @@
         <%if (session.getAttribute("userObj") != null) {
                 User user = (User) session.getAttribute("userObj");
                 if (user.getFirstname().equals("admin")) {
-                // admin goes here%>        
+                    // admin goes here%>        
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
                 <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
             </div>
         </form>
         <% } else {
-         // Normal user goes here %>
+            // Normal user goes here %>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
                 <%-- <input type="hidden" name="origin" value="logout"> --%>
@@ -33,20 +33,26 @@
             </div>
         </form>
         <% }
-     } else {
-         // Guest goes here %> 
+        } else {
+            // Guest goes here %> 
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">
                 <input type="text" name="password" class="form-control" placeholder="Password" value="admin123">
             </div>
-            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Log in</button>
-            <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login</button>            
         </form>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/formRegistration.jsp" method="post">
             <div class="form-group">
                 <button type="submit" class="btn navbar-btn"><span class="glyphicon glyphicon-user"></span> Register</button>
             </div>
+            
+        </form>
+        <form class="navbar-form navbar-right"action="${pageContext.servletContext.contextPath}/CartController?action=showCart" method="post">
+            <div class="form-group">
+                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
+            </div>
+            
         </form>
         <% } %>     
     </div>

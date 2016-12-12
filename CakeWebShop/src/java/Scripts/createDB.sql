@@ -11,7 +11,7 @@ create table users
     phone varchar(8) not null,					# tlf.nr. i dk er 8 (kan udvides)
     address varchar(50) not null,
     zip varchar(4) not null,					# 4 fordi i dk, grønland og færøerne bruges kun max 4 (kan udvides)
-    password varchar(40) not null				# 40 fordi SHA1 er 40 char lang 
+    password varchar(100) not null				# 40 fordi SHA1 er 40 char lang 
 );
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '23374263', 'adressen 4a,', '2300', 'admin123');
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'guest123');

@@ -44,9 +44,9 @@ public class AccountController extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-
+        UserMapper um = new UserMapper();
         if (action.equals("login")) {
-            UserMapper um = new UserMapper();
+            
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             boolean isAuthenticated = um.authenticateUser(email, password);
@@ -67,6 +67,10 @@ public class AccountController extends HttpServlet {
             logout(request);
             response.sendRedirect("/CakeWebShop");
         }
+         else if(action.equals("register")){
+            String firstName= reguest.getAttribute("Firstname");
+        }
+
 
 //        String origin = request.getParameter("origin");
 //        if (origin != null) {

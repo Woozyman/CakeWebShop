@@ -69,7 +69,7 @@
                     </p>
                 </div>
             </fieldset>
-            <input type="submit" class="submitbutton" value="Register"/>  
+            <input type="submit" class="submitbutton" value="Register" /> 
             
           
         </form>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controllers;
 
 import java.io.IOException;
@@ -18,14 +13,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.swing.text.html.HTML;
 import javax.websocket.Session;
+import models.Cart;
+import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
 
-/**
- *
- * @author freyb
- */
-@WebServlet(name = "RouteController", urlPatterns = {"/", "/CakeWebShop/RouteController"})
+@WebServlet(name = "RouteController", urlPatterns = {"/RouteController", "/"})
 public class RouteController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -44,15 +37,21 @@ public class RouteController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (mainPage.equals("/CakeWebShop")) {
+            
             ShopItemMapper sim = new ShopItemMapper();
-            List<ShopItem> si = sim.getAllItems();
+            List<ShopItem> si = sim.getAllItems();            
+            
+            Cart cart = new Cart();
+            //Test Test Test Uncomment line below to simulate items in basket
+           // cart.addItemToCart(new ShopItem());
 
             HttpSession session = request.getSession();
-
+            //Sets The ShopItems and the Cart objects on the session
             session.setAttribute("cakeList", si);
+            session.setAttribute("cart", cart);
         }
 
-        request.getRequestDispatcher("/mainbody.jsp").include(request, response);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     /**
@@ -65,8 +64,7 @@ public class RouteController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            response.getWriter().print("Test");
+            throws ServletException, IOException {           
         String action = request.getParameter("action");
         String id = request.getParameter("id");
         String page = null;
@@ -77,7 +75,7 @@ public class RouteController extends HttpServlet {
         } else if (action.equals("create")) {
             page = "/ShopItemController";            
         }
-            request.getRequestDispatcher(page).forward(request, response);
+            request.getRequestDispatcher(page).include(request, response);
     }
 
     /**

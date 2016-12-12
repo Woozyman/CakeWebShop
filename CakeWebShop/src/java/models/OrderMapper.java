@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package models;
 
-import dataaccess.DB;
+import dataaccess.DB_local;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,16 +9,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author freyb
- */
 public class OrderMapper {
 
-    private static DB db;
+    private static DB_local db;
 
     public OrderMapper() {
-        this.db = new DB();
+        this.db = new DB_local();
     }
 
     public static void createOrder(Order order) {

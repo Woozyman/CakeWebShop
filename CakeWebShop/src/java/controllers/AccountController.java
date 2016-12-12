@@ -68,7 +68,9 @@ public class AccountController extends HttpServlet {
             response.sendRedirect("/CakeWebShop");
         }
          else if(action.equals("register")){
-            String firstName= reguest.getAttribute("Firstname");
+            String firstName = (String) request.getAttribute("FirstName");
+            
+            User user = new User()
         }
 
 

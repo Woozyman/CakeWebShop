@@ -68,9 +68,16 @@ public class AccountController extends HttpServlet {
             response.sendRedirect("/CakeWebShop");
         }
          else if(action.equals("register")){
-            String firstName= reguest.getAttribute("Firstname");
+            String email = (String)request.getAttribute("Email");
+            String password = (String)request.getAttribute("Password");
+            String firstname = (String)request.getAttribute("FirstName");
+            String larstname = (String)request.getAttribute("LastName");
+            String phonenumber = (String)request.getAttribute("PhoneNumber");
+            String address = (String)request.getAttribute("Address");
+            String zip = (String)request.getAttribute("Zip");    
         }
-
+    
+         User user = new User (firstname, lastname, email, phonenumber, address, zip, password);
 
 //        String origin = request.getParameter("origin");
 //        if (origin != null) {

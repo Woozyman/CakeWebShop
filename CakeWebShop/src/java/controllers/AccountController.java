@@ -46,7 +46,7 @@ public class AccountController extends HttpServlet {
         String action = request.getParameter("action");
         UserMapper um = new UserMapper();
         if (action.equals("login")) {
-            
+
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             boolean isAuthenticated = um.authenticateUser(email, password);
@@ -63,16 +63,12 @@ public class AccountController extends HttpServlet {
                 //response.getWriter().print("du er ikke logget ind");
                 response.sendRedirect("home.jsp");
             }
-        }else if(action.equals("logout")){
+        } else if (action.equals("logout")) {
             logout(request);
             response.sendRedirect("/CakeWebShop");
-        }
-         else if(action.equals("register")){
-            String firstName = (String) request.getAttribute("FirstName");
-            
+        } else if (action.equals("register")) {
             User user = new User()
         }
-
 
 //        String origin = request.getParameter("origin");
 //        if (origin != null) {
@@ -80,7 +76,6 @@ public class AccountController extends HttpServlet {
 //                logout(request);
 //            }
 //        }
-
     }
 
     private void logout(HttpServletRequest request) {

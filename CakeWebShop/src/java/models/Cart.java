@@ -8,10 +8,6 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author freyb
- */
 public class Cart {
 
     private List<ShopItem> items;

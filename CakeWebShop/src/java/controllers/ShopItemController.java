@@ -73,7 +73,7 @@ public class ShopItemController extends HttpServlet {
 
             sim.addItem(item);
 
-            response.sendRedirect("/home.jsp");
+            response.sendRedirect("home.jsp");
         } else if (action.equals("updateitem")) {
 
             String name = (String) request.getParameter("itemName");
@@ -90,6 +90,8 @@ public class ShopItemController extends HttpServlet {
                  item.setDiscontinuedDate(date);
             }                 
             sim.updateItem(item, id);
+            
+            response.sendRedirect("home.jsp");
         }
     }
 

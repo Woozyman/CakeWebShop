@@ -34,7 +34,7 @@ public class ShopItemMapper {
             String picture = item.getItemPicture();
             double price = item.getItemPrice();
 
-            String query = "INSERT INTO shopitems(name, picture, price)"
+            String query = "INSERT INTO shopItems(name, picture, price)"
                     + "VALUES(?,?,?)";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
@@ -57,7 +57,7 @@ public class ShopItemMapper {
         Date disDate = item.getDiscontinuedDate();
 
         try {
-            String query = "UPDATE shopitems SET itemName=?, itemDescription=?, itemPicture=?, "
+            String query = "UPDATE shopItems SET itemName=?, itemDescription=?, itemPicture=?, "
                     + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
@@ -115,7 +115,7 @@ public class ShopItemMapper {
     public ShopItem getItem(int id) {
         ShopItem item = null;
 
-        String query = "SELECT itemid, itemName, itemPicture, itemPrice, itemDescription, discontinuedDate FROM shopitems "
+        String query = "SELECT itemid, itemName, itemPicture, itemPrice, itemDescription, discontinuedDate FROM shopItems "
                 + "WHERE itemid = ? ";
 
         try {
@@ -143,7 +143,7 @@ public class ShopItemMapper {
         List<ShopItem> shopItems = new ArrayList();
 
         try {
-            String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopitems";
+            String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopItems";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();

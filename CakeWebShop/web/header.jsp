@@ -21,8 +21,16 @@
     </div>
     <% Cart cart = (Cart) session.getAttribute("cart");%> 
     <%if(session.getAttribute("userObj")!=null){
-        User user = (User)session.getAttribute("userObj");%>
-                
+        User user = (User)session.getAttribute("userObj");
+        if (user.getFirstname().equals("admin")) {
+    // admin goes here%>        
+        <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
+            <div class="form-group">
+                <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
+            </div>
+        </form>
+     <% } else {
+     // Normal user goes here %>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
             <%-- <input type="hidden" name="origin" value="logout"> --%>
@@ -30,9 +38,9 @@
                 <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
             </div>
         </form>
-            
-     <% } else { %>
-            
+     <% }
+    } else { 
+     // Guest goes here %> 
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">

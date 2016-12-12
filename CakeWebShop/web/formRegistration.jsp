@@ -15,7 +15,8 @@
     </head>
     <body>
         <c:import url="header.jsp"></c:import>
-        <form action="#" method="POST">
+        
+        <form action="/AccountController?action=register" method="POST">
             <fieldset class="box">
                 <legend>Email and password</legend>
                 <div>

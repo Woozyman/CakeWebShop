@@ -16,7 +16,7 @@
     <body>
         <c:import url="header.jsp"></c:import>
         
-        <form action="/AccountController?action=register" method="POST">
+            <form action="${pageContext.servletContext.contextPath}/AccountController?action=register" method="POST">
             <fieldset class="box">
                 <legend>Email and password</legend>
                 <div>
@@ -69,7 +69,7 @@
                     </p>
                 </div>
             </fieldset>
-            <input type="submit" class="submitbutton" value="Register"  
+            <input type="submit" class="submitbutton" value="Register"/>  
             
           
         </form>

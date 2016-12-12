@@ -74,17 +74,14 @@ public class AccountController extends HttpServlet {
             String lastname = (String)request.getAttribute("LastName");
             String phonenumber = (String)request.getAttribute("PhoneNumber");
             String address = (String)request.getAttribute("Address");
-            String zip = (String)request.getAttribute("Zip");   
-            
-            User user = new User (firstname, lastname, email, phonenumber, address, zip, password);
-            
-            um.createUser(user);
-            
-            
-        }
+            String zip = (String)request.getAttribute("Zip");    
+        
     
-         
-
+         User user = new User (firstname, lastname, email, phonenumber, address, zip, password);
+         um.createUser(user);
+         response.sendRedirect("home.jsp");
+                
+         }
 //        String origin = request.getParameter("origin");
 //        if (origin != null) {
 //            if (origin.equals("logout")) {

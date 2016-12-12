@@ -16,7 +16,7 @@ public class UserMapper {
         this.db = new DB_local();
     }
 
-    public static void createUser(User user) {
+    public void createUser(User user) {
         try {
             String firstname = user.getFirstname();
             String lastname = user.getLastname();
@@ -46,7 +46,7 @@ public class UserMapper {
         }
     }
 
-    public static User getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         User user = null;
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users WHERE email = ?";
@@ -71,7 +71,7 @@ public class UserMapper {
         return user;
     }
 
-    public static List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList();
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
@@ -95,7 +95,7 @@ public class UserMapper {
         return users;
     }
 
-    public static boolean authenticateUser(String email, String password) {
+    public boolean authenticateUser(String email, String password) {
         try {
             String query = "SELECT email, password FROM users WHERE email = ?";
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
@@ -114,8 +114,5 @@ public class UserMapper {
         return false;
     }
 
-    public static void main(String[] args) { // right click and select "run file" to insert data
-       
-      
-    }
+   
 }

@@ -60,7 +60,7 @@ public class AccountController extends HttpServlet {
                     ex.printStackTrace();
                 }
             } else {
-                //response.getWriter().print("du er ikke logget ind");
+               //User is redirected if login fails.
                 response.sendRedirect("home.jsp");
             }
         }else if(action.equals("logout")){

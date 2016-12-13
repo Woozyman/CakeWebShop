@@ -11,9 +11,13 @@ import java.util.List;
 public class Cart {
 
     private List<ShopItem> items;
-
-    public Cart() {
-        this.items = new ArrayList();
+    private List<OrderLine> orderLines;
+    
+    public Cart(){}
+    
+    public Cart(List<ShopItem> items, List<OrderLine> lines) {
+        this.items = items;
+        this.orderLines = lines;
     }
 
     public void addItemToCart(ShopItem item) {
@@ -30,6 +34,14 @@ public class Cart {
 
     public int getItemsCount() {
         return items.size();
+    }   
+    
+    public List<OrderLine> getOrderLines(){
+        return this.orderLines;
+    }
+    
+    public List<ShopItem> getShopItems(){
+        return this.items;
     }
 
 }

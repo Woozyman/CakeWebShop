@@ -13,14 +13,14 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">CakeWebshop</a>
         </div>
-        <% Cart cart = (Cart) session.getAttribute("cart");%> 
+        <% Cart cart = (Cart) session.getAttribute("cart"); %>
         <%if (session.getAttribute("userObj") != null) {
                 User user = (User) session.getAttribute("userObj");
                 if (user.getFirstname().equals("admin")) {
                     // admin goes here%>        
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
-                <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
+                <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.println(user.getFirstname()); %></button>
             </div>
         </form>
         <% } else {
@@ -28,7 +28,7 @@
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
                 <%-- <input type="hidden" name="origin" value="logout"> --%>
-                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
+                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount()); %>)</button>
                 <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
             </div>
         </form>
@@ -50,7 +50,7 @@
         </form>
         <form class="navbar-form navbar-right"action="${pageContext.servletContext.contextPath}/CartController?action=showCart" method="post">
             <div class="form-group">
-                <button class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
+                <button type="submit" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
             </div>
             
         </form>

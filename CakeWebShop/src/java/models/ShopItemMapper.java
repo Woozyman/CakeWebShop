@@ -10,13 +10,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ShopItemMapper {
 
     private DB_local db;
+    private Cart cart;
 
     public ShopItemMapper() {
         this.db = new DB_local();
+        this.cart = new Cart();
     }
 
     public void addItem(ShopItem item) {
@@ -164,4 +168,7 @@ public class ShopItemMapper {
         return shopItems;
     }
 
+    
+    
+    
 }

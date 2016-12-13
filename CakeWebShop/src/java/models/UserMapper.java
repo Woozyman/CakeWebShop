@@ -7,10 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserMapper {
 
-    private static DB_local db;
+    private DB_local db;
+    private Cart cart;
 
     public UserMapper() {
         this.db = new DB_local();
@@ -39,10 +42,9 @@ public class UserMapper {
             ps.setString(7, password);
 
             ps.executeUpdate();
-          
 
         } catch (SQLException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -53,7 +55,7 @@ public class UserMapper {
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -77,7 +79,7 @@ public class UserMapper {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-           
+
             while (rs.next()) {
                 String firstname = rs.getString("firstname");
                 String lastname = rs.getString("lastname");
@@ -101,7 +103,7 @@ public class UserMapper {
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-        
+
             if (rs.next()) {
                 if (rs.getString("password").equals(password)) {
                     return true;
@@ -112,7 +114,41 @@ public class UserMapper {
             return false;
         }
         return false;
+    }  
+
+    public Cart getCart(int userId) {
+
+        List<ShopItem> itemsInCart = new ArrayList();
+        int orderId = -1;
+
+        //Find Order not yet paid.
+        String query1 = "SELECT orderid FROM orders WHERE orderInShoppingCart = 1 and userid = ?";
+        //Get all orderlines to populate cart.
+        String query2 = "SELECT shopItemid, numberOfItems FROM orderLines WHERE orderId = ? ";
+
+        try {
+
+            PreparedStatement ps1 = db.getConnection().prepareStatement(query1);
+            ps1.setInt(1, userId);
+            ResultSet rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                orderId = rs1.getInt("orderid");
+            }
+
+            PreparedStatement ps2 = db.getConnection().prepareStatement(query2);
+            ps2.setInt(1, orderId);
+            ResultSet rs2 = ps2.executeQuery();
+
+            while (rs2.next()) {
+                int id = rs2.getInt("shopItemid");
+                int numItems = rs2.getInt("numberOfItems");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ShopItemMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return this.cart;
     }
 
-   
 }

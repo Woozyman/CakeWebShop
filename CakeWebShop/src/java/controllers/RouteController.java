@@ -14,6 +14,8 @@ import javax.servlet.jsp.tagext.JspFragment;
 import javax.swing.text.html.HTML;
 import javax.websocket.Session;
 import models.Cart;
+import models.OrderLine;
+import models.OrderLineMapper;
 import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
@@ -39,12 +41,13 @@ public class RouteController extends HttpServlet {
         if (mainPage.equals("/CakeWebShop")) {
             
             ShopItemMapper sim = new ShopItemMapper();
-            List<ShopItem> si = sim.getAllItems();            
+            List<ShopItem> si = sim.getAllItems();  
             
-            Cart cart = new Cart();
-            //Test Test Test Uncomment line below to simulate items in basket
-           // cart.addItemToCart(new ShopItem());
-
+            OrderLineMapper orm = new OrderLineMapper();
+            List<OrderLine> orderLines = orm.getOrderLines(0);
+            
+            Cart cart = new Cart(si, orderLines);
+           
             HttpSession session = request.getSession();
             //Sets The ShopItems and the Cart objects on the session
             session.setAttribute("cakeList", si);

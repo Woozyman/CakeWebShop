@@ -50,6 +50,7 @@ public class RouteController extends HttpServlet {
            
             HttpSession session = request.getSession();
             //Sets The ShopItems and the Cart objects on the session
+            //So that guest also can add items to cart before they create a user.
             session.setAttribute("cakeList", si);
             session.setAttribute("cart", cart);
         }

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Cart;
+import models.OrderLine;
+import models.ShopItem;
 import models.User;
 import models.UserMapper;
 
@@ -55,6 +58,22 @@ public class AccountController extends HttpServlet {
                     User user = um.getUserByEmail(email);
                     HttpSession session = request.getSession();
                     session.setAttribute("userObj", user);
+                    
+                    int unPaidOrderId = um.getUnpaidOrderId(user);
+                    if (unPaidOrderId != -1) {
+                        /*gets current Cart if any from session
+                        And if it's not empty it merges with the old cart from db */
+                        Cart currenCart = (Cart) session.getAttribute("cart");
+                        Cart oldCart = um.getCart(um.getUserId(email), unPaidOrderId);
+                        if (currenCart == null) {
+                          session.setAttribute("cart", oldCart);
+                        } 
+                        else{
+                            currenCart = mergeCarts(oldCart, currenCart);
+                            session.setAttribute("cart", currenCart);
+                        }
+                    }
+                 
                     response.sendRedirect("home.jsp");
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -87,6 +106,17 @@ public class AccountController extends HttpServlet {
 
     private void logout(HttpServletRequest request) {
         request.getSession().invalidate();
+    }
+    
+    private Cart mergeCarts(Cart oldCart, Cart newCart){
+    
+        Cart mergedCart = oldCart;
+        
+        for(ShopItem item : newCart.getShopItems()){
+            mergedCart.addItemToCart(item);
+        }
+        
+        return mergedCart;
     }
 
     /**

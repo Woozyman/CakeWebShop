@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public class UserMapper {
 
     private DB_local db;
-    private Cart cart;
 
     public UserMapper() {
         this.db = new DB_local();
@@ -73,6 +72,28 @@ public class UserMapper {
         return user;
     }
 
+    public int getUserId(String email) {
+        int result = 0;
+        try {
+            String query = "SELECT userid FROM users WHERE email = ?";
+
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            while (rs.next()) {
+                result = rs.getInt("userid");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+
     public List<User> getAllUsers() {
         List<User> users = new ArrayList();
         try {
@@ -114,41 +135,75 @@ public class UserMapper {
             return false;
         }
         return false;
-    }  
+    }
 
-    public Cart getCart(int userId) {
-
-        List<ShopItem> itemsInCart = new ArrayList();
+    public int getUnpaidOrderId(User user) {
+        int itemsInCart = -1;
         int orderId = -1;
-
-        //Find Order not yet paid.
-        String query1 = "SELECT orderid FROM orders WHERE orderInShoppingCart = 1 and userid = ?";
-        //Get all orderlines to populate cart.
-        String query2 = "SELECT shopItemid, numberOfItems FROM orderLines WHERE orderId = ? ";
-
         try {
+            //Find Order not yet paid.
+            String query = "SELECT orderInShoppingCart, orderid FROM orders WHERE orderInShoppingCart = 1 and userid = ?";
 
-            PreparedStatement ps1 = db.getConnection().prepareStatement(query1);
-            ps1.setInt(1, userId);
-            ResultSet rs1 = ps1.executeQuery();
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, this.getUserId(user.getEmail()));
+            ResultSet rs = ps.executeQuery();
 
-            while (rs1.next()) {
-                orderId = rs1.getInt("orderid");
+            while (rs.next()) {
+
+                itemsInCart = rs.getInt("orderInShoppingCart");
+                orderId = rs.getInt("orderid");
+
             }
-
-            PreparedStatement ps2 = db.getConnection().prepareStatement(query2);
-            ps2.setInt(1, orderId);
-            ResultSet rs2 = ps2.executeQuery();
-
-            while (rs2.next()) {
-                int id = rs2.getInt("shopItemid");
-                int numItems = rs2.getInt("numberOfItems");
-            }
+            
         } catch (SQLException ex) {
-            Logger.getLogger(ShopItemMapper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return this.cart;
+        if (itemsInCart == 1) {
+            return orderId;
+        }
+
+        return -1;
+    }
+
+    public Cart getCart(int userId, int orderId) {
+
+        List<ShopItem> itemsInCart = new ArrayList();
+        List<OrderLine> orderLines = new ArrayList();
+        ShopItemMapper sim = new ShopItemMapper();
+        OrderLineMapper orm = new OrderLineMapper();
+        
+        //Get all orderlines to populate cart.
+        orderLines = orm.getOrderLines(orderId);       
+        
+        //Insert Items in Cart
+        for(OrderLine lineItem : orderLines){            
+            itemsInCart.add(sim.getItem(lineItem.getShopItemId()));
+        }        
+           // Skal måske Slettes.... 
+//        String query = "SELECT shopItemid, numberOfItems FROM orderLines WHERE orderId = ? ";
+//        int id;
+//        int numItems;
+//        try {
+//
+//            PreparedStatement ps = db.getConnection().prepareStatement(query);
+//            ps.setInt(1, orderId);
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                id = rs.getInt("shopItemid");
+//                numItems = rs.getInt("numberOfItems");
+//
+//                ShopItem item = sim.getItem(id);
+//                itemsInCart.add(item);
+//
+//            }
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ShopItemMapper.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        return new Cart(itemsInCart, orderLines);
     }
 
 }

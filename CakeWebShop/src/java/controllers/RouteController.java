@@ -43,7 +43,7 @@ public class RouteController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (session.getAttribute("firstVisit").equals(1)) {
-            
+            session.setAttribute("firstVisit", 0); // make sure this only runs once/session
             ShopItemMapper sim = new ShopItemMapper(); 
             List<ShopItem> items = sim.getAllItems();
             OrderLineMapper orm = new OrderLineMapper();                    

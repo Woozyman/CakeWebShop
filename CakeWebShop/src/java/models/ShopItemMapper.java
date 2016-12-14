@@ -167,8 +167,5 @@ public class ShopItemMapper {
 
         return shopItems;
     }
-
-    
-    
     
 }

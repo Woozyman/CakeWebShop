@@ -45,30 +45,21 @@
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
     </tr>
-    <%
-            }
+    <%      }
         }
     } else {
 //Guest goes here
-
         List<ShopItem> cakes = new ArrayList();
         cakes = (ArrayList) session.getAttribute("cakeList");
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-
-         <img src="<c:url value='images/lagkage.jpg'/>" alt=.../>
-        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
-=======
         <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
-
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
     </tr>
-    <%
-            }
-        }
-    %>
+    <%      }
+        }%>
 </table>
 <c:import url="footer.jsp"></c:import>

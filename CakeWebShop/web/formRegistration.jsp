@@ -1,78 +1,84 @@
-<%-- 
-    Document   : formRegistration
-    Created on : 10-12-2016, 16:13:48
-    Author     : Jens
---%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="models.ShopItem"%>
+<%@page import="java.util.List"%>
+<%@page import="models.User"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="Styles/styles.css" rel="stylesheet" type="text/css"/>
-        <title>Registration Form JSP</title>
-    </head>
-    <body>
-        <c:import url="header.jsp"></c:import>
+<c:import url="header.jsp"></c:import>
         
-            <form action="${pageContext.servletContext.contextPath}/AccountController?action=register" method="POST">
-            <fieldset class="box">
-                <legend>Email and password</legend>
-                <div>
-                    <p>
-                        <label class="textlabel" for="emailInput">Email</label>
-                        <input id="emailInput" placeholder="Enter valid email address" title="email" name="Email"   type="text"
-                               required="required" class="textinput" maxlength="50" autofocus="autofocus"/>                                                      
-                    </p>   
-                    <p>
-                        <label class="textlabel" for="passwordInput1">Password</label>
-                        <input id="passwordInput" placeholder="Enter password, min 8 characters" title="password" name="Password1"
-                               type="password" required="required" class="textinput" maxlength="40" />
-                    </p>
-                      <p>
-                        <label class="textlabel" for="passwordInput2">Password</label>
-                        <input id="passwordInput" placeholder="Reenter password, make sure itÂ´s the same!" title="reenter password" 
-                               name="Password2" type="password" required="required" class="textinput" maxlength="40"/>
-                    </p>
-                </div>                
-            </fieldset>
-            <br />
-            <fieldset class="box">
-                <Legend>Your details</Legend>
-                <div>
-                        <input type="hidden" name="origin" value="register" />
-                    <p>
-                        <label class="textlabel" for="firstNameInput">First Name</label>
-                        <input id="firstNameInput" placeholder="Firstname" title="First name" name="FirstName" type="text" required="required" autofocus="autofocus" 
-                               class="textinput" maxlength="30" />                         
-                    </p>
-                     <p>
-                        <label class="textlabel" for="lastNameInput">Last Name</label>
-                        <input id="lastNameInput" placeholder="Lastname" title="Last name" name="LastName" type="text" required="required"  
-                               class="textinput" maxlength="30" />                         
-                    </p>
-                     <p>
-                        <label class="textlabel" for="phoneInput">Phone Number</label>
-                        <input id="phoneInput" placeholder="Enter a 8 digit phone number" title="Phone number" name="PhoneNumber" type="text" required="required"  
-                               class="textinput" maxlength="8" />                         
-                    </p>
-                     <p>
-                        <label class="textlabel" for="address">Address</label>
-                        <input id="addressInput" placeholder="Streetname and number" title="Address" name="Address" type="text" required="required"  
-                               class="textinput" maxlength="50" />                         
-                    </p>
-                     <p>
-                        <label class="textlabel" for="zipInput">Zip</label>
-                        <input id="zipInput" placeholder="Enter zip code"name="Zip" title="Zip code" type="text" required="required"  
-                               class="textinput" maxlength="4" />                         
-                    </p>
-                </div>
-            </fieldset>
-            <input type="submit" class="submitbutton" value="Register" /> 
-            
-          
-        </form>
-        <c:import url="footer.jsp"></c:import>
-    </body>
-</html>
+    <form class="form-horizontal" action="${pageContext.servletContext.contextPath}/AccountController?action=register" method="POST">
+    <fieldset>
+        <legend>Email and password</legend>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="emailInput">Email</label>
+            <div class="col-sm-6">
+                <input type="email" class="form-control" id="emailInput" placeholder="Enter a valid email address" title="email" name="Email"
+                       required="required" maxlength="50" autofocus="autofocus"/>
+            </div>
+        </div>   
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="passwordInput1">Password</label>
+            <div class="col-sm-6">
+
+                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password, min 8 characters" title="password" name="Password1"
+                       type="password" required="required" maxlength="40" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="passwordInput2">Repeat Password</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Reenter password, make sure it´s the same!" title="reenter password" 
+                       name="Password2" required="required" maxlength="40"/>
+            </div>
+        </div>
+
+    </fieldset>
+    <br />
+    <fieldset>
+        <Legend>Your details</Legend>
+        <div class="form-group">
+            <input type="hidden" name="origin" value="register" />
+
+            <label class="control-label col-sm-2" for="firstNameInput">First Name</label>
+            <div class="col-sm-6">
+                <input id="firstNameInput" placeholder="Firstname" title="First name" name="FirstName" type="text" required="required" autofocus="autofocus" 
+                       class="form-control" maxlength="30" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lastNameInput">Last Name</label>
+            <div class="col-sm-6">
+                <input id="lastNameInput" placeholder="Lastname" title="Last name" name="LastName" type="text" required="required"  
+                       class="form-control" maxlength="30" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="phoneInput">Phone Number</label>
+            <div class="col-sm-6">
+                <input id="phoneInput" placeholder="Enter a 8 digit phone number" title="Phone number" name="PhoneNumber" type="text" required="required"  
+                       class="form-control" maxlength="8" minlength="8" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="address">Address</label>
+            <div class="col-sm-6">
+                <input id="addressInput" placeholder="Streetname and number" title="Address" name="Address" type="text" required="required"  
+                       class="form-control" maxlength="50" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="zipInput">Zip</label>
+            <div class="col-sm-6">
+                <input id="zipInput" placeholder="Enter zip code"name="Zip" title="Zip code" type="text" required="required"  
+                       class="form-control" maxlength="4" minlength="4"/> 
+            </div>
+        </div>
+        </div>
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+            <input type="submit" class="btn btn-success" value="Register" />
+        </div>
+    </fieldset>
+</form>
+<c:import url="footer.jsp"></c:import>

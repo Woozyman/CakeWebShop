@@ -25,7 +25,7 @@
     <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
         <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
         <tr>
-            <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
+            <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture()%>"></a></td>
             <td><%= cake.getItemName()%></td>
             <td><%= cake.getItemPrice()%></td>
             <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
@@ -39,8 +39,8 @@
         cakes = (ArrayList) session.getAttribute("cakeList");
         for (ShopItem cake : cakes) {%>
     </tr>
-    <tr>
-        <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
+    <tr>      
+        <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
@@ -54,7 +54,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/RouteController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>

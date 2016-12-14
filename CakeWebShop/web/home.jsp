@@ -25,6 +25,7 @@
     <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
         <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
         <tr>
+           
             <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
             <td><%= cake.getItemName()%></td>
             <td><%= cake.getItemPrice()%></td>
@@ -50,11 +51,13 @@
         }
     } else {
 //Guest goes here
+
         List<ShopItem> cakes = new ArrayList();
         cakes = (ArrayList) session.getAttribute("cakeList");
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
+         <img src="<c:url value='images/lagkage.jpg'/>" alt=.../>
         <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>

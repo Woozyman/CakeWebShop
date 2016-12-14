@@ -5,12 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="header.jsp"></c:import>
-
+<% ShopItem item = (ShopItem) request.getAttribute("item"); %>
 <div class="container">
-    <h1>Item - (itemName goes here)</h1><br>
+    <h1> <%= item.getItemName() %></h1><br>
     <div class="row">
-        <div class="col-sm-4">(Image goes here)</div>
-        <div class="col-sm-8">Name:<br>(kage)<br><br>Price:<br>(pris)<br><br>Description:<br>(beskrivelse)</div>
+        <div class="col-sm-4"><img src=<%= item.getItemPicture() %>/></div>
+        <div class="col-sm-8">Name:<br><%= item.getItemName() %><br><br>Price:<br><%= item.getItemPrice()  %><br><br>Description:<br><%= item.getItemDescription() %></div>
     </div>
     <form class="form-inline">
         <div class="form-group">

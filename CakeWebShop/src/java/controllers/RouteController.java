@@ -79,6 +79,8 @@ public class RouteController extends HttpServlet {
             page = "/ShopItemController";            
         }else if(action.equals("showCart")){
             page = "/cart.jsp";
+        }else if(action.equals("details")){
+            page = "/ShopItemController?id="+id;
         }
             request.getRequestDispatcher(page).include(request, response);
     }

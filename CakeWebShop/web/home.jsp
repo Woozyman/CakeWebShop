@@ -38,7 +38,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
     </tr>
@@ -52,7 +52,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="/cakes.jsp?id=<%=cake.getItemId() %>"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
     </tr>

@@ -25,7 +25,10 @@
         </form>
         <% } else {
             // Normal user goes here %>
-        <button class="btn btn-success navbar-btn navbar-right" action="${pageContext.servletContext.contextPath}/RouteController?action=showCart"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount()); %>)</button>
+        <form method="post" action="${pageContext.servletContext.contextPath}/RouteController?action=showCart">
+            <button  class="btn btn-success navbar-btn navbar-right" ><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount()); %>)</button>
+        </form> 
+
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">
                 <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.print(user.getFirstname()); %></button>
@@ -41,29 +44,29 @@
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login</button> 
         </form>
-<% //her starter loginknapper %>
-         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
+        <% //her starter loginknapper %>
+        <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="hidden" name="email" class="form-control" placeholder="E-mail" value="fclante@gmail.com">
                 <input type="hidden" name="password" class="form-control" placeholder="Password" value="pass123">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login Frey</button> 
         </form>
-         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
+        <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="hidden" name="email" class="form-control" placeholder="E-mail" value="admin@cakewebshop.com">
                 <input type="hidden" name="password" class="form-control" placeholder="Password" value="admin123">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login Admin</button> 
-       </form>
-<% //her slutter loginknapper %>
- 
+        </form>
+        <% //her slutter loginknapper %>
+
         <button type="submit" class="btn btn-success navbar-btn" action="${pageContext.servletContext.contextPath}/CartController?action=showCart" method="post"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount()); %>)</button>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/formRegistration.jsp" method="post">
             <div class="form-group">
                 <button type="submit" class="btn navbar-btn"><span class="glyphicon glyphicon-user"></span> Register</button>
             </div>
-            
+
         </form>
         <% } %>     
     </div>

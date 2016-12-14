@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jens
  */
-@WebFilter(filterName = "RegistrationFormValidating", urlPatterns = {"/AccountController"})
+@WebFilter(filterName = "RegistrationFormValidating", urlPatterns = {"/AccountController?action=register"})
 public class RegistrationFormValidating implements Filter {
 
     private DB_local db;

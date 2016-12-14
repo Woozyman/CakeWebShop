@@ -40,31 +40,29 @@ public class RouteController extends HttpServlet {
         String id = request.getParameter("id");
         HttpSession session = request.getSession();
         session.setAttribute("firstVisit", 1);
-     //   String mainPage = request.getContextPath();
         String action = request.getParameter("action");
 
         if (session.getAttribute("firstVisit").equals(1)) {
             session.setAttribute("firstVisit", 0); // make sure this only runs once/session
-            ShopItemMapper sim = new ShopItemMapper(); 
+            ShopItemMapper sim = new ShopItemMapper();
             List<ShopItem> items = sim.getAllItems();
-            OrderLineMapper orm = new OrderLineMapper();                    
-                //New Empty Cart.   
+            OrderLineMapper orm = new OrderLineMapper();
+            //New Empty Cart.   
             Cart cart = new Cart(new ArrayList(), new ArrayList());
-           
+
             //Sets The ShopItems and the Cart objects on the session
             //So that guest also can add items to cart before they create a user.
             session.setAttribute("cakeList", items);
             session.setAttribute("cart", cart);
-            
+
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
-        
-        if(action.equals("showCart")){
+
+        if (action.equals("showCart")) {
             page = "/cart.jsp";
         }
-            request.getRequestDispatcher(page).include(request, response);
+        request.getRequestDispatcher(page).include(request, response);
 
-        
     }
 
     /**
@@ -77,22 +75,22 @@ public class RouteController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {           
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         String id = request.getParameter("id");
         String page = null;
         if (action.equals("register")) {
             page = "/Register.jsp";
         } else if (action.equals("edit")) {
-            page = "/ShopItemController?id="+id;           
+            page = "/ShopItemController?id=" + id;
         } else if (action.equals("create")) {
-            page = "/ShopItemController";            
-        }else if(action.equals("showCart")){
+            page = "/ShopItemController";
+        } else if (action.equals("showCart")) {
             page = "/cart.jsp";
-        }else if(action.equals("details")){
-            page = "/ShopItemController?id="+id;
+        } else if (action.equals("details")) {
+            page = "/ShopItemController?id=" + id;
         }
-            request.getRequestDispatcher(page).include(request, response);
+        request.getRequestDispatcher(page).include(request, response);
     }
 
     /**

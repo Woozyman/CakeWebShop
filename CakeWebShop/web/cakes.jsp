@@ -12,10 +12,10 @@
         <div class="col-sm-4"><img width="350" src="${pageContext.servletContext.contextPath}/<%= item.getItemPicture() %>"/></div>
         <div class="col-sm-8">Name:<br><%= item.getItemName() %><br><br>Price:<br><%= item.getItemPrice()  %><br><br>Description:<br><%= item.getItemDescription() %></div>
     </div>
-    <form class="form-inline">
+    <form class="form-inline" action="/CartController?action=addToCart&numOfItems=${numOfItems}">
         <div class="form-group">
             <label for="focusedInput">Antal</label>
-            <input class="form-control" id="focusedInput" type="number" value="1" min="1">
+            <input class="form-control" id="focusedInput" name="numOfItems" type="number" value="1" min="1">
             <button type="submit" class="btn btn-default">Bestil</button>
         </div>
     </form>

@@ -95,10 +95,7 @@ public class ShopItemController extends HttpServlet {
 
             response.sendRedirect("home.jsp");
         }
-//        } else if (action.equals("details")) {
-//            request.setAttribute("item", item);
-//            request.getRequestDispatcher("cakes.jsp").forward(request, response);
-//        }
+
     }
 
     /**

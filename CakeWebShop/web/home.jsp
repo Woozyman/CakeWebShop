@@ -14,6 +14,7 @@
     <%if (session.getAttribute("userObj") != null) {
             User user = (User) session.getAttribute("userObj");
             if (user.getFirstname().equals("admin")) {
+//Admin goes here
                 List<ShopItem> cakes = new ArrayList();
                 cakes = (ArrayList) session.getAttribute("cakeList");
                 out.print("<th>Edit</th>");
@@ -30,8 +31,22 @@
         </tr>
     </form>
     <%          }
+        } else {
+//almindelig User goes here
+        List<ShopItem> cakes = new ArrayList();
+        cakes = (ArrayList) session.getAttribute("cakeList");
+        for (ShopItem cake : cakes) {%>
+    </tr>
+    <tr>
+        <td><a href="#"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><%= cake.getItemName()%></td>
+        <td><%= cake.getItemPrice()%></td>
+    </tr>
+    <%
+            }
         }
     } else {
+//Guest goes here
         List<ShopItem> cakes = new ArrayList();
         cakes = (ArrayList) session.getAttribute("cakeList");
         for (ShopItem cake : cakes) {%>

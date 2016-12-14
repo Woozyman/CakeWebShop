@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Cart;
+import models.ShopItem;
 
 @WebServlet(name = "CartController", urlPatterns = {"/CartController"})
-public class CartController extends HttpServlet { 
+public class CartController extends HttpServlet {
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -24,8 +26,7 @@ public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-      
+
     }
 
     /**
@@ -38,14 +39,27 @@ public class CartController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
+        
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
         
         if (action.equals("showCart")) {
-            HttpSession session = request.getSession();
-            Cart cart = new Cart(); 
+            
+            Cart cart = (Cart) session.getAttribute("cart");
+            
+        } else if (action.equals("addToCart")) {
+            
+            int numOfItems = (int) request.getAttribute("numOfItems");
+            Cart cart = (Cart) session.getAttribute("cart");            
+            ShopItem item = (ShopItem) request.getAttribute("item");
+            
+            cart.addItemToCart(item);
+            session.setAttribute("cart", cart);
+            
+            response.sendRedirect("/home.jsp");
         }
-        
+
     }
 
     /**

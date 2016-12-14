@@ -12,7 +12,7 @@
     <h1>CheckOut/payment</h1><br>
     <p>Ammount: (Beløbet som skal trækkes kommer her)</p>
     <p>heraf moms (25%): (beløb ovenfor /0.2 )</p>
-    <form class="form-horizontal" action="#">
+    <form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath}/AccountController?action=pay">
         <fieldset>
             <legend>Payment <img width="300" src="http://rk-retail.dk/wp-content/uploads/2015/12/kreditkort_logo_danmark.jpg"/></legend>
             <div class="form-group">

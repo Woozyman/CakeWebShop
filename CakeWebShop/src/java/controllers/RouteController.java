@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.ServletException;
@@ -40,18 +41,16 @@ public class RouteController extends HttpServlet {
 
         if (mainPage.equals("/CakeWebShop")) {
             
-            ShopItemMapper sim = new ShopItemMapper();
-            List<ShopItem> si = sim.getAllItems();  
-            
-            OrderLineMapper orm = new OrderLineMapper();
-            List<OrderLine> orderLines = orm.getOrderLines(0);
-            
-            Cart cart = new Cart(si, orderLines);
+            ShopItemMapper sim = new ShopItemMapper(); 
+            List<ShopItem> items = sim.getAllItems();
+            OrderLineMapper orm = new OrderLineMapper();                    
+                //New Empty Cart.   
+            Cart cart = new Cart(new ArrayList(), new ArrayList());
            
             HttpSession session = request.getSession();
             //Sets The ShopItems and the Cart objects on the session
             //So that guest also can add items to cart before they create a user.
-            session.setAttribute("cakeList", si);
+            session.setAttribute("cakeList", items);
             session.setAttribute("cart", cart);
         }
 

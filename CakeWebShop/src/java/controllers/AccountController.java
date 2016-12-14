@@ -102,9 +102,7 @@ public class AccountController extends HttpServlet {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Payment Complete, order is in the oven.');");
             out.println("location='home.jsp';");
-            out.println("</script>");
-            
-            
+            out.println("</script>");           
         }
 
     }

@@ -49,7 +49,7 @@ public class AccountController extends HttpServlet {
         String action = request.getParameter("action");
         UserMapper um = new UserMapper();
         if (action.equals("login")) {
-            
+
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             boolean isAuthenticated = um.authenticateUser(email, password);
@@ -58,7 +58,7 @@ public class AccountController extends HttpServlet {
                     User user = um.getUserByEmail(email);
                     HttpSession session = request.getSession();
                     session.setAttribute("userObj", user);
-                    
+
                     int unPaidOrderId = um.getUnpaidOrderId(user);
                     if (unPaidOrderId != -1) {
                         /*gets current Cart if any from session
@@ -66,56 +66,61 @@ public class AccountController extends HttpServlet {
                         Cart currenCart = (Cart) session.getAttribute("cart");
                         Cart oldCart = um.getCart(um.getUserId(email), unPaidOrderId);
                         if (currenCart == null) {
-                          session.setAttribute("cart", oldCart);
-                        } 
-                        else{
+                            session.setAttribute("cart", oldCart);
+                        } else {
                             currenCart = mergeCarts(oldCart, currenCart);
                             session.setAttribute("cart", currenCart);
                         }
                     }
-                 
+
                     response.sendRedirect("home.jsp");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else {
-               //User is redirected if login fails.
+                //User is redirected if login fails.
                 response.sendRedirect("home.jsp");
             }
-        }else if(action.equals("logout")){
+        } else if (action.equals("logout")) {
             logout(request);
             response.sendRedirect("/CakeWebShop");
+        } else if (action.equals("register")) {
+            String email = (String) request.getParameter("Email");
+            String password = (String) request.getParameter("Password1");
+            String firstname = (String) request.getParameter("FirstName");
+            String lastname = (String) request.getParameter("LastName");
+            String phonenumber = (String) request.getParameter("PhoneNumber");
+            String address = (String) request.getParameter("Address");
+            String zip = (String) request.getParameter("Zip");
+
+            User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
+            um.createUser(user);
+            response.sendRedirect("home.jsp");
+
+        } else if (action.equals("pay")) {
+            PrintWriter out = response.getWriter();
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Payment Complete, order is in the oven.');");
+            out.println("location='home.jsp';");
+            out.println("</script>");
+            
+            
         }
-         else if(action.equals("register")){
-            String email = (String)request.getParameter("Email");
-            String password = (String)request.getParameter("Password1");
-            String firstname = (String)request.getParameter("FirstName");
-            String lastname = (String)request.getParameter("LastName");
-            String phonenumber = (String)request.getParameter("PhoneNumber");
-            String address = (String)request.getParameter("Address");
-            String zip = (String)request.getParameter("Zip");    
-        
-    
-         User user = new User (firstname, lastname, email, phonenumber, address, zip, password);
-         um.createUser(user);
-         response.sendRedirect("home.jsp");
-                
-         }
 
     }
 
     private void logout(HttpServletRequest request) {
         request.getSession().invalidate();
     }
-    
-    private Cart mergeCarts(Cart oldCart, Cart newCart){
-    
+
+    private Cart mergeCarts(Cart oldCart, Cart newCart) {
+
         Cart mergedCart = oldCart;
-        
-        for(ShopItem item : newCart.getShopItems()){
+
+        for (ShopItem item : newCart.getShopItems()) {
             mergedCart.addItemToCart(item);
         }
-        
+
         return mergedCart;
     }
 

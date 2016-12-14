@@ -22,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -29,17 +31,20 @@ import javax.servlet.annotation.WebFilter;
  */
 @WebFilter(filterName = "RegistrationFormValidating", urlPatterns = {"/AccountController"})
 public class RegistrationFormValidating implements Filter {
-    
+
+    private DB_local db;
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public RegistrationFormValidating() {
-    }    
-    
+        this.db = new DB_local();
+
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -66,8 +71,8 @@ public class RegistrationFormValidating implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -104,32 +109,38 @@ public class RegistrationFormValidating implements Filter {
      */
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
-            
             throws IOException, ServletException {
-        
-         {
-            
-            try {
-                
-                DB_local db = new DB_local();
-                
+
+        HttpServletRequest httprequest = (HttpServletRequest) request;
+        HttpServletResponse httpresponse = (HttpServletResponse) response;
+
+        {
+
+            {
                 PrintWriter out = response.getWriter();
-                final String queryCheck = "SELECT count (*) from users WHERE email = ?";
-                final PreparedStatement ps = DB_local.getConnection().prepareStatement(queryCheck);
-                final ResultSet resultset = ps.executeQuery(queryCheck);
-                if(resultSet.next()) {
-                    final int count = resultSet.getInt(1);
+                try {
+
+                    String queryCheck = "SELECT countfrom users WHERE email = ?";
+                    PreparedStatement ps = db.getConnection().prepareStatement(queryCheck);
+                    ps.setString(1, queryCheck);
+                    ResultSet resultset = ps.executeQuery();
+                    if (resultSet.next()) {
+
+                        int count = resultset.getInt(1);
+
+                    }
                     out.println("alert('email allready exist!');");
-                } else
-                    out.println("alert('email ok!);");
-                
-                
+                } catch (SQLException ex) {
+                    Logger.getLogger(RegistrationFormValidating.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                out.println("alert('email ok!');");
+
                 if (debug) {
                     log("RegistrationFormValidating:doFilter()");
                 }
 
                 doBeforeProcessing(request, response);
-                
+
                 Throwable problem = null;
                 try {
                     chain.doFilter(request, response);
@@ -140,9 +151,9 @@ public class RegistrationFormValidating implements Filter {
                     problem = t;
                     t.printStackTrace();
                 }
-                
+
                 doAfterProcessing(request, response);
-                
+
                 // If there was a problem, we want to rethrow it if it is
                 // a known type, otherwise log it.
                 if (problem != null) {
@@ -154,17 +165,21 @@ public class RegistrationFormValidating implements Filter {
                     }
                     sendProcessingError(problem, response);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(RegistrationFormValidating.class.getName()).log(Level.SEVERE, null, ex);
+
             }
+
         }
-catch (SQLException ex) {
-            Logger.getLogger(RegistrationFormValidating.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+      
     }
 
     /**
      * Return the filter configuration object for this filter.
+     */
+    /**
+     * Return the filter configuration object for this filter.
+     *
+     * @return
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -182,16 +197,16 @@ catch (SQLException ex) {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("RegistrationFormValidating:Initializing filter");
             }
         }
@@ -210,20 +225,20 @@ catch (SQLException ex) {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -240,7 +255,7 @@ catch (SQLException ex) {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -254,9 +269,9 @@ catch (SQLException ex) {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }

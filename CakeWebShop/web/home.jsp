@@ -21,10 +21,10 @@
                 for (ShopItem cake : cakes) {
     %>
         </tr>
-    <form action="/CakeWebShop/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
+    <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
         <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
         <tr>
-            <td><a href="/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
+            <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
             <td><%= cake.getItemName()%></td>
             <td><%= cake.getItemPrice()%></td>
             <td><input type="submit" name="edit" value="Rediger vare"></td>
@@ -38,7 +38,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
     </tr>
@@ -52,7 +52,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
     </tr>

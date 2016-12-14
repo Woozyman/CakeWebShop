@@ -11,6 +11,7 @@
             <th>Image</th>
             <th>Name</th>
             <th>Price</th>
+            <th>Details</th>
     <%if (session.getAttribute("userObj") != null) {
             User user = (User) session.getAttribute("userObj");
             if (user.getFirstname().equals("admin")) {
@@ -27,6 +28,7 @@
             <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
             <td><%= cake.getItemName()%></td>
             <td><%= cake.getItemPrice()%></td>
+            <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
             <td><input type="submit" name="edit" value="Rediger vare"></td>
         </tr>
     </form>
@@ -41,6 +43,7 @@
         <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
+        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
     </tr>
     <%
             }
@@ -52,9 +55,10 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}<%= cake.getItemPicture()%>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>"><img src="<%= cake.getItemPicture()%>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
+        <td><a href="${pageContext.servletContext.contextPath}/cakes.jsp?id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
     </tr>
     <%
             }

@@ -25,7 +25,7 @@
     <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
         <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
         <tr>
-            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture()%>"></a></td>
+            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture()%>"></a></td>
             <td><%= cake.getItemName()%></td>
             <td><%= cake.getItemPrice()%></td>
             <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
@@ -40,7 +40,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>      
-        <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
@@ -54,7 +54,7 @@
         for (ShopItem cake : cakes) {%>
     </tr>
     <tr>
-        <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
+        <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture() %>"></a></td>
         <td><%= cake.getItemName()%></td>
         <td><%= cake.getItemPrice()%></td>
         <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>

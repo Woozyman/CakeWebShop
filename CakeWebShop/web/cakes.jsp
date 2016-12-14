@@ -9,7 +9,7 @@
 <div class="container">
     <h1> <%= item.getItemName() %></h1><br>
     <div class="row">
-        <div class="col-sm-4"><img src=<%= item.getItemPicture() %>/></div>
+        <div class="col-sm-4"><img width="350" src="${pageContext.servletContext.contextPath}/<%= item.getItemPicture() %>"/></div>
         <div class="col-sm-8">Name:<br><%= item.getItemName() %><br><br>Price:<br><%= item.getItemPrice()  %><br><br>Description:<br><%= item.getItemDescription() %></div>
     </div>
     <form class="form-inline">

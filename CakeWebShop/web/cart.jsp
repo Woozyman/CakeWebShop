@@ -46,5 +46,5 @@
 
     </form>
 </table>
-
+<a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay</a>
 <c:import url="footer.jsp"></c:import>

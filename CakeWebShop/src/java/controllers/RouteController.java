@@ -21,7 +21,7 @@ import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
 
-@WebServlet(name = "RouteController", urlPatterns = {"/RouteController", "/"})
+@WebServlet(name = "RouteController", urlPatterns = {"/RouteController"})
 public class RouteController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -36,25 +36,29 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("firstVisit", 1);
         String mainPage = request.getContextPath();
         String action = request.getParameter("action");
 
-        if (mainPage.equals("/CakeWebShop")) {
-            
+        if (session.getAttribute("firstVisit").equals(1)) {
+            session.setAttribute("firstVisit", 0); // make sure this only runs once/session
             ShopItemMapper sim = new ShopItemMapper(); 
             List<ShopItem> items = sim.getAllItems();
             OrderLineMapper orm = new OrderLineMapper();                    
                 //New Empty Cart.   
             Cart cart = new Cart(new ArrayList(), new ArrayList());
            
-            HttpSession session = request.getSession();
             //Sets The ShopItems and the Cart objects on the session
             //So that guest also can add items to cart before they create a user.
             session.setAttribute("cakeList", items);
             session.setAttribute("cart", cart);
+            
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
 
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        return;
     }
 
     /**
@@ -79,6 +83,8 @@ public class RouteController extends HttpServlet {
             page = "/ShopItemController";            
         }else if(action.equals("showCart")){
             page = "/cart.jsp";
+        }else if(action.equals("details")){
+            page = "/ShopItemController?id="+id;
         }
             request.getRequestDispatcher(page).include(request, response);
     }

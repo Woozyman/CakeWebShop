@@ -36,10 +36,11 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String page = null;
+        String id = request.getParameter("id");
         HttpSession session = request.getSession();
         session.setAttribute("firstVisit", 1);
-        String mainPage = request.getContextPath();
+     //   String mainPage = request.getContextPath();
         String action = request.getParameter("action");
 
         if (session.getAttribute("firstVisit").equals(1)) {
@@ -57,8 +58,13 @@ public class RouteController extends HttpServlet {
             
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
+        
+        if(action.equals("showCart")){
+            page = "/cart.jsp";
+        }
+            request.getRequestDispatcher(page).include(request, response);
 
-        return;
+        
     }
 
     /**

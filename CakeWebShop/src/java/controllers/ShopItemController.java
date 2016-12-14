@@ -29,6 +29,17 @@ public class ShopItemController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+        String page = null;
+        int id = Integer.parseInt(request.getParameter("id"));
+        ShopItemMapper sim = new ShopItemMapper();
+        ShopItem item = sim.getItem(id);
+        
+        if (action.equals("details")) {
+            request.setAttribute("item", item);
+            page = "cakes.jsp";
+        }
+        request.getRequestDispatcher(page).forward(request, response);
     }
 
     /**
@@ -71,23 +82,23 @@ public class ShopItemController extends HttpServlet {
             String desc = (String) request.getParameter("itemDescription");
             String pic = (String) request.getParameter("itemPicture");
             Double price = Double.parseDouble(request.getParameter("itemPrice"));
-            String date = (String)request.getParameter("discontinuedDate");   
+            String date = (String) request.getParameter("discontinuedDate");
 
             item.setItemName(name);
             item.setItemDescription(desc);
             item.setItemPicture(pic);
             item.setItemPrice(price);
             if (date != null) {
-                 item.setDiscontinuedDate(date);
-            }                 
+                item.setDiscontinuedDate(date);
+            }
             sim.updateItem(item, id);
-            
+
             response.sendRedirect("home.jsp");
         }
-        else if(action.equals("details")){
-            request.setAttribute("item", item);
-            request.getRequestDispatcher("cakes.jsp").forward(request, response);
-        }
+//        } else if (action.equals("details")) {
+//            request.setAttribute("item", item);
+//            request.getRequestDispatcher("cakes.jsp").forward(request, response);
+//        }
     }
 
     /**

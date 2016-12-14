@@ -39,8 +39,8 @@
 // Guest goes here %> 
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
-                <input type="text" name="email" class="form-control" placeholder="E-mail">
-                <input type="text" name="password" class="form-control" placeholder="Password">
+                <input type="email" name="email" class="form-control" placeholder="E-mail">
+                <input type="password" name="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login</button> 
         </form>

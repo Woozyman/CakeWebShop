@@ -27,9 +27,10 @@ public class UserMapper {
             String address = user.getAddress();
             String zip = user.getZip();
             String password = user.getPassword();
+            String salt = user.getSalt();
 
-            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password)"
-                    + "VALUES (?,?,?,?,?,?,?)";
+            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password, salt)"
+                    + "VALUES (?,?,?,?,?,?,?,?)";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, firstname);
@@ -39,6 +40,7 @@ public class UserMapper {
             ps.setString(5, address);
             ps.setString(6, zip);
             ps.setString(7, password);
+            ps.setString(8, salt);
 
             ps.executeUpdate();
 
@@ -120,15 +122,21 @@ public class UserMapper {
 
     public boolean authenticateUser(String email, String password) {
         try {
-            String query = "SELECT email, password FROM users WHERE email = ?";
+            String query = "SELECT email, password, salt FROM users WHERE email = ?";
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                
+                //HER SKAL LAVES TJEK PÅ SALTET PASSWORD
+                //Hashes(rs.getString("password")+rs.getString("salt"))
+                //smides i en variabel som skal være .equals(password)+salt
+                // hvis det giver mening
                 if (rs.getString("password").equals(password)) {
                     return true;
                 }
+                
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

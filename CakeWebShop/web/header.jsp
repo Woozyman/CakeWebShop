@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
 <%@page import="models.Cart" %>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>CakeWebShop</title>
@@ -25,7 +26,7 @@
         </form>
         <% } else {
 // Normal user goes here %>
-        <form method="post" action="${pageContext.servletContext.contextPath}/CartController?action=showCart">
+        <form method="post" action="${pageContext.servletContext.contextPath}/RouteController?action=showCart">
             <button  class="btn btn-success navbar-btn navbar-right" ><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount());%>)</button>
         </form> 
 
@@ -39,8 +40,8 @@
 // Guest goes here %> 
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
-                <input type="text" name="email" class="form-control" placeholder="E-mail">
-                <input type="text" name="password" class="form-control" placeholder="Password">
+                <input type="email" name="email" class="form-control" placeholder="E-mail">
+                <input type="password" name="password" class="form-control" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login</button> 
         </form>

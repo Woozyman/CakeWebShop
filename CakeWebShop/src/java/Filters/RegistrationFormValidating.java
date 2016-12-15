@@ -34,7 +34,8 @@ public class RegistrationFormValidating implements Filter {
 
     private DB_local db;
     private static final boolean debug = true;
-
+  
+        
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
@@ -111,9 +112,7 @@ public class RegistrationFormValidating implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest httprequest = (HttpServletRequest) request;
-        HttpServletResponse httpresponse = (HttpServletResponse) response;
-
+       
         {
 
             {

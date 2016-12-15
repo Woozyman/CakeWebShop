@@ -20,7 +20,7 @@
             <label class="control-label col-sm-2" for="passwordInput1">Password</label>
             <div class="col-sm-6">
 
-                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password, min 8 characters" title="password" name="Password1"
+                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password, min 8 characters" title="password" name="Password"
                        type="password" required="required" maxlength="40" />
             </div>
         </div>

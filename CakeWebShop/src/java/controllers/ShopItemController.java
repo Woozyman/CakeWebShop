@@ -37,7 +37,7 @@ public class ShopItemController extends HttpServlet {
         
         if (action.equals("details")) {
             request.setAttribute("item", item);
-            page = "cakes.jsp";
+            page = "cakeDetails.jsp";
         }
         request.getRequestDispatcher(page).forward(request, response);
     }

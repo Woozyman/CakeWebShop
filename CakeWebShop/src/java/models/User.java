@@ -1,6 +1,7 @@
 package models;
 
 public class User {
+    private int id;  
     private String firstname;
     private String lastname;
     private String email;
@@ -20,6 +21,10 @@ public class User {
         this.address = address;
         this.zip = zip;
         this.password = password;
+    }
+    
+      public int getId() {
+        return id;
     }
 
     public String getFirstname() {

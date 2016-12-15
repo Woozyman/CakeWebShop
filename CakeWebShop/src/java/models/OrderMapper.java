@@ -17,93 +17,97 @@ public class OrderMapper {
         this.db = new DB_local();
     }
 
-    public static void createOrder(Order order) {
+    public void createOrder(Order order) {
         try {
             int userId = order.getUserId();
-            int orderStatus = order.getOrderStatus();
             Date orderDate = order.getOrderDate();
             Date orderDeliveryDate = order.getOrderDeliveryDate();
+            int orderInShoppingCart = order.getOrderInShoppingCart();
 
-            String query = "INSERT INTO orders (userId, orderStatus, orderDate, orderDeliveryDate)"
+            String query = "INSERT INTO orders (userId, orderDate, orderDeliveryDate, orderInShoppingCart)"
                     + "VALUES(?,?,?,?)"; //The integers below corresponds to these '?' parameters.
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, userId);
-            ps.setInt(2, orderStatus);
-            ps.setDate(3, orderDate);
-            ps.setDate(4, orderDeliveryDate);
+            ps.setDate(2, orderDate);
+            ps.setDate(3, orderDeliveryDate);
+            ps.setInt(4, orderInShoppingCart);
 
             ps.executeUpdate();
-            
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void updateOrderStatus(Order order, int status) {
-
-        order.setOrderStatus(status);
+    public void completeOrder(int orderId) {
 
         try {
-            String query = "SET orderStatus=1 WHERE orderId = ?";
+            String query = "UPDATE orders SET orderInShoppingCart=0 WHERE orderId = ?";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
-            ps.setInt(1, order.getOrderId());
-            
+            ps.setInt(1, orderId);
+
             ps.executeUpdate();
-           
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean existingOrder(int orderId) {
+    public boolean existingOrder(int orderId) {
         try {
             String query = "SELECT orderId FROM orders WHERE orderId = ?";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
-            
+
             ps.setInt(1, orderId);
-            
+
             ResultSet rs = ps.executeQuery();
-          
-            
+
             if (!rs.next()) {
                 System.out.println("No  Elements in resultset!");
                 return false;
-            }else{
+            } else {
                 System.out.println("OrderId: " + orderId + " Found!");
                 return true;
             }
-                     
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static void main(String[] args) {
-//        Order order = new Order();
-//
-//        order.setUserId(2);
-//        order.setOrderStatus(1);
-//
-//        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-//        try {
-//            Date orderDate = new Date(formatter.parse("05-12-2016").getTime());
-//            order.setOrderDate(orderDate);
-//            Date orderDeliveryDate = new Date(formatter.parse("07-12-2016").getTime());
-//            order.setOrderDeliveryDate(orderDeliveryDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        createOrder(order);
+    public Order getOrder(int id) {
 
-        System.out.println(existingOrder(1));
+        Order result = new Order();
+        try {
+            String query = "SELECT * FROM orders WHERE orderid = ?";
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, id);
 
+            ResultSet rs = ps.executeQuery();
+
+            int orderId = rs.getInt("orderid");
+            int userId = rs.getInt("userid");
+            Date orderDate = rs.getDate("orderDate");
+            Date orderCakeCompletedDate = rs.getDate("orderCakeCompletedDate");
+            Date orderDeliveryDate = rs.getDate("orderDeliveryDate");
+            int orderInShoppingCart = rs.getInt("orderInShoppingCart");
+
+            while (rs.next()) {
+                result.setOrderId(orderId);
+                result.setUserId(userId);
+                result.setOrderDate(orderDate);
+                result.setOrderCakeCompletedDate(orderCakeCompletedDate);
+                result.setOrderDeliveryDate(orderDeliveryDate);
+                result.setOrderInShoppingCart(orderInShoppingCart);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Cart;
+import models.Order;
 import models.OrderLine;
+import models.OrderMapper;
 import models.ShopItem;
+import models.ShopItemMapper;
 import models.User;
 import models.UserMapper;
 
@@ -45,9 +48,11 @@ public class AccountController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
         String action = request.getParameter("action");
         UserMapper um = new UserMapper();
+        ShopItemMapper sim = new ShopItemMapper();
+        OrderMapper orm = new OrderMapper();
         if (action.equals("login")) {
 
             String email = request.getParameter("email");
@@ -56,15 +61,18 @@ public class AccountController extends HttpServlet {
             if (isAuthenticated) {
                 try {
                     User user = um.getUserByEmail(email);
-                    HttpSession session = request.getSession();
                     session.setAttribute("userObj", user);
 
                     int unPaidOrderId = um.getUnpaidOrderId(user);
                     if (unPaidOrderId != -1) {
+                        /*gets the unpaid order and sets in on the session to be updated later 
+                        if user decides to checkout and pay.*/
+                        Order order = orm.getOrder(unPaidOrderId);
+                        session.setAttribute("order", order);
                         /*gets current Cart if any from session
                         And if it's not empty it merges with the old cart from db */
                         Cart currenCart = (Cart) session.getAttribute("cart");
-                        Cart oldCart = um.getCart(um.getUserId(email), unPaidOrderId);
+                        Cart oldCart = sim.getCart(unPaidOrderId);
                         if (currenCart == null) {
                             session.setAttribute("cart", oldCart);
                         } else {
@@ -102,7 +110,10 @@ public class AccountController extends HttpServlet {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Payment Complete, order is in the oven.');");
             out.println("location='home.jsp';");
-            out.println("</script>");           
+            out.println("</script>");
+
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            orm.completeOrder(orderId);
         }
 
     }
@@ -115,8 +126,8 @@ public class AccountController extends HttpServlet {
 
         Cart mergedCart = oldCart;
 
-        for (ShopItem item : newCart.getShopItems()) {
-            mergedCart.addItemToCart(item);
+        for (OrderLine lineItem : newCart.getOrderLines()) {
+            mergedCart.addItemToCart(lineItem);
         }
 
         return mergedCart;

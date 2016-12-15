@@ -20,8 +20,10 @@
         </tr>
     <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
         Cart cart = (Cart) session.getAttribute("cart");
-        List<ShopItem> items = cart.getShopItems();
         List<OrderLine> orderLines = cart.getOrderLines();
+        /*mapShopItemsToOrderLines(List<OrderLine> lineItems) fra ShopItemMapper
+        *returnerer: List<ShopItems> Som skal populere Tabellen nedenfor
+        */ 
     %>  
 
     <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
@@ -31,7 +33,7 @@
          
             <tr>
               
-                    <td><a href="#"><img src=<% item.getItemPicture(); %>></a></td>
+                    <td><a href="#"><img src="${pageContext.servletContext.contextPath}/<% item.getItemPicture(); %>"></a></td>
                     <td><% item.getItemName(); %></td>
                     <td><% item.getItemPrice();%></td>
                     <td><input type="number" min="1" value=""></input></td>

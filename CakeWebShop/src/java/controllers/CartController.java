@@ -9,7 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Cart;
+import models.Order;
+import models.OrderLine;
+import models.OrderMapper;
 import models.ShopItem;
+import models.ShopItemMapper;
+import models.User;
+import models.UserMapper;
 
 @WebServlet(name = "CartController", urlPatterns = {"/CartController"})
 public class CartController extends HttpServlet {
@@ -40,24 +46,44 @@ public class CartController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
-        
+        UserMapper um = new UserMapper();
+        OrderMapper orm = new OrderMapper();
+        ShopItemMapper sim = new ShopItemMapper();
+        Order order = null;
+
         if (action.equals("showCart")) {
-            
-            Cart cart = (Cart) session.getAttribute("cart");
-            
+           
+            response.sendRedirect("cart.jsp");
         } else if (action.equals("addToCart")) {
+
+            User user = (User) session.getAttribute("userObj");
             
-            int numOfItems = (int) request.getAttribute("numOfItems");
-            Cart cart = (Cart) session.getAttribute("cart");            
-            ShopItem item = (ShopItem) request.getAttribute("item");
+            int orderId = -1;
+
+            Cart cart = (Cart) session.getAttribute("cart");
+            int itemId = Integer.parseInt(request.getParameter("id"));
+            int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
+
+            if (cart.getOrderLines().isEmpty()) {
+                order = new Order(user.getId(),null,null,1);
+                //persist Order in Db to refer orderLines to.
+                orm.createOrder(order);
+                session.setAttribute("order", order);
+                
+            }else{
+                order = (Order) session.getAttribute("order");
+            }
+            orderId = order.getOrderId();
+            OrderLine orderLine = new OrderLine(orderId, itemId, numOfItems, 1);
             
-            cart.addItemToCart(item);
+            cart.addItemToCart(orderLine);
+
             session.setAttribute("cart", cart);
-            
-            response.sendRedirect("/home.jsp");
+
+            response.sendRedirect("home.jsp");
         }
 
     }

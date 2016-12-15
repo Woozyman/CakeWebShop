@@ -48,7 +48,7 @@ public class RouteController extends HttpServlet {
             List<ShopItem> items = sim.getAllItems();
             OrderLineMapper orm = new OrderLineMapper();
             //New Empty Cart.   
-            Cart cart = new Cart(new ArrayList(), new ArrayList());
+            Cart cart = new Cart(new ArrayList());
 
             //Sets The ShopItems and the Cart objects on the session
             //So that guest also can add items to cart before they create a user.
@@ -58,9 +58,6 @@ public class RouteController extends HttpServlet {
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
 
-        if (action.equals("showCart")) {
-            page = "/cart.jsp";
-        }
         request.getRequestDispatcher(page).include(request, response);
 
     }
@@ -85,11 +82,10 @@ public class RouteController extends HttpServlet {
             page = "/ShopItemController?id=" + id;
         } else if (action.equals("create")) {
             page = "/ShopItemController";
-        } else if (action.equals("showCart")) {
-            page = "/cart.jsp";
-        } else if (action.equals("details")) {
+        }else if (action.equals("details")) {
             page = "/ShopItemController?id=" + id;
         }
+
         request.getRequestDispatcher(page).include(request, response);
     }
 

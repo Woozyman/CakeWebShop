@@ -25,7 +25,7 @@
         </form>
         <% } else {
 // Normal user goes here %>
-        <form method="post" action="${pageContext.servletContext.contextPath}/RouteController?action=showCart">
+        <form method="post" action="${pageContext.servletContext.contextPath}/CartController?action=showCart">
             <button  class="btn btn-success navbar-btn navbar-right" ><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount());%>)</button>
         </form> 
 

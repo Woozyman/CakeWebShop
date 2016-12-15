@@ -122,7 +122,7 @@ public class UserMapper {
 
     public boolean authenticateUser(String email, String password) {
         try {
-            String query = "SELECT email, password, salt FROM users WHERE email = ?";
+            String query = "SELECT email, password FROM users WHERE email = ?";
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();

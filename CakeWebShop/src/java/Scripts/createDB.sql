@@ -11,11 +11,12 @@ create table users
     phone varchar(8) not null,					# tlf.nr. i dk er 8 (kan udvides)
     address varchar(50) not null,
     zip varchar(4) not null,					# 4 fordi i dk, grønland og færøerne bruges kun max 4 (kan udvides)
-    password varchar(100) not null				# 40 fordi SHA1 er 40 char lang 
+    password varchar(100) not null,				# 40 fordi SHA1 er 40 char lang
+    salt varchar(25)
 );
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '23374263', 'adressen 4a,', '2300', 'admin123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'guest123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','fclante@gmail.com','50565150','Amagerfælledvej 47','2300','pass123');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password, salt) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '23374263', 'adressen 4a,', '2300', 'admin123', 'Salt&Peber');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password, salt) VALUES ('guest', 'user', 'guest@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'guest123', 'Salt&Peber');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password, salt) VALUES ('Frey','Clante','fclante@gmail.com','50565150','Amagerfælledvej 47','2300','pass123', 'Salt&Peber');
 
 create table shopItems
 (
@@ -26,8 +27,8 @@ create table shopItems
     itemPrice double(5,2) not null,
     discontinuedDate datetime
 );
-INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Lagkage','Vanillie/Banan','/pic/lagkage.jpg',149.5);
-INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Chokoladekage','Chokolade','/pic/chokoladekage.jpg',49.5);
+INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Fødselsdags Lagkage','Vanillie/Banan','images/lagkage.jpg',149.5);
+INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Chokoladekage','Chokolade','images/chokoladekage.jpg',49.5);
 
 create table orders
 (

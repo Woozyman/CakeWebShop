@@ -10,38 +10,33 @@ import java.util.List;
 
 public class Cart {
 
-    private List<ShopItem> items;
     private List<OrderLine> orderLines;
-    
-    public Cart(){}
-    
-    public Cart(List<ShopItem> items, List<OrderLine> lines) {
-        this.items = items;
+
+    public Cart() {
+    }
+
+    public Cart(List<OrderLine> lines) {
         this.orderLines = lines;
     }
 
-    public void addItemToCart(ShopItem item) {
-        items.add(item);
+    public void addItemToCart(OrderLine item) {
+        orderLines.add(item);
     }
 
-    public void removeItemFromCart(ShopItem item) {
-        items.remove(item);
+    public void removeItemFromCart(OrderLine item) {
+        orderLines.remove(item);
     }
 
     public void emptyCart() {
-        items.clear();
+        orderLines.clear();
     }
 
     public int getItemsCount() {
-        return items.size();
-    }   
-    
-    public List<OrderLine> getOrderLines(){
-        return this.orderLines;
+        return orderLines.size();
     }
-    
-    public List<ShopItem> getShopItems(){
-        return this.items;
+
+    public List<OrderLine> getOrderLines() {
+        return this.orderLines;
     }
 
 }

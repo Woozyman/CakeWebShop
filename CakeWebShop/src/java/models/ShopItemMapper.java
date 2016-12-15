@@ -168,4 +168,37 @@ public class ShopItemMapper {
         return shopItems;
     }
     
+     public Cart getCart(int orderId) {
+      
+        List<OrderLine> orderLines = new ArrayList();      
+        OrderLineMapper orm = new OrderLineMapper();
+        
+        Cart resultingCart = new Cart();
+        
+        //Get all orderlines to populate cart.
+        orderLines = orm.getOrderLines(orderId);       
+        
+        //Insert Items in Cart
+        for(OrderLine lineItem : orderLines){            
+           cart.addItemToCart(lineItem);
+        }        
+         return new Cart(orderLines);
+    }   
+     
+     public List<ShopItem> mapShopItemsToOrderLines(List<OrderLine> lineItems){
+         
+         List<ShopItem> items = new ArrayList();
+         
+         for(OrderLine lineItem : lineItems){
+             ShopItem shopItem = new ShopItem();
+             shopItem = this.getItem(lineItem.getShopItemId());
+             
+             shopItem.setItemPrice(lineItem.getItemPrice());
+             
+             items.add(shopItem);
+         }
+         
+         return items;
+     }
+    
 }

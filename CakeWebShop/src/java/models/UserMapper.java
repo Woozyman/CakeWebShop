@@ -122,7 +122,7 @@ public class UserMapper {
 
     public boolean authenticateUser(String email, String password) {
         try {
-            String query = "SELECT email, password, salt FROM users WHERE email = ?";
+            String query = "SELECT email, password FROM users WHERE email = ?";
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -172,46 +172,7 @@ public class UserMapper {
         }
 
         return -1;
-    }
-
-    public Cart getCart(int userId, int orderId) {
-
-        List<ShopItem> itemsInCart = new ArrayList();
-        List<OrderLine> orderLines = new ArrayList();
-        ShopItemMapper sim = new ShopItemMapper();
-        OrderLineMapper orm = new OrderLineMapper();
-        
-        //Get all orderlines to populate cart.
-        orderLines = orm.getOrderLines(orderId);       
-        
-        //Insert Items in Cart
-        for(OrderLine lineItem : orderLines){            
-            itemsInCart.add(sim.getItem(lineItem.getShopItemId()));
-        }        
-           // Skal måske Slettes.... 
-//        String query = "SELECT shopItemid, numberOfItems FROM orderLines WHERE orderId = ? ";
-//        int id;
-//        int numItems;
-//        try {
-//
-//            PreparedStatement ps = db.getConnection().prepareStatement(query);
-//            ps.setInt(1, orderId);
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                id = rs.getInt("shopItemid");
-//                numItems = rs.getInt("numberOfItems");
-//
-//                ShopItem item = sim.getItem(id);
-//                itemsInCart.add(item);
-//
-//            }
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ShopItemMapper.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
-        return new Cart(itemsInCart, orderLines);
-    }
+    }  
+   
 
 }

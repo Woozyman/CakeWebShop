@@ -3,25 +3,30 @@ package models;
 import java.sql.Date;
 
 public class Order {
-    
+
     private int orderId;
-    
     private int userId;
-    private int orderStatus;
     private Date orderDate;
+    private Date orderCakeCompletedDate;
     private Date orderDeliveryDate;
-    
-    public Order(){}
-    
-    public Order(int userId, int orderStatus, Date orderDate, Date orderDeliveryDate){
+    private int orderInShoppingCart;
+
+    public Order() {
+    }
+
+    public Order(int userId, Date orderDate, Date orderDeliveryDate, int inCart) {
         this.userId = userId;
-        this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.orderDeliveryDate = orderDeliveryDate;
+        this.orderInShoppingCart = inCart;
     }
-    
+
     public int getOrderId() {
         return orderId;
+    }
+
+    public void setOrderId(int id) {
+        this.orderId = id;
     }
 
     public int getUserId() {
@@ -30,14 +35,6 @@ public class Order {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
     }
 
     public Date getOrderDate() {
@@ -55,7 +52,21 @@ public class Order {
     public void setOrderDeliveryDate(Date orderDeliveryDate) {
         this.orderDeliveryDate = orderDeliveryDate;
     }
-    
-    
-    
+
+    public int getOrderInShoppingCart() {
+        return orderInShoppingCart;
+    }
+
+    public void setOrderInShoppingCart(int orderInShoppingCart) {
+        this.orderInShoppingCart = orderInShoppingCart;
+    }
+
+    public Date getOrderCakeCompletedDate() {
+        return orderCakeCompletedDate;
+    }
+
+    public void setOrderCakeCompletedDate(Date orderCakeCompletedDate) {
+        this.orderCakeCompletedDate = orderCakeCompletedDate;
+    }
+
 }

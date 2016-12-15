@@ -5,14 +5,13 @@
  */
 package Filters;
 
-import dataaccess.DB_local;
+import dataaccess.PasswordStorage;
+import static dataaccess.PasswordStorage.createHash;
+import static dataaccess.PasswordStorage.verifyPassword;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.Filter;
@@ -23,33 +22,30 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author Jens
  */
-@WebFilter(filterName = "RegistrationFormValidating", urlPatterns = {"/AccountController?action=register"})
-public class RegistrationFormValidating implements Filter {
 
-    private DB_local db;
+@WebFilter(filterName = "PasswordHashSaltFilter", urlPatterns = {"/AccountController?action=register"})
+public class PasswordHashSaltFilter implements Filter {
+    
     private static final boolean debug = true;
-  
-        
+
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-
-    public RegistrationFormValidating() {
-        this.db = new DB_local();
-
-    }
-
+    
+    public PasswordHashSaltFilter() {
+        PasswordStorage pws = new PasswordStorage();
+    }    
+    
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RegistrationFormValidating:DoBeforeProcessing");
+            log("PasswordHashSaltFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -72,12 +68,12 @@ public class RegistrationFormValidating implements Filter {
 	    log(buf.toString());
 	}
          */
-    }
-
+    }    
+    
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("RegistrationFormValidating:DoAfterProcessing");
+            log("PasswordHashSaltFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -111,74 +107,61 @@ public class RegistrationFormValidating implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
-       
-        {
-
-            {
-                PrintWriter out = response.getWriter();
-                try {
-
-                    String queryCheck = "SELECT countfrom users WHERE email = ?";
-                    PreparedStatement ps = db.getConnection().prepareStatement(queryCheck);
-                    ps.setString(1, queryCheck);
-                    ResultSet resultset = ps.executeQuery();
-                    if (resultSet.next()) {
-
-                        int count = resultset.getInt(1);
-
-                    }
-                    out.println("alert('email allready exist!');");
-                } catch (SQLException ex) {
-                    Logger.getLogger(RegistrationFormValidating.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                out.println("alert('email ok!');");
-
-                if (debug) {
-                    log("RegistrationFormValidating:doFilter()");
-                }
-
-                doBeforeProcessing(request, response);
-
-                Throwable problem = null;
-                try {
-                    chain.doFilter(request, response);
-                } catch (Throwable t) {
-                    // If an exception is thrown somewhere down the filter chain,
-                    // we still want to execute our after processing, and then
-                    // rethrow the problem after that.
-                    problem = t;
-                    t.printStackTrace();
-                }
-
-                doAfterProcessing(request, response);
-
-                // If there was a problem, we want to rethrow it if it is
-                // a known type, otherwise log it.
-                if (problem != null) {
-                    if (problem instanceof ServletException) {
-                        throw (ServletException) problem;
-                    }
-                    if (problem instanceof IOException) {
-                        throw (IOException) problem;
-                    }
-                    sendProcessingError(problem, response);
-                }
-
+        try {
+            HttpServletRequest httpRequest =(HttpServletRequest) request;
+            
+            String password = httpRequest.getParameter("Password");
+            
+            if (password != null && password.length()>= 8)  {
+                           
+            String hashedPassword = PasswordStorage.createHash("Password");
+            boolean bool = PasswordStorage.verifyPassword("Password", hashedPassword);
+            System.out.println(bool);
+            
+            chain.doFilter(request, response);
+            
+            }
+            
+            
+            if (debug) {
+                log("PasswordHashSaltFilter:doFilter()");
+            }
+            
+            doBeforeProcessing(request, response);
+            
+            Throwable problem = null;
+            try {
+                chain.doFilter(request, response);
+            } catch (Throwable t) {
+                // If an exception is thrown somewhere down the filter chain,
+                // we still want to execute our after processing, and then
+                // rethrow the problem after that.
+                problem = t;
+                t.printStackTrace();
             }
 
+            doAfterProcessing(request, response);
+            
+            // If there was a problem, we want to rethrow it if it is
+            // a known type, otherwise log it.
+            if (problem != null) {
+                if (problem instanceof ServletException) {
+                    throw (ServletException) problem;
+                }
+                if (problem instanceof IOException) {
+                    throw (IOException) problem;
+                }
+                sendProcessingError(problem, response);
+            }
+        } catch (PasswordStorage.CannotPerformOperationException ex) {
+            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PasswordStorage.InvalidHashException ex) {
+            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-      
     }
 
     /**
      * Return the filter configuration object for this filter.
-     */
-    /**
-     * Return the filter configuration object for this filter.
-     *
-     * @return
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -196,17 +179,17 @@ public class RegistrationFormValidating implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {
+    public void destroy() {        
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {
-                log("RegistrationFormValidating:Initializing filter");
+            if (debug) {                
+                log("PasswordHashSaltFilter:Initializing filter");
             }
         }
     }
@@ -217,27 +200,27 @@ public class RegistrationFormValidating implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("RegistrationFormValidating()");
+            return ("PasswordHashSaltFilter()");
         }
-        StringBuffer sb = new StringBuffer("RegistrationFormValidating(");
+        StringBuffer sb = new StringBuffer("PasswordHashSaltFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-
+    
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
+        String stackTrace = getStackTrace(t);        
+        
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
+                PrintWriter pw = new PrintWriter(ps);                
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
+                pw.print(stackTrace);                
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -254,7 +237,7 @@ public class RegistrationFormValidating implements Filter {
             }
         }
     }
-
+    
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -268,9 +251,9 @@ public class RegistrationFormValidating implements Filter {
         }
         return stackTrace;
     }
-
+    
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
+        filterConfig.getServletContext().log(msg);        
     }
-
+    
 }

@@ -39,7 +39,7 @@ public class PasswordHashSaltFilter implements Filter {
     private FilterConfig filterConfig = null;
     
     public PasswordHashSaltFilter() {
-        PasswordStorage pws = new PasswordStorage();
+        PasswordStorage passwordstorage = new PasswordStorage();
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -118,7 +118,7 @@ public class PasswordHashSaltFilter implements Filter {
             boolean bool = PasswordStorage.verifyPassword("Password", hashedPassword);
             System.out.println(bool);
             
-            chain.doFilter(request, response);
+             
             
             }
             

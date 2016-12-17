@@ -5,19 +5,14 @@
  */
 package Filters;
 
-import dataaccess.PasswordStorage;
-import static dataaccess.PasswordStorage.createHash;
-import static dataaccess.PasswordStorage.verifyPassword;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.security.SecureRandom;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
@@ -27,233 +22,209 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Jens
  */
+@WebFilter(filterName = "HashSaltFilter", urlPatterns = {"/AccountController?action=register"})
+public  class PasswordHashSaltFilter implements Filter {
 
-@WebFilter(filterName = "PasswordHashSaltFilter", urlPatterns = {"/AccountController?action=register"})
-public class PasswordHashSaltFilter implements Filter {
-    
-    private static final boolean debug = true;
-
-    // The filter configuration object we are associated with.  If
-    // this value is null, this filter instance is not currently
-    // configured. 
-    private FilterConfig filterConfig = null;
-    
-    public PasswordHashSaltFilter() {
-        PasswordStorage passwordstorage = new PasswordStorage();
-    }    
-    
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("PasswordHashSaltFilter:DoBeforeProcessing");
-        }
-
-        // Write code here to process the request and/or response before
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
-        // such as the parameters.
-        /*
-	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    String values[] = request.getParameterValues(name);
-	    int n = values.length;
-	    StringBuffer buf = new StringBuffer();
-	    buf.append(name);
-	    buf.append("=");
-	    for(int i=0; i < n; i++) {
-	        buf.append(values[i]);
-	        if (i < n-1)
-	            buf.append(",");
-	    }
-	    log(buf.toString());
-	}
-         */
-    }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("PasswordHashSaltFilter:DoAfterProcessing");
-        }
-
-        // Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-        /*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-         */
-        // For example, a filter might append something to the response.
-        /*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
+    private static String toBase64(byte[] salt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
+    private FilterConfig filterConfig;
+
+    public PasswordHashSaltFilter() throws CannotPerformOperationException, InvalidHashException {
+        this.b = verifyPassword("password", hashedPassword);
+    }
+     
+    @Override
+    public void init(final FilterConfig filterConfig)
+{
+    this.filterConfig = filterConfig;
+}
+    @Override
+    public void destroy()
+{
+    filterConfig = null;
+}  
+       
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
-            throws IOException, ServletException {
+            throws java.io.IOException, javax.servlet.ServletException
+    {
+        HttpServletRequest httpReq = (HttpServletRequest) request;
+       
+    }
+
+    private byte[] fromBase64(String param) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private byte[] pbkdf2(char[] password, byte[] salt, int iterations, int length) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+        @SuppressWarnings("serial")
+        class InvalidHashException extends Exception {
+        public InvalidHashException(String message) {
+            super(message);
+        }
+        public InvalidHashException(String message, Throwable source) {
+            super(message, source);
+        }
+    }
+
+    @SuppressWarnings("serial")
+        class CannotPerformOperationException extends Exception {
+        public CannotPerformOperationException(String message) {
+            super(message);
+        }
+        public CannotPerformOperationException(String message, Throwable source) {
+            super(message, source);
+        }
+    }
+    final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
+
+    // These constants may be changed without breaking existing hashes.
+    final int SALT_BYTE_SIZE = 24;
+    final int HASH_BYTE_SIZE = 18;
+    final int PBKDF2_ITERATIONS = 64000;
+
+    // These constants define the encoding and may not be changed.
+    final int HASH_SECTIONS = 5;
+    final int HASH_ALGORITHM_INDEX = 0;
+    final int ITERATION_INDEX = 1;
+    final int HASH_SIZE_INDEX = 2;
+    final int SALT_INDEX = 3;
+    final int PBKDF2_INDEX = 4;    
+    
+    final String createHash(String password)
+        throws CannotPerformOperationException
+    {
+        return createHash(password.toCharArray());
+    }
+
+        final String createHash(char[] password)
+        throws CannotPerformOperationException
+    {
+        // Generate a random salt
+        SecureRandom random = new SecureRandom();
+        byte[] salt;
+        salt = new byte[SALT_BYTE_SIZE];
+        random.nextBytes(salt);
+
+        // Hash the password
+        byte[] hash;
+        hash = pbkdf2(password, salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
+        int hashSize = hash.length;
+
+        // format: algorithm:iterations:hashSize:salt:hash
+        String parts = "sha1:" +
+            PBKDF2_ITERATIONS +
+            ":" + hashSize +
+            ":" +
+            toBase64(salt) +
+            ":" +
+            toBase64(hash);
+        return parts;
+    }
+    public boolean verifyPassword(String password, String correctHash)
+        throws CannotPerformOperationException, InvalidHashException
+    {
+        return verifyPassword(password.toCharArray(), correctHash);
+    }
+
+    public boolean verifyPassword(char[] password, String correctHash)
+        throws CannotPerformOperationException, InvalidHashException
+    {
+        // Decode the hash into its parameters
+        String[] params = correctHash.split(":");
+        if (params.length != HASH_SECTIONS) {
+            throw new InvalidHashException(
+                "Fields are missing from the password hash."
+            );
+        }
+
+        // Currently, Java only supports SHA1.
+        if (!params[HASH_ALGORITHM_INDEX].equals("sha1")) {
+            throw new CannotPerformOperationException(
+                "Unsupported hash type."
+            );
+        }
+
+        int iterations = 0;
         try {
-            HttpServletRequest httpRequest =(HttpServletRequest) request;
-            
-            String password = httpRequest.getParameter("Password");
-            
-            if (password != null && password.length()>= 8)  {
-                           
-            String hashedPassword = PasswordStorage.createHash("Password");
-            boolean bool = PasswordStorage.verifyPassword("Password", hashedPassword);
-            System.out.println(bool);
-            
-             
-            
-            }
-            
-            
-            if (debug) {
-                log("PasswordHashSaltFilter:doFilter()");
-            }
-            
-            doBeforeProcessing(request, response);
-            
-            Throwable problem = null;
-            try {
-                chain.doFilter(request, response);
-            } catch (Throwable t) {
-                // If an exception is thrown somewhere down the filter chain,
-                // we still want to execute our after processing, and then
-                // rethrow the problem after that.
-                problem = t;
-                t.printStackTrace();
-            }
-
-            doAfterProcessing(request, response);
-            
-            // If there was a problem, we want to rethrow it if it is
-            // a known type, otherwise log it.
-            if (problem != null) {
-                if (problem instanceof ServletException) {
-                    throw (ServletException) problem;
-                }
-                if (problem instanceof IOException) {
-                    throw (IOException) problem;
-                }
-                sendProcessingError(problem, response);
-            }
-        } catch (PasswordStorage.CannotPerformOperationException ex) {
-            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PasswordStorage.InvalidHashException ex) {
-            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
+            iterations = Integer.parseInt(params[ITERATION_INDEX]);
+        } catch (NumberFormatException ex) {
+            throw new InvalidHashException(
+                "Could not parse the iteration count as an integer.",
+                ex
+            );
         }
-    }
 
-    /**
-     * Return the filter configuration object for this filter.
-     */
-    public FilterConfig getFilterConfig() {
-        return (this.filterConfig);
-    }
-
-    /**
-     * Set the filter configuration object for this filter.
-     *
-     * @param filterConfig The filter configuration object
-     */
-    public void setFilterConfig(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
-    }
-
-    /**
-     * Destroy method for this filter
-     */
-    public void destroy() {        
-    }
-
-    /**
-     * Init method for this filter
-     */
-    public void init(FilterConfig filterConfig) {        
-        this.filterConfig = filterConfig;
-        if (filterConfig != null) {
-            if (debug) {                
-                log("PasswordHashSaltFilter:Initializing filter");
-            }
+        if (iterations < 1) {
+            throw new InvalidHashException(
+                "Invalid number of iterations. Must be >= 1."
+            );
         }
-    }
 
-    /**
-     * Return a String representation of this object.
-     */
-    @Override
-    public String toString() {
-        if (filterConfig == null) {
-            return ("PasswordHashSaltFilter()");
-        }
-        StringBuffer sb = new StringBuffer("PasswordHashSaltFilter(");
-        sb.append(filterConfig);
-        sb.append(")");
-        return (sb.toString());
-    }
-    
-    private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
-        if (stackTrace != null && !stackTrace.equals("")) {
-            try {
-                response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
-                response.getOutputStream().close();
-            } catch (Exception ex) {
-            }
-        } else {
-            try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
-                response.getOutputStream().close();
-            } catch (Exception ex) {
-            }
-        }
-    }
-    
-    public static String getStackTrace(Throwable t) {
-        String stackTrace = null;
+        byte[] salt = null;
         try {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.close();
-            sw.close();
-            stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+            salt = fromBase64(params[SALT_INDEX]);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidHashException(
+                "Base64 decoding of salt failed.",
+                ex
+            );
         }
-        return stackTrace;
+
+        byte[] hash = null;
+        try {
+            hash = fromBase64(params[PBKDF2_INDEX]);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidHashException(
+                "Base64 decoding of pbkdf2 output failed.",
+                ex
+            );
+        }
+
+
+        int storedHashSize = 0;
+        try {
+            storedHashSize = Integer.parseInt(params[HASH_SIZE_INDEX]);
+        } catch (NumberFormatException ex) {
+            throw new InvalidHashException(
+                "Could not parse the hash size as an integer.",
+                ex
+            );
+        }
+
+        if (storedHashSize != hash.length) {
+            throw new InvalidHashException(
+                "Hash length doesn't match stored hash length."
+            );
+        }
+
+        // Compute the hash of the provided password, using the same salt, 
+        {  // iteration count, and hash length
+        byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
+        // Compare the hashes in constant time. The password is correct if
+        // both hashes match.
+        return slowEquals(hash, testHash);
     }
-    
-    public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
     }
+    private static boolean slowEquals(byte[] a, byte[] b)
+    {
+        int diff = a.length ^ b.length;
+        for(int i = 0; i < a.length && i < b.length; i++)
+            diff |= a[i] ^ b[i];
+        return diff == 0;
+    } 
+        public String hashedPassword = createHash("Password");
+        public boolean b;
+    }
+      
+
+
+
     
-}
+ 

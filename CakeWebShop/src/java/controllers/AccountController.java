@@ -94,13 +94,14 @@ public class AccountController extends HttpServlet {
             response.sendRedirect("/CakeWebShop");
         } else if (action.equals("register")) {
             String email = (String) request.getParameter("Email");
-            String password = (String) request.getParameter("Password1");
+            String password = (String) request.getParameter("Password");
             String firstname = (String) request.getParameter("FirstName");
             String lastname = (String) request.getParameter("LastName");
             String phonenumber = (String) request.getParameter("PhoneNumber");
             String address = (String) request.getParameter("Address");
             String zip = (String) request.getParameter("Zip");
-
+            String salt =(String) request.getParameter("salt");
+            
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
             um.createUser(user);
             response.sendRedirect("home.jsp");

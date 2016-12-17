@@ -10,8 +10,6 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.SecureRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Jens
  */
 @WebFilter(filterName = "HashSaltFilter", urlPatterns = {"/AccountController?action=register"})
-public  class PasswordHashSaltFilter implements Filter {
+public final  class PasswordHashSaltFilter implements Filter {
 
     private static String toBase64(byte[] salt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -42,11 +40,7 @@ public  class PasswordHashSaltFilter implements Filter {
 {
     this.filterConfig = filterConfig;
 }
-    @Override
-    public void destroy()
-{
-    filterConfig = null;
-}  
+   
        
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -56,26 +50,21 @@ public  class PasswordHashSaltFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         String password = (String) request.getParameter("Password");
         String salt =(String) request.getParameter("salt");
-        try {
-            createHash(password);
-        } catch (CannotPerformOperationException ex) {
-            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
-        }  
-        try {
-            verifyPassword(password, "Password");
-        } catch (CannotPerformOperationException ex) {
-            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidHashException ex) {
-            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+        
+    }   
+   
 
     private byte[] fromBase64(String param) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     private byte[] pbkdf2(char[] password, byte[] salt, int iterations, int length) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public void destroy() {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
         @SuppressWarnings("serial")
         class InvalidHashException extends Exception {
@@ -125,7 +114,7 @@ public  class PasswordHashSaltFilter implements Filter {
         byte[] salt;
         salt = new byte[SALT_BYTE_SIZE];
         random.nextBytes(salt);
-
+        
         // Hash the password
         byte[] hash;
         hash = pbkdf2(password, salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
@@ -235,10 +224,17 @@ public  class PasswordHashSaltFilter implements Filter {
         return diff == 0;
     } 
         public String hashedPassword = createHash("Password");
-        public boolean b;
+        public boolean b = verifyPassword("Password", hashedPassword);
     }
-    
 
+/* disse 2 metoder er out of scope ?  
 
+}
+        chain.doFilter(request,response);
+}
+  
+    @Override
+    public void destroy() {        
+    }  
     
- 
+*/

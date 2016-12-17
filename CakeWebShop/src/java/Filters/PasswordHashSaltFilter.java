@@ -52,7 +52,8 @@ public  class PasswordHashSaltFilter implements Filter {
             throws java.io.IOException, javax.servlet.ServletException
     {
         HttpServletRequest httpReq = (HttpServletRequest) request;
-       
+        String password = (String) request.getParameter("Password");
+        String salt =(String) request.getParameter("salt");
     }
 
     private byte[] fromBase64(String param) {

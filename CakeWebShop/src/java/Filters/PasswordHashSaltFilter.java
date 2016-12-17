@@ -10,6 +10,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.SecureRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -54,6 +56,18 @@ public  class PasswordHashSaltFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         String password = (String) request.getParameter("Password");
         String salt =(String) request.getParameter("salt");
+        try {
+            createHash(password);
+        } catch (CannotPerformOperationException ex) {
+            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        try {
+            verifyPassword(password, "Password");
+        } catch (CannotPerformOperationException ex) {
+            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidHashException ex) {
+            Logger.getLogger(PasswordHashSaltFilter.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private byte[] fromBase64(String param) {
@@ -223,8 +237,7 @@ public  class PasswordHashSaltFilter implements Filter {
         public String hashedPassword = createHash("Password");
         public boolean b;
     }
-      
-
+    
 
 
     

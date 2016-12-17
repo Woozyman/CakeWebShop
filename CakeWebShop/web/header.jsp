@@ -45,7 +45,7 @@
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login</button> 
         </form>
-<% //her starter loginknapper %>
+        <% //her starter loginknapper %>
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
                 <input type="hidden" name="email" class="form-control" placeholder="E-mail" value="fclante@gmail.com">
@@ -60,7 +60,7 @@
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login Admin</button> 
         </form>
-<% //her slutter loginknapper %>
+        <% //her slutter loginknapper %>
         <button type="submit" class="btn btn-success navbar-btn navbar-right" action="${pageContext.servletContext.contextPath}/CartController?action=showCart" method="post"><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.print(cart.getItemsCount());%>)</button>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/formRegistration.jsp" method="post">
             <button type="submit" class="btn navbar-btn"><span class="glyphicon glyphicon-user"></span> Register</button>

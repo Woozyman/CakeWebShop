@@ -2,6 +2,7 @@
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
 <%@page import="models.Cart" %>
 
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>CakeWebShop</title>
@@ -9,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+<body>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -48,7 +50,7 @@
 <% //her starter loginknapper %>
         <form class="navbar-form navbar-left" action="${pageContext.servletContext.contextPath}/AccountController?action=login" method="POST">
             <div class="form-group">
-                <input type="hidden" name="email" class="form-control" placeholder="E-mail" value="fclante@gmail.com">
+                <input type="hidden" name="email" class="form-control" placeholder="E-mail" value="frey@cakewebshop.com">
                 <input type="hidden" name="password" class="form-control" placeholder="Password" value="pass123">
             </div>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Login Frey</button> 

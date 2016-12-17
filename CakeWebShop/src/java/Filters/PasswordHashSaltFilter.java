@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Filters;
 
 import java.io.IOException;
@@ -18,10 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- *
- * @author Jens
- */
 @WebFilter(filterName = "HashSaltFilter", urlPatterns = {"/AccountController?action=register"})
 public final  class PasswordHashSaltFilter implements Filter {
 
@@ -34,7 +25,7 @@ public final  class PasswordHashSaltFilter implements Filter {
     public PasswordHashSaltFilter() throws CannotPerformOperationException, InvalidHashException {
         this.b = verifyPassword("password", hashedPassword);
     }
-     
+
     @Override
     public void init(final FilterConfig filterConfig)
 {
@@ -45,8 +36,7 @@ public final  class PasswordHashSaltFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
-            throws java.io.IOException, javax.servlet.ServletException
-    {
+            throws java.io.IOException, javax.servlet.ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         String password = (String) request.getParameter("Password");
         String salt =(String) request.getParameter("salt");
@@ -66,21 +56,26 @@ public final  class PasswordHashSaltFilter implements Filter {
     public void destroy() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
-        @SuppressWarnings("serial")
-        class InvalidHashException extends Exception {
+
+    @SuppressWarnings("serial")
+    class InvalidHashException extends Exception {
+
         public InvalidHashException(String message) {
             super(message);
         }
+
         public InvalidHashException(String message, Throwable source) {
             super(message, source);
         }
     }
 
     @SuppressWarnings("serial")
-        class CannotPerformOperationException extends Exception {
+    class CannotPerformOperationException extends Exception {
+
         public CannotPerformOperationException(String message) {
             super(message);
         }
+
         public CannotPerformOperationException(String message, Throwable source) {
             super(message, source);
         }
@@ -98,17 +93,15 @@ public final  class PasswordHashSaltFilter implements Filter {
     final int ITERATION_INDEX = 1;
     final int HASH_SIZE_INDEX = 2;
     final int SALT_INDEX = 3;
-    final int PBKDF2_INDEX = 4;    
-    
+    final int PBKDF2_INDEX = 4;
+
     final String createHash(String password)
-        throws CannotPerformOperationException
-    {
+            throws CannotPerformOperationException {
         return createHash(password.toCharArray());
     }
 
-        final String createHash(char[] password)
-        throws CannotPerformOperationException
-    {
+    final String createHash(char[] password)
+            throws CannotPerformOperationException {
         // Generate a random salt
         SecureRandom random = new SecureRandom();
         byte[] salt;
@@ -121,36 +114,35 @@ public final  class PasswordHashSaltFilter implements Filter {
         int hashSize = hash.length;
 
         // format: algorithm:iterations:hashSize:salt:hash
-        String parts = "sha1:" +
-            PBKDF2_ITERATIONS +
-            ":" + hashSize +
-            ":" +
-            toBase64(salt) +
-            ":" +
-            toBase64(hash);
+        String parts = "sha1:"
+                + PBKDF2_ITERATIONS
+                + ":" + hashSize
+                + ":"
+                + toBase64(salt)
+                + ":"
+                + toBase64(hash);
         return parts;
     }
+
     public boolean verifyPassword(String password, String correctHash)
-        throws CannotPerformOperationException, InvalidHashException
-    {
+            throws CannotPerformOperationException, InvalidHashException {
         return verifyPassword(password.toCharArray(), correctHash);
     }
 
     public boolean verifyPassword(char[] password, String correctHash)
-        throws CannotPerformOperationException, InvalidHashException
-    {
+            throws CannotPerformOperationException, InvalidHashException {
         // Decode the hash into its parameters
         String[] params = correctHash.split(":");
         if (params.length != HASH_SECTIONS) {
             throw new InvalidHashException(
-                "Fields are missing from the password hash."
+                    "Fields are missing from the password hash."
             );
         }
 
         // Currently, Java only supports SHA1.
         if (!params[HASH_ALGORITHM_INDEX].equals("sha1")) {
             throw new CannotPerformOperationException(
-                "Unsupported hash type."
+                    "Unsupported hash type."
             );
         }
 
@@ -159,25 +151,24 @@ public final  class PasswordHashSaltFilter implements Filter {
             iterations = Integer.parseInt(params[ITERATION_INDEX]);
         } catch (NumberFormatException ex) {
             throw new InvalidHashException(
-                "Could not parse the iteration count as an integer.",
-                ex
+                    "Could not parse the iteration count as an integer.",
+                    ex
             );
         }
 
         if (iterations < 1) {
             throw new InvalidHashException(
-                "Invalid number of iterations. Must be >= 1."
+                    "Invalid number of iterations. Must be >= 1."
             );
         }
-
 
         byte[] salt = null;
         try {
             salt = fromBase64(params[SALT_INDEX]);
         } catch (IllegalArgumentException ex) {
             throw new InvalidHashException(
-                "Base64 decoding of salt failed.",
-                ex
+                    "Base64 decoding of salt failed.",
+                    ex
             );
         }
 
@@ -186,41 +177,41 @@ public final  class PasswordHashSaltFilter implements Filter {
             hash = fromBase64(params[PBKDF2_INDEX]);
         } catch (IllegalArgumentException ex) {
             throw new InvalidHashException(
-                "Base64 decoding of pbkdf2 output failed.",
-                ex
+                    "Base64 decoding of pbkdf2 output failed.",
+                    ex
             );
         }
-
 
         int storedHashSize = 0;
         try {
             storedHashSize = Integer.parseInt(params[HASH_SIZE_INDEX]);
         } catch (NumberFormatException ex) {
             throw new InvalidHashException(
-                "Could not parse the hash size as an integer.",
-                ex
+                    "Could not parse the hash size as an integer.",
+                    ex
             );
         }
 
         if (storedHashSize != hash.length) {
             throw new InvalidHashException(
-                "Hash length doesn't match stored hash length."
+                    "Hash length doesn't match stored hash length."
             );
         }
 
         // Compute the hash of the provided password, using the same salt, 
         {  // iteration count, and hash length
-        byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
-        // Compare the hashes in constant time. The password is correct if
-        // both hashes match.
-        return slowEquals(hash, testHash);
+            byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
+            // Compare the hashes in constant time. The password is correct if
+            // both hashes match.
+            return slowEquals(hash, testHash);
+        }
     }
-    }
-    private static boolean slowEquals(byte[] a, byte[] b)
-    {
+
+    private static boolean slowEquals(byte[] a, byte[] b) {
         int diff = a.length ^ b.length;
-        for(int i = 0; i < a.length && i < b.length; i++)
+        for (int i = 0; i < a.length && i < b.length; i++) {
             diff |= a[i] ^ b[i];
+        }
         return diff == 0;
     } 
         public String hashedPassword = createHash("Password");

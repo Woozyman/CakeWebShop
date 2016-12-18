@@ -14,8 +14,9 @@
         <tr>
             <th>Image</th>
             <th>Name</th>
-            <th>Price</th>
             <th>Number</th>
+            <th>Price</th>
+            <th>Total</th>
             <th>Update Number</th>
             <th>Remove</th>
         </tr>
@@ -26,22 +27,31 @@
         List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
         OrderLineMapper orm = new OrderLineMapper();
         int orderId = (int) session.getAttribute("orderId");
-        
-        for(ShopItem item : items) { %>
+        double total = 0;
+        for(ShopItem item : items) { 
+            total = total + (orm.getItemCount(item.getItemId(), orderId)*item.getItemPrice());
+    %>
          
             <tr>  
                     <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
                     <td><%=item.getItemName()%></td>
-                    <td><%=item.getItemPrice()%></td>
                     <td><input type="number" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId) %>"></input></td>
+                    <td><%=item.getItemPrice()%></td>
+                    <td><%=orm.getItemCount(item.getItemId(), orderId)*item.getItemPrice()%></td>
                     <td><a href="${pageContext.servletContext.contextPath}/CartController?action=update"> Update </a></td>
                     <td><a href="${pageContext.servletContext.contextPath}/CartController?action=remove"> Remove </a></td>
             </tr>
            
        <% } %>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td>Total all:</td>
+       <td><%=total%></td>
+       <td><a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay Order</a></td>
+       <td></td>
        
-
   
 </table>
-<a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay</a>
+
 <c:import url="footer.jsp"></c:import>

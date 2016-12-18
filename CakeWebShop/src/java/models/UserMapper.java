@@ -1,6 +1,5 @@
 package models;
 
-import Filters.PasswordHashSaltFilter;
 import dataaccess.DB_local;
 import java.util.List;
 import java.sql.PreparedStatement;

@@ -18,7 +18,7 @@ public class OrderLineMapper {
     public void addOrderLine(OrderLine orderLine, int orderId){
         
         try {
-            String query = "INSERT into orderlines orderid, shopItemid, numberOfItems, itemPrice"
+            String query = "INSERT into orderlines (orderLineid, shopItemid, numberOfItems, itemPrice) "
                 + "VALUES (?,?,?,?)";
             
             PreparedStatement ps = db.getConnection().prepareStatement(query);
@@ -32,6 +32,8 @@ public class OrderLineMapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        db.closeConnection();
     }
 
     public List<OrderLine> getOrderLines(int orderId) {
@@ -39,7 +41,7 @@ public class OrderLineMapper {
 
         try {
             String query = "SELECT orderid, shopItemid, numberOfItems, itemPrice FROM orderlines"
-                    + "WHERE orderid = ? ";
+                    + "WHERE orderid = ?";
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, orderId);
 
@@ -59,7 +61,7 @@ public class OrderLineMapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        db.closeConnection();
         return orderLines;
     }    
 }

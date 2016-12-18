@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import models.Cart;
 import models.Order;
 import models.OrderLine;
+import models.OrderLineMapper;
 import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
@@ -32,6 +34,21 @@ public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
+        HttpSession session = request.getSession();        
+        ShopItemMapper sim = new ShopItemMapper();
+        OrderLineMapper lineMapper = new OrderLineMapper();
+        
+        
+        if (action.equals("showCart")) {
+           Order order = (Order) session.getAttribute("order");
+           Cart cart = (Cart) session.getAttribute("cart");
+           List<OrderLine> lineItems = lineMapper.getOrderLines(order.getOrderId());
+           session.setAttribute("orderLines", lineItems);
+           List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
+           session.setAttribute("shopItems", shopItems);
+           request.getRequestDispatcher("/cart.jsp").forward(request, response);
+        }
 
     }
 
@@ -52,33 +69,32 @@ public class CartController extends HttpServlet {
         UserMapper um = new UserMapper();
         OrderMapper orm = new OrderMapper();
         ShopItemMapper sim = new ShopItemMapper();
+        OrderLineMapper lineMapper = new OrderLineMapper();
         Order order = null;
 
-        if (action.equals("showCart")) {
-           
-            response.sendRedirect("cart.jsp");
-        } else if (action.equals("addToCart")) {
+        if (action.equals("addToCart")) {
 
             User user = (User) session.getAttribute("userObj");
-            
+
             int orderId = -1;
 
             Cart cart = (Cart) session.getAttribute("cart");
             int itemId = Integer.parseInt(request.getParameter("id"));
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
-
+            int userid = um.getUserId(user.getEmail());
             if (cart.getOrderLines().isEmpty()) {
-                order = new Order(user.getId(),null,null,1);
+                order = new Order(userid, null, null, 1);
                 //persist Order in Db to refer orderLines to.
                 orm.createOrder(order);
                 session.setAttribute("order", order);
-                
-            }else{
+
+            } else {
                 order = (Order) session.getAttribute("order");
             }
             orderId = order.getOrderId();
             OrderLine orderLine = new OrderLine(orderId, itemId, numOfItems, 1);
-            
+            lineMapper.addOrderLine(orderLine, orderId);
+
             cart.addItemToCart(orderLine);
 
             session.setAttribute("cart", cart);

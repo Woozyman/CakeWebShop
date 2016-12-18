@@ -85,14 +85,14 @@ public class UserMapper {
             ResultSet rs = ps.executeQuery();
 
             rs.next();
-            while (rs.next()) {
-                result = rs.getInt("userid");
-            }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
+            result = rs.getInt("userid");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, e);
         }
-
+        db.closeConnection();
         return result;
     }
 
@@ -128,7 +128,7 @@ public class UserMapper {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                
+
                 //HER SKAL LAVES TJEK PÅ SALTET PASSWORD
                 //Hashes(rs.getString("password")+rs.getString("salt"))
                 //smides i en variabel som skal være .equals(password)+salt
@@ -136,7 +136,7 @@ public class UserMapper {
                 if (rs.getString("password").equals(password)) {
                     return true;
                 }
-                
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -162,7 +162,7 @@ public class UserMapper {
                 orderId = rs.getInt("orderid");
 
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -172,7 +172,6 @@ public class UserMapper {
         }
 
         return -1;
-    }  
-   
+    }
 
 }

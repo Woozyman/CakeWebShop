@@ -19,8 +19,7 @@
             <th>Remove</th>
         </tr>
     <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
-        Cart cart = (Cart) session.getAttribute("cart");
-        List<OrderLine> orderLines = cart.getOrderLines();
+        List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
         /*mapShopItemsToOrderLines(List<OrderLine> lineItems) fra ShopItemMapper
         *returnerer: List<ShopItems> Som skal populere Tabellen nedenfor
         */ 

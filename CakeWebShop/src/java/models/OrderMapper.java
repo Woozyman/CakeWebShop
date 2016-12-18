@@ -38,6 +38,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        db.closeConnection();
     }
 
     public void completeOrder(int orderId) {

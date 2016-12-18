@@ -35,21 +35,20 @@ public class CartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        HttpSession session = request.getSession();        
+        HttpSession session = request.getSession();
         ShopItemMapper sim = new ShopItemMapper();
-        OrderLineMapper lineMapper = new OrderLineMapper();
-        
-        
+
         if (action.equals("showCart")) {
-           Order order = (Order) session.getAttribute("order");
-           Cart cart = (Cart) session.getAttribute("cart");
-           int id = order.getOrderId();
-         //  List<OrderLine> lineItems = lineMapper.getOrderLines(id);
-           List<OrderLine> lineItems = cart.getOrderLines();
-           session.setAttribute("orderLines", lineItems);
-           List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
-           session.setAttribute("shopItems", shopItems);
-           request.getRequestDispatcher("/cart.jsp").forward(request, response);
+
+            Order order = (Order) session.getAttribute("order");
+            session.setAttribute("orderId", order.getOrderId());
+            Cart cart = (Cart) session.getAttribute("cart");
+            List<OrderLine> lineItems = cart.getOrderLines();
+            session.setAttribute("orderLines", lineItems);
+            List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
+            session.setAttribute("shopItems", shopItems);
+            request.getRequestDispatcher("/cart.jsp").forward(request, response);
+
         }
 
     }
@@ -70,44 +69,54 @@ public class CartController extends HttpServlet {
         HttpSession session = request.getSession();
         UserMapper um = new UserMapper();
         OrderMapper orm = new OrderMapper();
-        ShopItemMapper sim = new ShopItemMapper();
         OrderLineMapper lineMapper = new OrderLineMapper();
         Order order = null;
-
+        OrderLine orderLine = null;
+        Cart cart = (Cart) session.getAttribute("cart");
+        User user = (User) session.getAttribute("userObj");
         if (action.equals("addToCart")) {
-
-            User user = (User) session.getAttribute("userObj");
 
             int orderId = -1;
 
-            Cart cart = (Cart) session.getAttribute("cart");
             int itemId = Integer.parseInt(request.getParameter("id"));
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
             int userid = um.getUserId(user.getEmail());
             double currentPrice = lineMapper.getCurrentPrice(itemId);
-            
+
             if (cart.getOrderLines().isEmpty()) {
-                order = new Order(userid, null, null, 1);
-                //persist Order in Db to refer orderLines to.
-                orm.createOrder(order);
-                order.setOrderId(um.getUnpaidOrderId(user));
-                session.setAttribute("order", order);
+                if (user != null) {
+                    order = new Order(userid, null, null, 1);
+                    //persist Order in Db to refer orderLines to.
+                    orm.createOrder(order);
+                    order.setOrderId(um.getUnpaidOrderId(user));
+                    session.setAttribute("order", order);
+                } else {
+                    //userid  = 0 means not a registered user.
+                    order = new Order(0, null, null, 1);
+                    orm.createOrder(order);
+                    session.setAttribute("order", order);
+                }
 
             } else {
                 order = (Order) session.getAttribute("order");
-                order.setOrderId(um.getUnpaidOrderId(user));
+                if (user != null) {
+                    order.setOrderId(um.getUnpaidOrderId(user));
+                }
             }
-            orderId = order.getOrderId();          
-            
-            OrderLine orderLine = new OrderLine(orderId, itemId, numOfItems, currentPrice);
-            
-            lineMapper.addOrderLine(orderLine);
+            orderId = order.getOrderId();
 
-            cart.addItemToCart(orderLine);
+            if (lineMapper.itemAlreadyOnOrder(itemId)) {
+                lineMapper.updateOrderLine(itemId, numOfItems, orderId);
+            } else {
+                orderLine = new OrderLine(orderId, itemId, numOfItems, currentPrice);
+
+                lineMapper.addOrderLine(orderLine);
+                cart.addItemToCart(orderLine);
+            }
 
             session.setAttribute("cart", cart);
 
-            response.sendRedirect("home.jsp");
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
 
     }

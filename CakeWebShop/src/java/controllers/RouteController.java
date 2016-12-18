@@ -36,29 +36,36 @@ public class RouteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String page = null;
-        String id = request.getParameter("id");
-        HttpSession session = request.getSession();
-        session.setAttribute("firstVisit", 1);
         String action = request.getParameter("action");
-
+        String page = null;       
+        HttpSession session = request.getSession();
+        
+        if (session.getAttribute("firstVisit") == null) {
+            session.setAttribute("firstVisit", 1);
+        }       
+       
         if (session.getAttribute("firstVisit").equals(1)) {
             session.setAttribute("firstVisit", 0); // make sure this only runs once/session
             ShopItemMapper sim = new ShopItemMapper();
             List<ShopItem> items = sim.getAllItems();
-            OrderLineMapper orm = new OrderLineMapper();
+            
             //New Empty Cart.   
-            Cart cart = new Cart(new ArrayList());
+            Cart cart = new Cart(new ArrayList<OrderLine>());
 
             //Sets The ShopItems and the Cart objects on the session
             //So that guest also can add items to cart before they create a user.
             session.setAttribute("cakeList", items);
             session.setAttribute("cart", cart);
 
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/home.jsp").include(request, response);
+        }
+        
+        if (action.equals("home")) {
+            page = "/home.jsp";
+            request.getRequestDispatcher(page).forward(request, response);
         }
 
-        request.getRequestDispatcher(page).include(request, response);
+       response.sendRedirect("/home.jsp");
 
     }
 

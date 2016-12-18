@@ -89,22 +89,21 @@ public class OrderMapper {
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
-
+            rs.next();
             int orderId = rs.getInt("orderid");
             int userId = rs.getInt("userid");
             Date orderDate = rs.getDate("orderDate");
             Date orderCakeCompletedDate = rs.getDate("orderCakeCompletedDate");
             Date orderDeliveryDate = rs.getDate("orderDeliveryDate");
             int orderInShoppingCart = rs.getInt("orderInShoppingCart");
-
-            while (rs.next()) {
+           
                 result.setOrderId(orderId);
                 result.setUserId(userId);
                 result.setOrderDate(orderDate);
                 result.setOrderCakeCompletedDate(orderCakeCompletedDate);
                 result.setOrderDeliveryDate(orderDeliveryDate);
                 result.setOrderInShoppingCart(orderInShoppingCart);
-            }
+          
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -33,7 +33,7 @@
                     <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
                     <td><%=item.getItemName()%></td>
                     <td><%=item.getItemPrice()%></td>
-                    <td><input type="number" min="1" value=""></input></td>
+                    <td><input type="number" min="1" value="<%= orderLines.size() %>"></input></td>
                     <td><input type="submit" name="edit" value="Update Cart"></td>
                     <td><input type="submit" name="remove" value="remove"></td>
             </tr>

@@ -61,5 +61,5 @@
     </tr>
     <%      }
         }%>
-</table>
+</table><br><br>
 <c:import url="footer.jsp"></c:import>

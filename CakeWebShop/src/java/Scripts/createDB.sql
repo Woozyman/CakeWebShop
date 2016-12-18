@@ -32,7 +32,7 @@ INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Chokoladekage','Chokolade','images/chokolade.jpg',99.5);
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Babykage','Vanillie','images/babykage.jpg',149.5);
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Flagkage','Vanillie/flødeskum','images/flag.jpg',49.5);
-INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Batmankage','Fandant','images/Batman.jpg',79.5);
+INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Batmankage','Fandant','images/batman.jpg',79.5);
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Bryllupskage','Frugter','images/bryllup.jpg',349.5);
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('CocaCola kage','Fløde','images/cola.jpg',59.5);
 INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES ('Minions','Banan','images/minion.jpg',99.5);

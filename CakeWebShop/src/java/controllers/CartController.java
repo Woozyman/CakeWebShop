@@ -84,6 +84,8 @@ public class CartController extends HttpServlet {
             int itemId = Integer.parseInt(request.getParameter("id"));
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
             int userid = um.getUserId(user.getEmail());
+            double currentPrice = lineMapper.getCurrentPrice(itemId);
+            
             if (cart.getOrderLines().isEmpty()) {
                 order = new Order(userid, null, null, 1);
                 //persist Order in Db to refer orderLines to.
@@ -93,10 +95,13 @@ public class CartController extends HttpServlet {
 
             } else {
                 order = (Order) session.getAttribute("order");
+                order.setOrderId(um.getUnpaidOrderId(user));
             }
-            orderId = order.getOrderId();
-            OrderLine orderLine = new OrderLine(orderId, itemId, numOfItems, 1);
-            lineMapper.addOrderLine(orderLine, orderId);
+            orderId = order.getOrderId();          
+            
+            OrderLine orderLine = new OrderLine(orderId, itemId, numOfItems, currentPrice);
+            
+            lineMapper.addOrderLine(orderLine);
 
             cart.addItemToCart(orderLine);
 

@@ -5,8 +5,7 @@ public class OrderLine {
     private int orderLineId; //primary key , not in the constructor because mysql assigns id automatically
     private int orderId;    //foreign key
     private int numberOfItems;
-    private int shopItemId;  //foreign key
-    
+    private int shopItemId;  //foreign key    
     private double itemPrice;
     
     public OrderLine(){}

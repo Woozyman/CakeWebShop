@@ -15,20 +15,16 @@ public class OrderLineMapper {
         this.db = new DB_local();
     }
     
-    public void addOrderLine(OrderLine orderLine, int orderId){
+    public void addOrderLine(OrderLine orderLine){
         
         try {
-            String query = "INSERT into orderlines (orderid, shopItemid, numberOfItems, itemPrice) "
-                + "VALUES (?,?,?,?)";
+            String query = "INSERT into orderlines (orderid, shopItemid, numberOfItems, itemPrice) VALUES (?,?,?,?)";
             
             PreparedStatement ps = db.getConnection().prepareStatement(query);
-            ps.setInt(1, orderId);
+            ps.setInt(1, orderLine.getOrderId());
             ps.setInt(2, orderLine.getShopItemId());
             ps.setInt(3, orderLine.getNumberOfItems());
-            //Get correct price... fix it.
-            int itemId = orderLine.getShopItemId();
-            double currentPrice = getCurrentPrice(itemId);
-            ps.setDouble(4, currentPrice);
+            ps.setDouble(4, orderLine.getItemPrice());          
             
             ps.executeUpdate();
            

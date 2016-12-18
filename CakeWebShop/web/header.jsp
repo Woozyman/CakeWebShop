@@ -28,9 +28,6 @@
         </form>
         <% } else {
 // Normal user goes here %>
-<!--        <form method="post" action="${pageContext.servletContext.contextPath}/CartController?action=showCart">
-            <button  class="btn btn-success navbar-btn navbar-right" ><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount());%>)</button>
-        </form> -->
         <a href="CartController?action=showCart" class="btn btn-success navbar-btn navbar-right" ><span class="glyphicon glyphicon-shopping-cart"></span> Indkøbskurv (<%out.println(cart.getItemsCount());%>)</a>
         <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
             <div class="form-group">

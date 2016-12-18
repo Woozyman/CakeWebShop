@@ -43,7 +43,8 @@ public class CartController extends HttpServlet {
         if (action.equals("showCart")) {
            Order order = (Order) session.getAttribute("order");
            Cart cart = (Cart) session.getAttribute("cart");
-           List<OrderLine> lineItems = lineMapper.getOrderLines(order.getOrderId());
+           int id = order.getOrderId();
+           List<OrderLine> lineItems = lineMapper.getOrderLines(id);
            session.setAttribute("orderLines", lineItems);
            List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
            session.setAttribute("shopItems", shopItems);
@@ -86,6 +87,7 @@ public class CartController extends HttpServlet {
                 order = new Order(userid, null, null, 1);
                 //persist Order in Db to refer orderLines to.
                 orm.createOrder(order);
+                order.setOrderId(um.getUnpaidOrderId(user));
                 session.setAttribute("order", order);
 
             } else {

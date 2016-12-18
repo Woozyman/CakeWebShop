@@ -128,25 +128,9 @@ public class UserMapper {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-
-                //HER SKAL LAVES TJEK PÅ SALTET PASSWORD
-                //Hashes(rs.getString("password")+rs.getString("salt"))
-                //smides i en variabel som skal være .equals(password)+salt
-                // hvis det giver mening
-                /*
-                public static void main(String[] args) throws CannotPerformOperationException, InvalidHashException {
-                    String hashedPwd = PasswordHashSaltFilter.createHash("admin123");
-                    System.out.println(hashedPwd);
-                    System.out.println("length: "+hashedPwd.length());
-                    boolean b = PasswordHashSaltFilter.verifyPassword("admin123", hashedPwd);
-                    System.out.println(b);
-                }
-                */
-    
                 if (rs.getString("password").equals(password)) {
                     return true;
                 }
-
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

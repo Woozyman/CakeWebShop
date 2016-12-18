@@ -12,6 +12,6 @@
         <title>Cake Web Shop</title>
     </head>
     <body>       
-        <jsp:forward page="/RouteController"/>
+        <jsp:forward page="/RouteController?action=home"/>
     </body>
 </html>

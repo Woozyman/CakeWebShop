@@ -110,10 +110,13 @@ public class AccountController extends HttpServlet {
             String phonenumber = (String) request.getParameter("PhoneNumber");
             String address = (String) request.getParameter("Address");
             String zip = (String) request.getParameter("Zip");
-            String salt =(String) request.getParameter("salt");
             
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
-            um.createUser(user);
+            try {
+                um.createUser(user);
+            } catch (PasswordStorage.CannotPerformOperationException ex) {
+                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             response.sendRedirect("home.jsp");
 
         } else if (action.equals("pay")) {

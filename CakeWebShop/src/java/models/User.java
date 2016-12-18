@@ -82,9 +82,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    String getSalt() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

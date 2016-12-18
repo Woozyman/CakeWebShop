@@ -19,7 +19,7 @@ public class UserMapper {
         this.db = new DB_local();
     }
 
-    public void createUser(User user) {
+    public void createUser(User user) throws PasswordStorage.CannotPerformOperationException {
         try {
             String firstname = user.getFirstname();
             String lastname = user.getLastname();
@@ -28,10 +28,10 @@ public class UserMapper {
             String address = user.getAddress();
             String zip = user.getZip();
             String password = user.getPassword();
-            String salt = user.getSalt();
+            //password = PasswordStorage.createHash(password);
 
-            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password, salt)"
-                    + "VALUES (?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password)"
+                    + "VALUES (?,?,?,?,?,?,?)";
 
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, firstname);
@@ -41,7 +41,6 @@ public class UserMapper {
             ps.setString(5, address);
             ps.setString(6, zip);
             ps.setString(7, password);
-            ps.setString(8, salt);
 
             ps.executeUpdate();
 

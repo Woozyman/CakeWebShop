@@ -180,9 +180,10 @@ public class ShopItemMapper {
         
         //Insert Items in Cart
         for(OrderLine lineItem : orderLines){            
-           cart.addItemToCart(lineItem);
-        }        
-         return new Cart(orderLines);
+           resultingCart.addItemToCart(lineItem);
+        }                
+       
+         return resultingCart;
     }   
      
      public List<ShopItem> mapShopItemsToOrderLines(List<OrderLine> lineItems){

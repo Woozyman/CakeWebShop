@@ -44,7 +44,8 @@ public class CartController extends HttpServlet {
            Order order = (Order) session.getAttribute("order");
            Cart cart = (Cart) session.getAttribute("cart");
            int id = order.getOrderId();
-           List<OrderLine> lineItems = lineMapper.getOrderLines(id);
+         //  List<OrderLine> lineItems = lineMapper.getOrderLines(id);
+          List<OrderLine> lineItems = cart.getOrderLines();
            session.setAttribute("orderLines", lineItems);
            List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
            session.setAttribute("shopItems", shopItems);

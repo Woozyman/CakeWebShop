@@ -13,6 +13,7 @@ public class Cart {
     private List<OrderLine> orderLines;
 
     public Cart() {
+        orderLines = new ArrayList();
     }
 
     public Cart(List<OrderLine> lines) {

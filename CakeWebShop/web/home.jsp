@@ -2,9 +2,13 @@
 <%@page import="models.ShopItem"%>
 <%@page import="java.util.List"%>
 <%@page import="models.User"%>
+<%@page import="models.Time"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="header.jsp"></c:import>
+<% Time time = new Time();%>
+<%= "Tid lige nu: "+time.getTimeNow()+" - bestemt tid: " %>
+<%= time.getTime("2016-12-22") %>
 
     <table class="table table-striped">
         <tr>

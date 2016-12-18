@@ -18,32 +18,25 @@
             <th>Update Number</th>
             <th>Remove</th>
         </tr>
-    <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
-        List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
-        /*mapShopItemsToOrderLines(List<OrderLine> lineItems) fra ShopItemMapper
-        *returnerer: List<ShopItems> Som skal populere Tabellen nedenfor
-        */ 
-    %>  
 
-    <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
+        <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
         <input type="hidden" name="itemid" value="<%//= cake.getItemId()%>">
+        <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
+            List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
+            for (ShopItem item : items) {%>
+        <tr>
 
-       <% for(ShopItem item : items) { %>
-         
-            <tr>
-              
-                    <td><a href="#"><img src="${pageContext.servletContext.contextPath}/<% item.getItemPicture(); %>"></a></td>
-                    <td><% item.getItemName(); %></td>
-                    <td><% item.getItemPrice();%></td>
-                    <td><input type="number" min="1" value=""></input></td>
-                    <td><input type="submit" name="edit" value="Update Cart"></td>
-                    <td><input type="submit" name="remove" value="remove"></td>
-                   
+            <td><a href="#"><img src="${pageContext.servletContext.contextPath}/<%= item.getItemPicture()%>"></a></td>
+            <td><%= item.getItemName()%></td>
+            <td><%= item.getItemPrice()%></td>
+            <td><input type="number" min="1" value=""></input></td>
+            <td><input type="submit" name="edit" value="Update Cart"></td>
+            <td><input type="submit" name="remove" value="remove"></td>
 
-            </tr>
-           
-       <% } %>
-       
+        </tr>
+
+        <% }%>
+
 
     </form>
 </table>

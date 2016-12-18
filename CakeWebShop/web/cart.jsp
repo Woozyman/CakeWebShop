@@ -20,8 +20,8 @@
             <th>Remove</th>
         </tr>
 
-    <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
-        <input type="hidden" name="itemid" value="<%//= cake.getItemId()%>">
+      
+      
     <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
         List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
         OrderLineMapper orm = new OrderLineMapper();
@@ -34,14 +34,14 @@
                     <td><%=item.getItemName()%></td>
                     <td><%=item.getItemPrice()%></td>
                     <td><input type="number" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId) %>"></input></td>
-                    <td><input type="submit" name="edit" value="Update Cart"></td>
-                    <td><input type="submit" name="remove" value="remove"></td>
+                    <td><a href="${pageContext.servletContext.contextPath}/CartController?action=update"> Update </a></td>
+                    <td><a href="${pageContext.servletContext.contextPath}/CartController?action=remove"> Remove </a></td>
             </tr>
            
        <% } %>
        
 
-    </form>
+  
 </table>
 <a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay</a>
 <c:import url="footer.jsp"></c:import>

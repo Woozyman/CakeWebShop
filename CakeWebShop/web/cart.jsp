@@ -19,24 +19,27 @@
             <th>Remove</th>
         </tr>
 
-        <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
+    <form action="${pageContext.servletContext.contextPath}/?action=<%= request.getAttribute("name")%>&id=" method="POST">       
         <input type="hidden" name="itemid" value="<%//= cake.getItemId()%>">
-        <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
-            List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
-            for (ShopItem item : items) {%>
-        <tr>
+    <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
+        List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
+        List<OrderLine> orderLines = (List<OrderLine>) session.getAttribute("orderLines");        /*mapShopItemsToOrderLines(List<OrderLine> lineItems) fra ShopItemMapper
+        *returnerer: List<ShopItems> Som skal populere Tabellen nedenfor
+        */ 
 
-            <td><a href="#"><img src="${pageContext.servletContext.contextPath}/<%= item.getItemPicture()%>"></a></td>
-            <td><%= item.getItemName()%></td>
-            <td><%= item.getItemPrice()%></td>
-            <td><input type="number" min="1" value=""></input></td>
-            <td><input type="submit" name="edit" value="Update Cart"></td>
-            <td><input type="submit" name="remove" value="remove"></td>
-
-        </tr>
-
-        <% }%>
-
+        for(ShopItem item : items) { %>
+         
+            <tr>  
+                    <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
+                    <td><%=item.getItemName()%></td>
+                    <td><%=item.getItemPrice()%></td>
+                    <td><input type="number" min="1" value=""></input></td>
+                    <td><input type="submit" name="edit" value="Update Cart"></td>
+                    <td><input type="submit" name="remove" value="remove"></td>
+            </tr>
+           
+       <% } %>
+       
 
     </form>
 </table>

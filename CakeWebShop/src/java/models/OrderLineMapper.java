@@ -25,7 +25,10 @@ public class OrderLineMapper {
             ps.setInt(1, orderId);
             ps.setInt(2, orderLine.getShopItemId());
             ps.setInt(3, orderLine.getNumberOfItems());
-            ps.setDouble(4, orderLine.getItemPrice());
+            //Get correct price... fix it.
+            int itemId = orderLine.getShopItemId();
+            double currentPrice = getCurrentPrice(itemId);
+            ps.setDouble(4, currentPrice);
             
             ps.executeUpdate();
            
@@ -63,4 +66,11 @@ public class OrderLineMapper {
         db.closeConnection();
         return orderLines;
     }    
+    
+    public double getCurrentPrice(int shopItemId){
+        
+        ShopItemMapper sim = new ShopItemMapper();
+        
+        return sim.getItem(shopItemId).getItemPrice();
+    }
 }

@@ -75,7 +75,7 @@ public class PasswordStorage
     
     /*
     public static void main(String[] args) throws CannotPerformOperationException, InvalidHashException {
-        String hashedPwd = createHash("admin123");
+        String hashedPwd = createHash("Michael123");
         System.out.println(hashedPwd); //sha1:64000:18:FUGU2hk8mL71QQNGYR+Da5iYr/peSt3w:BRp8tzioWKQxv4Tem6/2FVfb skal i databasen
         System.out.println("length: "+hashedPwd.length());
         boolean b = verifyPassword("Michael123", hashedPwd);

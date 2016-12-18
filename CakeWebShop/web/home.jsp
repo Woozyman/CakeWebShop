@@ -37,6 +37,26 @@
         </tr>
     </form>
     <%          }
+        } else if (user.getFirstname().equals("baker")) {
+//Baker goes here
+                List<ShopItem> cakes = new ArrayList();
+                cakes = (ArrayList) session.getAttribute("cakeList");
+                out.print("<th>Baked</th>");
+out.print("<br><br>KAGER SOM SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES<br><br>");
+                for (ShopItem cake : cakes) {
+    %>
+        </tr>
+    <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
+        <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
+        <tr>
+            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture()%>"></a></td>
+            <td><%= cake.getItemName()%></td>
+            <td><%= cake.getItemPrice()%></td>
+            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
+            <td><input type="submit" name="edit" value="Register as baked"></td>
+        </tr>
+    </form>
+    <%          }
         } else {
 //almindelig User goes here
         List<ShopItem> cakes = new ArrayList();

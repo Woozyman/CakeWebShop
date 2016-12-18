@@ -13,11 +13,12 @@ create table users
     zip varchar(4) not null,					# 4 fordi i dk, grønland og færøerne bruges kun max 4 (kan udvides)
     password varchar(100) not null				# 100 fordi Hashen er lang
 );
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'admin123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '2222222', 'adressen 4b,', '2300', 'guest123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','frey@cakewebshop.com','33333333','adressen 4c','2300','pass123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Jens','Kolby','jens@cakewebshop.com','44444444','adressen 4d','2300','pass123');
-INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Michael','Hansen','michael@cakewebshop.com','55555555','adressen 4e','2300','pass123');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'sha1:64000:18:FN2lYGJGvuvCA24q03hqyZoVQAW3ogHd:HSwKPF/53VNjeBpeI/AD/zWb');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '2222222', 'adressen 4b,', '2300', 'sha1:64000:18:M/dg26HYd7T0RDEB5R/oJFx6pnWd60V5:YWtiqx7fSxuj2SSy49a9X5eP');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('baker', 'user', 'baker@cakewebshop.com', '3333333', 'adressen 4c,', '2300', 'sha1:64000:18:wAQY8vsbSP6SgeJm3B3/ckTmEmXA3ptA:9DoC+lrCKj3KHknobygZjY/a');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Frey','Clante','frey@cakewebshop.com','44444444','adressen 4d','2300','sha1:64000:18:yfNu77tAVdUMlsY5zD1b8/nw722aMIfR:3wdVtZWMV3FJA5rzSLeOy0H/');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Jens','Kolby','jens@cakewebshop.com','55555555','adressen 4e','2300','sha1:64000:18:yfNu77tAVdUMlsY5zD1b8/nw722aMIfR:3wdVtZWMV3FJA5rzSLeOy0H/');
+INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('Michael','Hansen','michael@cakewebshop.com','66666666','adressen 4f','2300','sha1:64000:18:yfNu77tAVdUMlsY5zD1b8/nw722aMIfR:3wdVtZWMV3FJA5rzSLeOy0H/');
 
 create table shopItems
 (
@@ -51,7 +52,7 @@ create table orders
     orderDeliveryDate datetime,
     orderInShoppingCart TINYINT
 );
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (3, '2016-12-10 10:15:00', NULL, '2016-12-20 12:00:00', 0);
+INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (4, '2016-12-10 10:15:00', NULL, '2016-12-20 12:00:00', 0);
 INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (3, '2016-12-11 12:05:00', NULL, '2016-12-22 12:00:00', 0);
 INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (2, NULL, NULL, NULL, 1);
 

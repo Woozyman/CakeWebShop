@@ -1,9 +1,3 @@
-<%-- 
-    Document   : upload
-    Created on : 11-Dec-2016, 20:26:19
-    Author     : freyb
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,6 +8,10 @@
     <body>
         <form method="post" action="${pageContext.servletContext.contextPath}/uploader" enctype="multipart/form-data">
             <input type ="file" name="file" value="Select Image ..." />
+            <input type="text" name="itemName" value="Name" />
+            <input type="text" name="itemDescription" value="Description" />
+            <!--<input type="text" name="itemPicture" value="" /> -->
+            <input type="text" name="itemPrice" value="Price" />
             <input type="submit" value="Upload" />
         </form>
     </body>

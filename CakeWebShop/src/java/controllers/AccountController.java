@@ -3,8 +3,6 @@
 import dataaccess.PasswordStorage;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,7 +15,6 @@ import models.Cart;
 import models.Order;
 import models.OrderLine;
 import models.OrderMapper;
-import models.ShopItem;
 import models.ShopItemMapper;
 import models.User;
 import models.UserMapper;
@@ -63,9 +60,7 @@ public class AccountController extends HttpServlet {
             boolean isAuthenticated = false;
             try {
                 isAuthenticated = um.authenticateUser(email, password);
-            } catch (PasswordStorage.CannotPerformOperationException ex) {
-                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (PasswordStorage.InvalidHashException ex) {
+            } catch (PasswordStorage.CannotPerformOperationException | PasswordStorage.InvalidHashException ex) {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (isAuthenticated) {
@@ -92,8 +87,7 @@ public class AccountController extends HttpServlet {
                     }
 
                     response.sendRedirect("home.jsp");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (IOException ex) {
                 }
             } else {
                 //User is redirected if login fails.

@@ -3,7 +3,6 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.tomcat.jni.Directory;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.FileItemFactory;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -83,11 +81,11 @@ public class UploadController extends HttpServlet {
                 String contentType = item.getContentType();
                 boolean saved = false;
 
-                for (int i = 0; i < fileTypes.length; i++) {
-                    if (contentType.equals(fileTypes[i])) {
+                for (String fileType : fileTypes) {
+                    if (contentType.equals(fileType)) {
                         File uploadDir = new File("/home/pi/ImageUpload"); //Alter to local path to test on localhost
-                        File file = File.createTempFile("img", "."+contentType.substring(6), uploadDir);                            
-                    
+                        File file = File.createTempFile("img", "."+contentType.substring(6), uploadDir);
+                        
                         item.write(file);
                         out.println("File Saved");
                         saved = true;
@@ -102,9 +100,7 @@ public class UploadController extends HttpServlet {
             }
 
         } catch (FileUploadException e) {
-            e.printStackTrace();
             out.println("upload failed: " + e.getMessage());
-            return;
         } catch (Exception e) {
             out.println("Can't save file: " + e.getMessage());
         }

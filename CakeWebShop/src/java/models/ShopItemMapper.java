@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ShopItemMapper {
 
@@ -32,7 +30,7 @@ public class ShopItemMapper {
             String query = "INSERT INTO shopItems(name, picture, price)"
                     + "VALUES(?,?,?)";
 
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, picture);
             ps.setDouble(3, price);
@@ -40,7 +38,6 @@ public class ShopItemMapper {
             ps.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -55,7 +52,7 @@ public class ShopItemMapper {
             String query = "UPDATE shopItems SET itemName=?, itemDescription=?, itemPicture=?, "
                     + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
 
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, descrip);
             ps.setString(3, pic);
@@ -66,7 +63,6 @@ public class ShopItemMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -79,17 +75,15 @@ public class ShopItemMapper {
             try {
                 String query = "SET discontinueDate=? WHERE itemid = ? ";
 
-                PreparedStatement ps = db.getConnection().prepareStatement(query);
+                PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
                 ps.setDate(1, discontinuedDate);
                 ps.setInt(2, item.getItemId());
 
                 int result = ps.executeUpdate();
 
             } catch (SQLException e) {
-                e.printStackTrace();
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 
@@ -97,13 +91,12 @@ public class ShopItemMapper {
         try {
             String query = "SET discontinueDate=null WHERE itemid = ? ";
 
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setInt(1, item.getItemId());
 
             int result = ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -114,7 +107,7 @@ public class ShopItemMapper {
                 + "WHERE itemid = ? ";
 
         try {
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
             boolean result = ps.execute(); //Returns true if result is a ResultSet and false if no result
@@ -129,7 +122,6 @@ public class ShopItemMapper {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return item;
     }
@@ -139,7 +131,7 @@ public class ShopItemMapper {
 
         try {
             String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopItems";
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 
@@ -153,7 +145,6 @@ public class ShopItemMapper {
                 try {
                     discontinued = rs.getDate("discontinuedDate").toString();
                 } catch (NullPointerException e) {
-                    e.printStackTrace();
                 } finally {
 
                 }
@@ -162,7 +153,6 @@ public class ShopItemMapper {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return shopItems;

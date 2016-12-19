@@ -2,14 +2,9 @@
 <%@page import="models.ShopItem"%>
 <%@page import="java.util.List"%>
 <%@page import="models.User"%>
-<%@page import="models.Time"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="header.jsp"></c:import>
-<% Time time = new Time();%>
-<%= "Tid lige nu: "+time.getTimeNow()+" - bestemt tid: " %>
-<%= time.getTime("2016-12-22") %>
-
     <table class="table table-striped">
         <tr>
             <th>Image</th>
@@ -39,20 +34,20 @@
     <%          }
         } else if (user.getFirstname().equals("baker")) {
 //Baker goes here
-                List<ShopItem> cakes = new ArrayList();
-                cakes = (ArrayList) session.getAttribute("cakeList");
+                List<ShopItem> bakeCakes = new ArrayList();
+                bakeCakes = (ArrayList) session.getAttribute("bakeList");
                 out.print("<th>Baked</th>");
 out.print("<br><br>KAGER SOM SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES<br><br>");
-                for (ShopItem cake : cakes) {
+                for (ShopItem bakeCake : bakeCakes) {
     %>
         </tr>
-    <form action="${pageContext.servletContext.contextPath}/RouteController?action=edit&id=<%= cake.getItemId()%>" method="POST">       
-        <input type="hidden" name="itemid" value="<%= cake.getItemId()%>">
+    <form action="${pageContext.servletContext.contextPath}/RouteController?action=baked&id=<%= bakeCake.getItemId()%>" method="POST">       
+        <input type="hidden" name="itemid" value="<%= bakeCake.getItemId()%>">
         <tr>
-            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= cake.getItemPicture()%>"></a></td>
-            <td><%= cake.getItemName()%></td>
-            <td><%= cake.getItemPrice()%></td>
-            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=cake.getItemId()%>" class="btn btn-default" role="button">Details</a>
+            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=bakeCake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= bakeCake.getItemPicture()%>"></a></td>
+            <td><%= bakeCake.getItemName()%></td>
+            <td><%= bakeCake.getItemPrice()%></td>
+            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=bakeCake.getItemId()%>" class="btn btn-default" role="button">Details</a>
             <td><input type="submit" name="edit" value="Register as baked"></td>
         </tr>
     </form>

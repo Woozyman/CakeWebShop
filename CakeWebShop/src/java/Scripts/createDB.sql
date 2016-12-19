@@ -8,10 +8,10 @@ create table users
     firstname varchar(30) not null,                             # Fornavn
     lastname varchar(30) not null,                              # Efternavn
     email  varchar(50) not null,                                # E-mail addresse
-    phone varchar(8) not null,					# tlf.nr. i dk er 8 (kan udvides)
+    phone varchar(8) not null,									# tlf.nr. i dk er 8 (kan udvides)
     address varchar(50) not null,                               # Adresse
-    zip varchar(4) not null,					# 4 fordi i dk, grønland og færøerne bruges kun max 4 (kan udvides)
-    password varchar(100) not null				# 100 fordi Hashen er lang
+    zip varchar(4) not null,									# 4 fordi i dk, grønland og færøerne bruges kun max 4 (kan udvides)
+    password varchar(100) not null								# 100 fordi Hashen er lang
 );
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('admin', 'istrator', 'admin@cakewebshop.com', '11111111', 'adressen 4a,', '2300', 'sha1:64000:18:FN2lYGJGvuvCA24q03hqyZoVQAW3ogHd:HSwKPF/53VNjeBpeI/AD/zWb');
 INSERT INTO users (firstname, lastname, email, phone, address, zip, password) VALUES ('guest', 'user', 'guest@cakewebshop.com', '2222222', 'adressen 4b,', '2300', 'sha1:64000:18:M/dg26HYd7T0RDEB5R/oJFx6pnWd60V5:YWtiqx7fSxuj2SSy49a9X5eP');
@@ -45,7 +45,7 @@ INSERT INTO shopItems (itemName, itemDescription, itemPicture, itemPrice) VALUES
 create table orders
 (
     orderid int(5) primary key auto_increment,
-    userid int(5),								# referere til users(userid)
+    userid int(5),												# referere til users(userid)
     FOREIGN KEY (userid) REFERENCES users(userid),
     orderDate datetime,
     orderCakeCompletedDate datetime,
@@ -61,5 +61,5 @@ create table orderLines
     shopItemid int(5),
     FOREIGN KEY (shopItemid) REFERENCES shopItems(itemid),
     numberOfItems int(3),
-    itemPrice double(5,2) not null				# ikke foreign key af historiske orsager.
+    itemPrice double(5,2) not null								# ikke foreign key af historiske orsager.
 );

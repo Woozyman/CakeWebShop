@@ -24,5 +24,6 @@ public class Time {
 /*
 <%@page import="models.Time"%>
 <% Time time = new Time();%>
-<%= time.getTimeNow() %>
+<%= "Tid lige nu: "+time.getTimeNow()+" - bestemt tid: " %>
+<%= time.getTime("2016-12-22") %>
 */

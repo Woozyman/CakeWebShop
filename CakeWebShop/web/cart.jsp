@@ -32,7 +32,15 @@
         int orderId = (int) session.getAttribute("orderId");
         double total = 0;
         for (ShopItem item : items) {
-            total = total + (orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice());
+           
+            if(user == null){
+                // Guest User Stores all info about cart in the session object.
+                total = total + (carthelper.getItemCountFromSessionCart(item.getItemId(), session) * item.getItemPrice());
+            }else{
+                total = total + (orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice());
+            }
+        
+            
     %>
     
     <form  method="POST">  
@@ -41,11 +49,14 @@
             <td><%=item.getItemName()%></td>
             <% if(user != null) {%>
             <td><input type="number" name="numOfItems" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId)%>"></input></td>
-            <% }else{ %>
-            <td><input type="number" name="numOfItems" min="1" value="<%= carthelper.getItemCountFromSessionCart(item.getItemId(), session) %>"></input></td>
-            <%}%>
             <td><%=item.getItemPrice()%></td>
             <td><%=orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice()%></td>
+            <% }else{ %>
+            <td><input type="number" name="numOfItems" min="1" value="<%= carthelper.getItemCountFromSessionCart(item.getItemId(), session) %>"></input></td>
+            <td><%=item.getItemPrice()%></td>
+            <td><%=carthelper.getItemCountFromSessionCart(item.getItemId(), session) * item.getItemPrice() %></td>
+            <%}%>
+           
             <td><button type="submit" formaction="${pageContext.servletContext.contextPath}/CartController?action=update&id=<%= item.getItemId() %>">Update</button></td>
             <td><button type="submit" formaction="${pageContext.servletContext.contextPath}/CartController?action=remove&id=<%= item.getItemId() %>">Remove</button></td>
         </tr>

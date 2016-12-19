@@ -34,24 +34,8 @@
     <%          }
         } else if (user.getFirstname().equals("baker")) {
 //Baker goes here
-                List<ShopItem> bakeCakes = new ArrayList();
-                bakeCakes = (ArrayList) session.getAttribute("bakeList");
                 out.print("<th>Baked</th>");
-out.print("<br><br>KAGER SOM SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES - SKAL LAVES<br><br>");
-                for (ShopItem bakeCake : bakeCakes) {
-    %>
-        </tr>
-    <form action="${pageContext.servletContext.contextPath}/RouteController?action=baked&id=<%= bakeCake.getItemId()%>" method="POST">       
-        <input type="hidden" name="itemid" value="<%= bakeCake.getItemId()%>">
-        <tr>
-            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=bakeCake.getItemId()%>"><img width="150" src="${pageContext.servletContext.contextPath}/<%= bakeCake.getItemPicture()%>"></a></td>
-            <td><%= bakeCake.getItemName()%></td>
-            <td><%= bakeCake.getItemPrice()%></td>
-            <td><a href="${pageContext.servletContext.contextPath}/ShopItemController?action=details&id=<%=bakeCake.getItemId()%>" class="btn btn-default" role="button">Details</a>
-            <td><input type="submit" name="edit" value="Register as baked"></td>
-        </tr>
-    </form>
-    <%          }
+out.print("<br><br>Her skal listen af alle de ubagte kager vises med en knap hvor man kan markere dem som bagt.<br>kan ikke testes før der kommer noget i databasen.<br><br>");
         } else {
 //almindelig User goes here
         List<ShopItem> cakes = new ArrayList();

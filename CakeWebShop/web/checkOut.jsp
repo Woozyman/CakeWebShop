@@ -1,3 +1,4 @@
+<%@page import="models.Order"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="models.ShopItem"%>
 <%@page import="java.util.List"%>
@@ -7,12 +8,13 @@
 <c:import url="header.jsp"></c:import>
 
 <%if (session.getAttribute("userObj") != null) {
-    User user = (User) session.getAttribute("userObj");%>
+    User user = (User) session.getAttribute("userObj");
+    Order order = (Order) session.getAttribute("order"); %>
 <div class="container">
     <h1>CheckOut/payment</h1><br>
     <p>Ammount: (Beløbet som skal trækkes kommer her)</p>
     <p>heraf moms (25%): (beløb ovenfor /0.2 )</p>
-    <form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath}/AccountController?action=pay&orderid=<%= session.getAttribute("order").getOrderId()%>">
+    <form class="form-horizontal" method="post" action="${pageContext.servletContext.contextPath}/AccountController?action=pay&orderid=<%= order.getOrderId()%>">
         <fieldset>
             <legend>Payment <img width="300" src="http://rk-retail.dk/wp-content/uploads/2015/12/kreditkort_logo_danmark.jpg"/></legend>
             <div class="form-group">

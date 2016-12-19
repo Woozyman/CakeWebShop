@@ -1,3 +1,4 @@
+<%@page import="dataaccess.CartHelper"%>
 <%@page import="models.OrderLineMapper"%>
 <%@page import="models.OrderLine"%>
 <%@page import="models.Cart"%>
@@ -24,6 +25,8 @@
 
 
     <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
+        User user = (User) session.getAttribute("userObj");
+        CartHelper carthelper = new CartHelper();
         List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
         OrderLineMapper orm = new OrderLineMapper();
         int orderId = (int) session.getAttribute("orderId");
@@ -36,7 +39,11 @@
         <tr>  
             <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
             <td><%=item.getItemName()%></td>
+            <% if(user != null) {%>
             <td><input type="number" name="numOfItems" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId)%>"></input></td>
+            <% }else{ %>
+            <td><input type="number" name="numOfItems" min="1" value="<%= carthelper.getItemCountFromSessionCart(item.getItemId(), session) %>"></input></td>
+            <%}%>
             <td><%=item.getItemPrice()%></td>
             <td><%=orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice()%></td>
             <td><button type="submit" formaction="${pageContext.servletContext.contextPath}/CartController?action=update&id=<%= item.getItemId() %>">Update</button></td>
@@ -49,7 +56,7 @@
     <td></td>
     <td>Total all:</td>
     <td><%=total%></td>
-    <td><a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay Order</a></td>
+    <td><a href="${pageContext.servletContext.contextPath}/CartController?action=checkout" class="btn btn-success" role="button">Pay Order</a></td>
     <td></td>
 
 

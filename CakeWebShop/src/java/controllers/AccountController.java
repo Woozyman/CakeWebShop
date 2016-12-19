@@ -108,6 +108,7 @@ public class AccountController extends HttpServlet {
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
             try {
                 um.createUser(user);
+                //Implement Mapping of order in cart when user registers with items in it... orderlines must be updated with userid and orderid.
             } catch (PasswordStorage.CannotPerformOperationException ex) {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }

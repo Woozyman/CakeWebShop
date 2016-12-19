@@ -70,12 +70,16 @@ public class OrderLineMapper {
         return sim.getItem(shopItemId).getItemPrice();
     }
 
-    public void removeOrderLine(int lineId) {
+    public void removeOrderLine(int itemId, int orderId) {
 
-        String query = "DELETE from orderLines WHERE orderLineid = ?";
+        String query = "DELETE from orderLines WHERE shopItemid = ? and orderid = ?";
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, itemId);
+            ps.setInt(2, orderId);
+            
+            ps.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,10 +111,10 @@ public class OrderLineMapper {
     public void updateOrderLine(int itemId, int numOfItems,int orderId) {
         
         String query = "UPDATE orderlines SET numberOfItems = ? WHERE shopItemid = ?";
-        int itemsToAdd = getItemCount(itemId, orderId);
+     
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
-            ps.setInt(1, numOfItems + itemsToAdd);
+            ps.setInt(1, numOfItems);
             ps.setInt(2, itemId);
             
             ps.executeUpdate();

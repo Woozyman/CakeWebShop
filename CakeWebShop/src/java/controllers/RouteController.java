@@ -32,14 +32,14 @@ public class RouteController extends HttpServlet {
         String action = request.getParameter("action");
         String page = null;       
         HttpSession session = request.getSession();
+        ShopItemMapper sim = new ShopItemMapper();
         
         if (session.getAttribute("firstVisit") == null) {
             session.setAttribute("firstVisit", 1);
         }       
        
         if (session.getAttribute("firstVisit").equals(1)) {
-            session.setAttribute("firstVisit", 0); // make sure this only runs once/session
-            ShopItemMapper sim = new ShopItemMapper();
+            session.setAttribute("firstVisit", 0); // make sure this only runs once/session           
             List<ShopItem> items = sim.getAllItems();
             
             //New Empty Cart.   
@@ -54,7 +54,7 @@ public class RouteController extends HttpServlet {
         }
         
         if (action.equals("home")) {
-            page = "/home.jsp";
+            page = "/home.jsp";          
             request.getRequestDispatcher(page).forward(request, response);
         }
 

@@ -21,37 +21,38 @@
             <th>Remove</th>
         </tr>
 
-      
-      
+
+
     <% /* Her skal logikken hente linierne fra orders hvor "orderInShoppingCart" == 1 */
         List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
         OrderLineMapper orm = new OrderLineMapper();
         int orderId = (int) session.getAttribute("orderId");
         double total = 0;
-        for(ShopItem item : items) { 
-            total = total + (orm.getItemCount(item.getItemId(), orderId)*item.getItemPrice());
+        for (ShopItem item : items) {
+            total = total + (orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice());
     %>
-         
-            <tr>  
-                    <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
-                    <td><%=item.getItemName()%></td>
-                    <td><input type="number" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId) %>"></input></td>
-                    <td><%=item.getItemPrice()%></td>
-                    <td><%=orm.getItemCount(item.getItemId(), orderId)*item.getItemPrice()%></td>
-                    <td><a href="${pageContext.servletContext.contextPath}/CartController?action=update"> Update </a></td>
-                    <td><a href="${pageContext.servletContext.contextPath}/CartController?action=remove"> Remove </a></td>
-            </tr>
-           
-       <% } %>
-       <td></td>
-       <td></td>
-       <td></td>
-       <td>Total all:</td>
-       <td><%=total%></td>
-       <td><a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay Order</a></td>
-       <td></td>
-       
-  
+    
+    <form  method="POST">  
+        <tr>  
+            <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
+            <td><%=item.getItemName()%></td>
+            <td><input type="number" name="numOfItems" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId)%>"></input></td>
+            <td><%=item.getItemPrice()%></td>
+            <td><%=orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice()%></td>
+            <td><button type="submit" formaction="${pageContext.servletContext.contextPath}/CartController?action=update&id=<%= item.getItemId() %>">Update</button></td>
+            <td><button type="submit" formaction="${pageContext.servletContext.contextPath}/CartController?action=remove&id=<%= item.getItemId() %>">Remove</button></td>
+        </tr>
+    </form>
+    <% }%>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>Total all:</td>
+    <td><%=total%></td>
+    <td><a href="${pageContext.servletContext.contextPath}/checkOut.jsp" class="btn btn-success" role="button">Pay Order</a></td>
+    <td></td>
+
+
 </table>
 
 <c:import url="footer.jsp"></c:import>

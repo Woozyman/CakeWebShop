@@ -35,12 +35,12 @@ public class CartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-               
+
         HttpSession session = request.getSession();
         ShopItemMapper sim = new ShopItemMapper();
 
         if (action.equals("showCart")) {
-
+            
             Order order = (Order) session.getAttribute("order");
             session.setAttribute("orderId", order.getOrderId());
             Cart cart = (Cart) session.getAttribute("cart");
@@ -67,10 +67,12 @@ public class CartController extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        int id = Integer.parseInt(request.getParameter("id"));
         HttpSession session = request.getSession();
         UserMapper um = new UserMapper();
         OrderMapper orm = new OrderMapper();
         OrderLineMapper lineMapper = new OrderLineMapper();
+        ShopItemMapper sim = new ShopItemMapper();
         Order order = null;
         OrderLine orderLine = null;
         Cart cart = (Cart) session.getAttribute("cart");
@@ -105,7 +107,7 @@ public class CartController extends HttpServlet {
                 }
             }
             orderId = order.getOrderId();
-                //if item is already in cart. add it to existing orderline
+            //if item is already in cart. add it to existing orderline
             if (lineMapper.itemAlreadyOnOrder(itemId)) {
                 lineMapper.updateOrderLine(itemId, numOfItems, orderId);
             } else {
@@ -117,9 +119,18 @@ public class CartController extends HttpServlet {
 
             session.setAttribute("cart", cart);
 
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
+           // request.getRequestDispatcher("/home.jsp").forward(request, response);
+        } else if (action.equals("update")) {
+            order = (Order) session.getAttribute("order");
+            int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
+            lineMapper.updateOrderLine(id, numOfItems, order.getOrderId());
+        }else if(action.equals("remove")){
+             order = (Order) session.getAttribute("order");
+             lineMapper.removeOrderLine(id, order.getOrderId());
+             cart = sim.getCart(order.getOrderId());
+             session.setAttribute("cart", cart);
         }
-
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 
     /**

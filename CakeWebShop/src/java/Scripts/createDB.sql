@@ -52,9 +52,6 @@ create table orders
     orderDeliveryDate datetime,
     orderInShoppingCart TINYINT
 );
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (4, '2016-12-10 10:15:00', NULL, '2016-12-20 12:00:00', 0);
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (3, '2016-12-11 12:05:00', NULL, '2016-12-22 12:00:00', 0);
-INSERT INTO orders (userid, orderDate, orderCakeCompletedDate, orderDeliveryDate, orderInShoppingCart) VALUES (2, NULL, NULL, NULL, 1);
 
 create table orderLines
 (
@@ -66,6 +63,3 @@ create table orderLines
     numberOfItems int(3),
     itemPrice double(5,2) not null				# ikke foreign key af historiske orsager.
 );
-INSERT INTO orderLines (orderid, shopItemid, numberOfItems, itemPrice) VALUES (1, 1, 2, 149.5);
-INSERT INTO orderLines (orderid, shopItemid, numberOfItems, itemPrice) VALUES (1, 2, 5, 49.5);
-INSERT INTO orderLines (orderid, shopItemid, numberOfItems, itemPrice) VALUES (2, 2, 10, 49.5);

@@ -105,7 +105,7 @@ public class CartController extends HttpServlet {
                 }
             }
             orderId = order.getOrderId();
-
+                //if item is already in cart. add it to existing orderline
             if (lineMapper.itemAlreadyOnOrder(itemId)) {
                 lineMapper.updateOrderLine(itemId, numOfItems, orderId);
             } else {

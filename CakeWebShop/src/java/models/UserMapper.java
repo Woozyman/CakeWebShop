@@ -27,8 +27,7 @@ public class UserMapper {
             String phone = user.getPhone();
             String address = user.getAddress();
             String zip = user.getZip();
-            String password = user.getPassword();
-            //password = PasswordStorage.createHash(password);
+            String password = PasswordStorage.createHash(user.getPassword());
 
             String query = "INSERT INTO users (firstname, lastname, email, phone, address, zip, password)"
                     + "VALUES (?,?,?,?,?,?,?)";

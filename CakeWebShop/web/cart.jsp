@@ -71,6 +71,6 @@
     <td></td>
 
 
-</table>
+    </table><br><br><br>
 
 <c:import url="footer.jsp"></c:import>

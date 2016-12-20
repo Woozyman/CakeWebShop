@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,7 @@ public class CartController extends HttpServlet {
 
         HttpSession session = request.getSession();
         ShopItemMapper sim = new ShopItemMapper();
-
+        User user = (User) session.getAttribute("userObj");
         if (action.equals("showCart")) {
 
             Order order = (Order) session.getAttribute("order");
@@ -46,16 +47,28 @@ public class CartController extends HttpServlet {
             Cart cart = (Cart) session.getAttribute("cart");
             List<OrderLine> lineItems = cart.getOrderLines();
             session.setAttribute("orderLines", lineItems);
-            List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
-            session.setAttribute("shopItems", shopItems);
+            if (user != null) {
+                 List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
+                 session.setAttribute("shopItems", shopItems);
+            }else{
+                List<ShopItem> shopItems = new ArrayList<ShopItem>();
+                 session.setAttribute("shopItems", shopItems);
+            }
+           
+            
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
 
-        } else if (action.equals("checkout")) {
-            User user = (User) session.getAttribute("userObj");
+        } else if (action.equals("checkout")) {            
             if (user != null) {
                 request.getRequestDispatcher("/checkOut.jsp").forward(request, response);
-            } else {                
-                request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
+            } else {
+                //If registered user redirect to login!.
+                //Else...
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('You need to be a registred user\\nPlease login or register');");
+                out.println("</script>");
+                request.getRequestDispatcher("/formRegistration.jsp").include(request, response);
             }
         }
 

@@ -5,7 +5,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="header.jsp"></c:import>
-        
+    
+<p></p>
     <form class="form-horizontal" action="${pageContext.servletContext.contextPath}/AccountController?action=register" method="POST">
     <fieldset>
         <legend>Email and password</legend>

@@ -11,7 +11,7 @@ public class DB_local {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/cakeWebShop";
     private static final String USER = "root";
-    private static final String PASSWORD = "1adgheh2Om1KO";
+    private static final String PASSWORD = "root";
 
     private static Connection conn = null;
 

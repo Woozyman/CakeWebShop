@@ -50,11 +50,11 @@ public class CartController extends HttpServlet {
             session.setAttribute("shopItems", shopItems);
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
 
-        }else if(action.equals("checkout")){
+        } else if (action.equals("checkout")) {
             User user = (User) session.getAttribute("userObj");
-            if(user != null){
+            if (user != null) {
                 request.getRequestDispatcher("/checkOut.jsp").forward(request, response);
-            }else{
+            } else {
                 //If registered user redirect to login!.
                 //Else...
                 request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
@@ -128,7 +128,7 @@ public class CartController extends HttpServlet {
                     lineMapper.addOrderLine(orderLine);
                     cart.addItemToCart(orderLine);
                 }
-            }else{
+            } else {
                 orderLine = new OrderLine(0, itemId, numOfItems, currentPrice);
                 cart.addItemToCart(orderLine);
             }
@@ -139,32 +139,42 @@ public class CartController extends HttpServlet {
         } else if (action.equals("update")) {
             order = (Order) session.getAttribute("order");
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
-            if(user != null){
+            if (user != null) {
                 lineMapper.updateOrderLine(id, numOfItems, order.getOrderId());
-            }
-            else{
+            } else {
                 List<OrderLine> lines = (List<OrderLine>) session.getAttribute("orderLines");
-                
-                for(OrderLine lineItem : lines){
-                    if(lineItem.getShopItemId() == id){
+
+                for (OrderLine lineItem : lines) {
+                    if (lineItem.getShopItemId() == id) {
                         lineItem.setNumberOfItems(numOfItems);
                         session.setAttribute("orderLines", lines);
                         break;
                     }
                 }
-            }           
-            
+            }
+
         } else if (action.equals("remove")) {
             order = (Order) session.getAttribute("order");
-            lineMapper.removeOrderLine(id, order.getOrderId());
+            if (user != null) {
+                lineMapper.removeOrderLine(id, order.getOrderId());
+                //Update cart on session
+                cart = sim.getCart(order.getOrderId());
+                 session.setAttribute("cart", cart);
+            } else {
+                List<OrderLine> orderLines = (List<OrderLine>) session.getAttribute("orderLines");
+                for (OrderLine lineItem : orderLines) {
+                    if (lineItem.getShopItemId() == id) {
+                        orderLines.remove(lineItem);
+                        break;
+                    }
+                }
+                session.setAttribute("orderLines", orderLines);
+            }
 
-            //Update cart on session
-            cart = sim.getCart(order.getOrderId());
-            session.setAttribute("cart", cart);
+           
         }
         request.getRequestDispatcher("/home.jsp").forward(request, response);
-    }    
-   
+    }
 
     /**
      * Returns a short description of the servlet.

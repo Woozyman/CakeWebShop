@@ -2,6 +2,7 @@
 <%@page import="models.ShopItem"%>
 <%@page import="java.util.List"%>
 <%@page import="models.User"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="header.jsp"></c:import>
@@ -28,7 +29,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="passwordInput2">Repeat Password</label>
             <div class="col-sm-6">
-                <input type="password" class="form-control" id="passwordInput" placeholder="Reenter password, make sure it´s the same!" title="reenter password" 
+                <input type="password" class="form-control" id="passwordInput" placeholder="Reenter password, make sure it's the same!" title="reenter password" 
                        name="Password2" required="required" maxlength="40"/>
             </div>
         </div>

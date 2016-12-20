@@ -47,18 +47,13 @@ public class CartController extends HttpServlet {
             Cart cart = (Cart) session.getAttribute("cart");
             List<OrderLine> lineItems = cart.getOrderLines();
             session.setAttribute("orderLines", lineItems);
-            if (user != null) {
-                 List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
-                 session.setAttribute("shopItems", shopItems);
-            }else{
-                List<ShopItem> shopItems = new ArrayList<ShopItem>();
-                 session.setAttribute("shopItems", shopItems);
-            }
-           
-            
+
+            List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(lineItems);
+            session.setAttribute("shopItems", shopItems);
+
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
 
-        } else if (action.equals("checkout")) {            
+        } else if (action.equals("checkout")) {
             if (user != null) {
                 request.getRequestDispatcher("/checkOut.jsp").forward(request, response);
             } else {
@@ -68,6 +63,7 @@ public class CartController extends HttpServlet {
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('You need to be a registred user\\nPlease login or register');");
                 out.println("</script>");
+                response.addHeader("Content-Type", "text/html; charset=UTF-8");
                 request.getRequestDispatcher("/formRegistration.jsp").include(request, response);
             }
         }
@@ -179,16 +175,16 @@ public class CartController extends HttpServlet {
                         break;
                     }
                 }
-                Cart updatedCart = new Cart(orderLines);  
+                Cart updatedCart = new Cart(orderLines);
                 session.setAttribute("cart", cart);
-                session.setAttribute("orderLines", orderLines);               
-                
+                session.setAttribute("orderLines", orderLines);
+
             }
 
         }
 
         if (action.equals("remove")) {
-           
+
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/home.jsp").forward(request, response);

@@ -11,7 +11,7 @@
             <input type="text" name="itemName" value="Name" />
             <input type="text" name="itemDescription" value="Description" />
             <!--<input type="text" name="itemPicture" value="" /> -->
-            <input type="text" name="itemPrice" value="Price" />
+            <input type="text" name="itemPrice" value="000.00" />
             <input type="submit" value="Upload" />
         </form>
     </body>

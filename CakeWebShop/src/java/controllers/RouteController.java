@@ -30,7 +30,6 @@ public class RouteController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        String page = null;       
         HttpSession session = request.getSession();
         ShopItemMapper sim = new ShopItemMapper();
         
@@ -53,9 +52,8 @@ public class RouteController extends HttpServlet {
             request.getRequestDispatcher("/home.jsp").include(request, response);
         }
         
-        if (action.equals("home")) {
-            page = "/home.jsp";          
-            request.getRequestDispatcher(page).forward(request, response);
+        if (action.equals("home")) {          
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
 
        response.sendRedirect("/home.jsp");

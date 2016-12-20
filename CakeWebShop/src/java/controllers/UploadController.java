@@ -61,8 +61,8 @@ public class UploadController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String itemName = request.getParameter("itemName");
         String itemDescription = request.getParameter("itemDescription");
-        double itemPrice = Double.parseDouble(request.getParameter("itemPrice"));
-                        
+        String price = (String) request.getAttribute("itemPrice");
+        double itemPrice = Double.parseDouble(price);
 
         if (!ServletFileUpload.isMultipartContent(request)) {
             out.println("Nothing Uploaded");

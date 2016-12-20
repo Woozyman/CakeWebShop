@@ -176,7 +176,11 @@ public class CartController extends HttpServlet {
                     }
                 }
                 Cart updatedCart = new Cart(orderLines);
-                session.setAttribute("cart", cart);
+                session.setAttribute("cart", updatedCart);
+
+                List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(orderLines);
+                session.setAttribute("shopItems", shopItems);
+                
                 session.setAttribute("orderLines", orderLines);
 
             }

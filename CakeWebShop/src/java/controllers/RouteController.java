@@ -49,7 +49,7 @@ public class RouteController extends HttpServlet {
             session.setAttribute("cakeList", items);
             session.setAttribute("cart", cart);
 
-            request.getRequestDispatcher("/home.jsp").include(request, response);
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
         
         if (action.equals("home")) {          

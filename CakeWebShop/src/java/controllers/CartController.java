@@ -54,9 +54,7 @@ public class CartController extends HttpServlet {
             User user = (User) session.getAttribute("userObj");
             if (user != null) {
                 request.getRequestDispatcher("/checkOut.jsp").forward(request, response);
-            } else {
-                //If registered user redirect to login!.
-                //Else...
+            } else {                
                 request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
             }
         }
@@ -159,7 +157,7 @@ public class CartController extends HttpServlet {
                 lineMapper.removeOrderLine(id, order.getOrderId());
                 //Update cart on session
                 cart = sim.getCart(order.getOrderId());
-                 session.setAttribute("cart", cart);
+                session.setAttribute("cart", cart);
             } else {
                 List<OrderLine> orderLines = (List<OrderLine>) session.getAttribute("orderLines");
                 for (OrderLine lineItem : orderLines) {
@@ -168,12 +166,21 @@ public class CartController extends HttpServlet {
                         break;
                     }
                 }
-                session.setAttribute("orderLines", orderLines);
+                Cart updatedCart = new Cart(orderLines);  
+                session.setAttribute("cart", cart);
+                session.setAttribute("orderLines", orderLines);               
+                
             }
 
-           
         }
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+
+        if (action.equals("remove")) {
+           
+            request.getRequestDispatcher("/cart.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
+        }
+
     }
 
     /**

@@ -1,6 +1,6 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="models.User" %> <!-- Remember page directive to Use types in jsp. -->
 <%@page import="models.Cart" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <html>
     <head>

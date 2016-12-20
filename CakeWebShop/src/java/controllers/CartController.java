@@ -61,6 +61,7 @@ public class CartController extends HttpServlet {
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('You need to be a registred user\\nPlease login or register');");
                 out.println("</script>");
+                response.addHeader("Content-Type", "text/html; charset=UTF-8");
                 request.getRequestDispatcher("/formRegistration.jsp").include(request, response);
             }
         }

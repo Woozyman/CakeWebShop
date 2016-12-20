@@ -28,17 +28,25 @@ public class ShopItemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        ShopItem item = new ShopItem();
         String action = request.getParameter("action");
         String page = null;
-        int id = Integer.parseInt(request.getParameter("id"));
-        ShopItemMapper sim = new ShopItemMapper();
-        ShopItem item = sim.getItem(id);
-        
-        if (action.equals("details")) {
-            request.setAttribute("item", item);
-            page = "cakeDetails.jsp";
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ShopItemMapper sim = new ShopItemMapper();
+            item = sim.getItem(id);
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } finally {
+            if (action.equals("details")) {
+                request.setAttribute("item", item);
+                page = "cakeDetails.jsp";
+            } else if (action.equals("create")) {
+                page = "upload.jsp";
+            }
         }
+
         request.getRequestDispatcher(page).forward(request, response);
     }
 
@@ -98,7 +106,7 @@ public class ShopItemController extends HttpServlet {
 
     }
 
-   @Override
+    @Override
     public String getServletInfo() {
         return "Short description";
     }

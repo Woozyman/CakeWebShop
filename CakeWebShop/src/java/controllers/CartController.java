@@ -183,7 +183,7 @@ public class CartController extends HttpServlet {
 
         }
 
-        if (action.equals("remove")) {
+        if (action.equals("remove") || action.equals("update")) {
 
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
         } else {

@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.ShopItem;
+import models.ShopItemMapper;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.FileItemFactory;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -57,6 +59,10 @@ public class UploadController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
+        String itemName = request.getParameter("itemName");
+        String itemDescription = request.getParameter("itemDescription");
+        double itemPrice = Double.parseDouble(request.getParameter("itemPrice"));
+                        
 
         if (!ServletFileUpload.isMultipartContent(request)) {
             out.println("Nothing Uploaded");
@@ -83,12 +89,23 @@ public class UploadController extends HttpServlet {
 
                 for (String fileType : fileTypes) {
                     if (contentType.equals(fileType)) {
-                        File uploadDir = new File("/home/pi/ImageUpload"); //Alter to local path to test on localhost
+                        File uploadDir = new File("/images"); //Alter to local path to test on localhost
                         File file = File.createTempFile("img", "."+contentType.substring(6), uploadDir);
                         
                         item.write(file);
+                     
                         out.println("File Saved");
                         saved = true;
+                        
+                        ShopItem newItem = new ShopItem();
+                        newItem.setItemName(itemName);
+                        newItem.setItemDescription(itemDescription);
+                        newItem.setItemPrice(itemPrice);
+                        newItem.setItemPicture(file.getAbsolutePath());
+                                
+                        ShopItemMapper sim = new ShopItemMapper();
+                        sim.addItem(newItem);
+                        
                         break;
                     }
                 }

@@ -57,7 +57,11 @@ public class CartController extends HttpServlet {
             } else {
                 //If registered user redirect to login!.
                 //Else...
-                request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
+                PrintWriter out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('You need to be a registred user\\nPlease login or register');");
+                out.println("</script>");
+                request.getRequestDispatcher("/formRegistration.jsp").include(request, response);
             }
         }
 

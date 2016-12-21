@@ -21,7 +21,9 @@
                         User user = (User) session.getAttribute("userObj");
                         if (user.getFirstname().equals("admin")) {
         // admin goes here%>        
-                <a type="button" href="${pageContext.servletContext.contextPath}/ShopItemController?action=create" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-plus"></span> Create New Shop Item</a>
+                <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/ShopItemController?action=create" method="POST">
+                    <button class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-plus"></span> Create New Shop Item</button>
+                </form>
                 <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
                     <div class="form-group">
                         <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.println(user.getFirstname());%></button>

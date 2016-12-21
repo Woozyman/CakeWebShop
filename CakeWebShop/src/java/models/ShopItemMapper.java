@@ -24,20 +24,22 @@ public class ShopItemMapper {
     public void addItem(ShopItem item) {
         try {
             String name = item.getItemName();
-            String picture = item.getItemPicture();
+            String desc = item.getItemDescription();
+            String pic = item.getItemPicture();
             double price = item.getItemPrice();
 
-            String query = "INSERT INTO shopItems(name, picture, price)"
-                    + "VALUES(?,?,?)";
+            String query = "INSERT INTO shopItems(itemName, itemDescription, itemPrice, itemPicture) VALUES(?,?,?,?)";
 
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
             ps.setString(1, name);
-            ps.setString(2, picture);
+            ps.setString(2, desc);
             ps.setDouble(3, price);
+            ps.setString(4, pic);
 
             ps.execute();
 
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

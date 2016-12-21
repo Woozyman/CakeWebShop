@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,10 +60,11 @@ public class UploadController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String itemName = request.getParameter("itemName");
-        String itemDescription = request.getParameter("itemDescription");
-        String price = (String) request.getAttribute("itemPrice");
-        double itemPrice = Double.parseDouble(price);
+
+        //form fields
+        String itemName = "";
+        String itemDesc = "";
+        String itemPrice = "";
 
         if (!ServletFileUpload.isMultipartContent(request)) {
             out.println("Nothing Uploaded");
@@ -78,38 +80,49 @@ public class UploadController extends HttpServlet {
             List<FileItem> files = new ArrayList();
 
             for (List<FileItem> list : fileList) {
-                files.add(list.get(0));
+                if (list.get(0).getFieldName().equals("file")) {
+                    files.add(list.get(0));
+                } else if (list.get(0).getFieldName().equals("itemName")) {
+                    itemName = list.get(0).getString();
+                } else if (list.get(0).getFieldName().equals("itemDesc")) {
+                    itemDesc = list.get(0).getString();
+                } else if (list.get(0).getFieldName().equals("itemPrice")) {
+                    itemPrice = list.get(0).getString();
+                }
             }
             //Accepted File Types
             String[] fileTypes = new String[]{"image/jpeg", "image/jpg", "image/png"};
-
+                      
+            // Upload path // Change to local path of WebApp
+            String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
             for (FileItem item : files) {
                 String contentType = item.getContentType();
                 boolean saved = false;
 
                 for (String fileType : fileTypes) {
                     if (contentType.equals(fileType)) {
-                        File uploadDir = new File("/images"); //Alter to local path to test on localhost
-                        File file = File.createTempFile("img", "."+contentType.substring(6), uploadDir);
+                        File uploadDir = new File(Dir); //Alter to local path to test on localhost
+                        File file = File.createTempFile("img", "." + contentType.substring(6), uploadDir);
                         
+                      
+                       
                         item.write(file);
-                     
                         out.println("File Saved");
                         saved = true;
-                        
+
                         ShopItem newItem = new ShopItem();
                         newItem.setItemName(itemName);
-                        newItem.setItemDescription(itemDescription);
-                        newItem.setItemPrice(itemPrice);
-                        newItem.setItemPicture(file.getAbsolutePath());
-                                
+                        newItem.setItemDescription(itemDesc);
+                        newItem.setItemPrice(Double.parseDouble(itemPrice));
+                        newItem.setItemPicture("images/"+ file.getName());
+
                         ShopItemMapper sim = new ShopItemMapper();
                         sim.addItem(newItem);
-                        
+
                         break;
                     }
                 }
-                
+
                 if (!saved) {
                     out.println("Only .png and .jpg files are supported\n You Selected: " + contentType);
                 }

@@ -106,7 +106,7 @@ public class UploadController extends HttpServlet {
                 }
             } 
             Dir = Dir+"web/images";
-            out.println(Dir);
+            //out.println(Dir);
             for (FileItem item : files) {
                 String contentType = item.getContentType();
                 boolean saved = false;
@@ -127,7 +127,7 @@ public class UploadController extends HttpServlet {
                         newItem.setItemDescription(itemDesc);
                         newItem.setItemPrice(Double.parseDouble(itemPrice));
                         newItem.setItemPicture("images/"+ file.getName());
-                        out.println(Dir + newItem.getItemPicture());
+                        //out.println(Dir + newItem.getItemPicture());
                         ShopItemMapper sim = new ShopItemMapper();
                         sim.addItem(newItem);
 

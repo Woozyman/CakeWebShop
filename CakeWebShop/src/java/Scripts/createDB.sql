@@ -25,7 +25,7 @@ create table shopItems
     itemid int(5) primary key auto_increment,
     itemName varchar(150) not null,
     itemDescription varchar(150) not null,
-    itemPicture varchar(50),
+    itemPicture varchar(150),
     itemPrice double(5,2) not null,
     discontinuedDate datetime
 );

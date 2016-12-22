@@ -86,33 +86,37 @@ public class AccountController extends HttpServlet {
                         if (currenCart == null) {
                             session.setAttribute("cart", oldCart);
                         } else {
-                            currenCart = mergeCarts(oldCart, currenCart, unPaidOrderId);
-                            lineMapper.addMultipleOrderLines(currenCart.getOrderLines());
+                            currenCart = mergeCarts(currenCart, unPaidOrderId);
+                           // lineMapper.addMultipleOrderLines(currenCart.getOrderLines());
                             session.setAttribute("cart", currenCart);
                         }
                     } else {
                         lineMapper = new OrderLineMapper();
                         Cart currenCart = (Cart) session.getAttribute("cart");
                         Order newOrder = new Order(um.getUserId(email), null, null, 1);
-                        orm.createOrder(newOrder);
+                        orm.createOrder(newOrder);                        
                         unPaidOrderId = um.getUnpaidOrderId(user);
+                        newOrder.setOrderId(unPaidOrderId);
+                        session.setAttribute("order", newOrder);
                         for (OrderLine line : currenCart.getOrderLines()) {
                             line.setOrderId(unPaidOrderId);
                             lineMapper.addOrderLine(line);
                         }
                         session.setAttribute("cart", currenCart);
                         Order sessionOrder = (Order) session.getAttribute("order");
+                        try {
                         sessionOrder.setUserId(um.getUserId(email));
                         sessionOrder.setOrderId(unPaidOrderId);
                         session.setAttribute("order", sessionOrder);
                         session.setAttribute("orderId", sessionOrder.getOrderId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     response.sendRedirect("index.jsp");
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (SQLException ex) {
-                    Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 //User is redirected if login fails.
@@ -169,15 +173,22 @@ public class AccountController extends HttpServlet {
         request.getSession().invalidate();
     }
 
-    private Cart mergeCarts(Cart oldCart, Cart currentcart, int orderId) {
-
-        Cart mergedCart = oldCart;
-
+    private Cart mergeCarts(Cart currentcart, int orderId) {
+       
+        OrderLineMapper lineMapper = new OrderLineMapper();
+        //Update orderLine in database
         for (OrderLine lineItem : currentcart.getOrderLines()) {
             lineItem.setOrderId(orderId);
-            mergedCart.addItemToCart(lineItem);
-        }
-
+            if (lineMapper.itemAlreadyOnOrder(lineItem.getShopItemId())) {
+                lineMapper.updateOrderLine(lineItem.getShopItemId(), lineItem.getNumberOfItems(), orderId);
+            }else{
+                lineMapper.addOrderLine(lineItem);
+            }
+        }     
+        
+        Cart mergedCart = new Cart(lineMapper.getOrderLines(orderId));       
+        
+        
         return mergedCart;
     }
 

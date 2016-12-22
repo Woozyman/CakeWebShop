@@ -162,6 +162,9 @@ public class OrderLineMapper {
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
+            if (this.itemAlreadyOnOrder(itemId)) {
+                ps.setInt(1, numOfItems + this.getItemCount(itemId, orderId));
+            }
             ps.setInt(1, numOfItems);
             ps.setInt(2, itemId);
 

@@ -94,7 +94,7 @@ public class UploadController extends HttpServlet {
             String[] fileTypes = new String[]{"image/jpeg", "image/jpg", "image/png"};
                       
             // Upload path // Change to local path of WebApp
-            String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
+            String Dir = "C:\\Users\\Jens\\Desktop\\GitRepos\\CakeWebShop\\CakeWebShop\\web\\images ";
             for (FileItem item : files) {
                 String contentType = item.getContentType();
                 boolean saved = false;

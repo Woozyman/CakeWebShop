@@ -69,6 +69,7 @@ public class UploadController extends HttpServlet {
         if (!ServletFileUpload.isMultipartContent(request)) {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Nothing Uploaded');");
+            out.println("location='upload.jsp';");
             out.println("</script>");
             return;
         }
@@ -96,7 +97,9 @@ public class UploadController extends HttpServlet {
             String[] fileTypes = new String[]{"image/jpeg", "image/jpg", "image/png"};
                       
             // Upload path // Change to local path of WebApp
+            //String Dir = "/Users/Michael/Desktop/CPHBusiness/05 Webprogrammering ServerSide/NetBeans/CakeWebShop/CakeWebShop/web/images";
             String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
+            
             for (FileItem item : files) {
                 String contentType = item.getContentType();
                 boolean saved = false;
@@ -110,6 +113,7 @@ public class UploadController extends HttpServlet {
                         item.write(file);
                         out.println("<script type=\"text/javascript\">");
                         out.println("alert('File Saved');");
+                        out.println("location='upload.jsp';");
                         out.println("</script>");
                         saved = true;
 
@@ -129,6 +133,7 @@ public class UploadController extends HttpServlet {
                 if (!saved) {
                     out.println("<script type=\"text/javascript\">");
                     out.println("alert('"+ "Only .png and .jpg files are supported\n You Selected: " + contentType +"');");
+                    out.println("location='upload.jsp';");
                     out.println("</script>");
             
                 }
@@ -138,11 +143,13 @@ public class UploadController extends HttpServlet {
         } catch (FileUploadException e) {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('"+ "upload failed: " + e.getMessage() +"');");
+            out.println("location='upload.jsp';");
             out.println("</script>");
             
         } catch (Exception e) {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('"+ "Can't save file: " + e.getMessage() +"');");
+            out.println("location='upload.jsp';");
             out.println("</script>");
             
         }

@@ -95,21 +95,21 @@ public class UploadController extends HttpServlet {
             }
             //Accepted File Types
             String[] fileTypes = new String[]{"image/jpeg", "image/jpg", "image/png"};
-                      
+
             // Upload path // Change to local path of WebApp
             //String Dir = "/Users/Michael/Desktop/CPHBusiness/05 Webprogrammering ServerSide/NetBeans/CakeWebShop/CakeWebShop/web/images";
             String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
-            
+            boolean saved = false;
+
             for (FileItem item : files) {
                 String contentType = item.getContentType();
-                boolean saved = false;
 
                 for (String fileType : fileTypes) {
                     if (contentType.equals(fileType)) {
                         File uploadDir = new File(Dir); //Alter to local path to test on localhost
-                       // File file = File.createTempFile("img", "." + contentType.substring(6), uploadDir);         
-                        File file = File.createTempFile("img",item.getName(), uploadDir);   
-                        
+                        // File file = File.createTempFile("img", "." + contentType.substring(6), uploadDir);         
+                        File file = File.createTempFile("img", item.getName(), uploadDir);
+
                         item.write(file);
                         out.println("<script type=\"text/javascript\">");
                         out.println("alert('File Saved');");
@@ -121,7 +121,7 @@ public class UploadController extends HttpServlet {
                         newItem.setItemName(itemName);
                         newItem.setItemDescription(itemDesc);
                         newItem.setItemPrice(Double.parseDouble(itemPrice));
-                        newItem.setItemPicture("images/"+ file.getName());
+                        newItem.setItemPicture("images/" + file.getName());
 
                         ShopItemMapper sim = new ShopItemMapper();
                         sim.addItem(newItem);
@@ -131,29 +131,29 @@ public class UploadController extends HttpServlet {
                 }
 
                 if (!saved) {
+
                     out.println("<script type=\"text/javascript\">");
-                    out.println("alert('"+ "Only .png and .jpg files are supported\n You Selected: " + contentType +"');");
+                    out.println("alert(' Only .png and .jpg files are supported');");
                     out.println("location='upload.jsp';");
                     out.println("</script>");
-            
                 }
 
             }
 
         } catch (FileUploadException e) {
             out.println("<script type=\"text/javascript\">");
-            out.println("alert('"+ "upload failed: " + e.getMessage() +"');");
+            out.println("alert(' upload failed: ');");
             out.println("location='upload.jsp';");
             out.println("</script>");
-            
+
         } catch (Exception e) {
             out.println("<script type=\"text/javascript\">");
-            out.println("alert('"+ "Can't save file: " + e.getMessage() +"');");
+            out.println("alert('Can't save file:');");
             out.println("location='upload.jsp';");
             out.println("</script>");
-            
         }
 
+        // response.sendRedirect("upload.jsp");
     }
 
     /**

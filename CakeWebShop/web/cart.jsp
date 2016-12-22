@@ -28,7 +28,7 @@
         User user = (User) session.getAttribute("userObj");
         CartHelper carthelper = new CartHelper();
         List<ShopItem> items = (List<ShopItem>) session.getAttribute("shopItems");
-        OrderLineMapper orm = new OrderLineMapper();
+        OrderLineMapper lineMapper = new OrderLineMapper();
         int orderId = (int) session.getAttribute("orderId");
         double total = 0;
         for (ShopItem item : items) {
@@ -37,7 +37,7 @@
                 // Guest User Stores all info about cart in the session object.
                 total = total + (carthelper.getItemCountFromSessionCart(item.getItemId(), session) * item.getItemPrice());
             }else{
-                total = total + (orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice());
+                total = total + (lineMapper.getItemCount(item.getItemId(), orderId) * item.getItemPrice());
             }
         
             
@@ -48,9 +48,9 @@
             <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%=item.getItemPicture()%>"></a></td>
             <td><%=item.getItemName()%></td>
             <% if(user != null) {%>
-            <td><input type="number" name="numOfItems" min="1" value="<%= orm.getItemCount(item.getItemId(), orderId)%>"></input></td>
+            <td><input type="number" name="numOfItems" min="1" value="<%= lineMapper.getItemCount(item.getItemId(), orderId)%>"></input></td>
             <td><%=item.getItemPrice()%></td>
-            <td><%=orm.getItemCount(item.getItemId(), orderId) * item.getItemPrice()%></td>
+            <td><%=lineMapper.getItemCount(item.getItemId(), orderId) * item.getItemPrice()%></td>
             <% }else{ %>
             <td><input type="number" name="numOfItems" min="1" value="<%= carthelper.getItemCountFromSessionCart(item.getItemId(), session) %>"></input></td>
             <td><%=item.getItemPrice()%></td>

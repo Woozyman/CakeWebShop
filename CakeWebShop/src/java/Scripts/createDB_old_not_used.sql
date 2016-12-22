@@ -61,6 +61,5 @@ create table orderLines
     shopItemid int(5),
     FOREIGN KEY (shopItemid) REFERENCES shopItems(itemid),
     numberOfItems int(3),
-    itemPrice double(5,2) not null,
-    orderLineProduced int(1) DEFAULT 0							# ikke foreign key af historiske orsager.
+    itemPrice double(5,2) not null								# ikke foreign key af historiske orsager.
 );

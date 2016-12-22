@@ -3,15 +3,21 @@ package controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.OrderLineMapper;
+import models.OrderMapper;
 import models.ShopItem;
 import models.ShopItemMapper;
+import models.Time;
 
 @WebServlet(name = "ShopItemController", urlPatterns = {"/ShopItemController"})
 public class ShopItemController extends HttpServlet {
@@ -62,7 +68,11 @@ public class ShopItemController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = -1;
+        if (request.getParameter("id") != null) {
+            id = Integer.parseInt(request.getParameter("id"));
+        }
+       
         ShopItemMapper sim = new ShopItemMapper();
         ShopItem item = sim.getItem(id);
         if (action.equals(("edit"))) {
@@ -101,6 +111,26 @@ public class ShopItemController extends HttpServlet {
             sim.updateItem(item, id);
 
             response.sendRedirect("index.jsp");
+        } else if (action.equals("markasbaked")) {
+            OrderLineMapper lineMapper = new OrderLineMapper();
+            OrderMapper orm = new OrderMapper();
+            int orderlineid = Integer.parseInt(request.getParameter("orderlineid"));
+            int orderId = Integer.parseInt(request.getParameter("orderid"));
+            try {
+                lineMapper.markOrderLineCompleted(orderlineid);
+                
+                if (orm.isOrderCompleted(orderId)) {
+                    Time time = new Time();
+                    orm.setOrderCompletedDate(orderId, time.getTimeNow());
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ParseException ex) {
+                Logger.getLogger(ShopItemController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            request.getRequestDispatcher("index.jsp").include(request, response);
         }
 
     }

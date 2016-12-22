@@ -89,24 +89,26 @@ public class OrderLineMapper {
     }
 
     public List<OrderLine> getInCompleteOrderLines() throws SQLException {
-        String query = "SELECT * FROM orderlines LEFT JOIN orders"
-                + "ON orderlines WHERE orderid = orders.orderid and orders.orderInShoppingCart = 1 ";
-        List<OrderLine> orderLines = new ArrayList();
-        try {
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+        String query = "SELECT orderLineid, orderlines.orderid, shopItemid, numberOfItems, ItemPrice"
+                + " FROM orderlines LEFT JOIN orders ON orderLines.orderid = orders.orderid "
+                + "WHERE orderCakeCompletedDate IS NULL AND orderlines.orderLineProduced = 0";
 
+        PreparedStatement ps = db.getConnection().prepareStatement(query);
+        List<OrderLine> orderLines = new ArrayList();
+        
+        try {
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                int orderLineid = rs.getInt("orderLineid");
-                int orderid = rs.getInt("orderid");
-                int shopItemid = rs.getInt("shopItemid");
-                int numOfItems = rs.getInt("numberOfItems");
-                double itemPrice = rs.getDouble("itemPrice");
+        while (rs.next()) {
+            int orderLineid = rs.getInt("orderLineid");
+            int orderid = rs.getInt("orderlines.orderid");
+            int shopItemid = rs.getInt("shopItemid");
+            int numOfItems = rs.getInt("numberOfItems");
+            double itemPrice = rs.getDouble("itemPrice");
 
-                orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
-            }
-        } catch (Exception e) {
+            orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
+        }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -196,5 +198,14 @@ public class OrderLineMapper {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void markOrderLineCompleted(int id) throws SQLException {
+        String query = "UPDATE orderlines SET orderLineProduced = 1 WHERE orderLineid = ?";
+        
+        PreparedStatement ps = db.getConnection().prepareStatement(query);
+        ps.setInt(1, id);
+        
+        ps.executeUpdate();        
     }
 }

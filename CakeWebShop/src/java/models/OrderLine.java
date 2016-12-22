@@ -7,6 +7,15 @@ public class OrderLine {
     private int numberOfItems;
     private int shopItemId;     //foreign key    
     private double itemPrice;
+    private int orderLineProduced = 0;
+
+    public int getOrderLineProduced() {
+        return orderLineProduced;
+    }
+
+    public void setOrderLineProduced(int orderLineProduced) {
+        this.orderLineProduced = orderLineProduced;
+    }
     
     public OrderLine(){}
     

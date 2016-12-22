@@ -44,21 +44,21 @@
         OrderLineMapper lineMapper = new OrderLineMapper();
         List<OrderLine> orderLines = lineMapper.getInCompleteOrderLines();
         ShopItemMapper sim = new ShopItemMapper();
-        List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(orderLines);
-        for (ShopItem items : shopItems) { %>    
+//        List<ShopItem> shopItems = sim.mapShopItemsToOrderLines(orderLines);
+        for (OrderLine lineItem : orderLines) { %>    
 
-    <form action="${pageContext.servletContext.contextPath}/ShopItemController?action=markasbaked&id=" method="post">
+    <form action="${pageContext.servletContext.contextPath}/ShopItemController?action=markasbaked&orderlineid=<%= lineItem.getOrderLineId() %>&orderid=<%= lineItem.getOrderId() %>" method="post">
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%= sim.getItem(lineItem.getShopItemId()).getItemPicture() %>"></a></td>
+            <td><%= sim.getItem(lineItem.getShopItemId()).getItemName() %></td>
+            <td><%= sim.getItem(lineItem.getShopItemId()).getItemPrice() %></td>
+            <td><%= sim.getItem(lineItem.getShopItemId()).getItemDescription() %></td>
             <td><input type="submit" value="Mark as Baked"></td>
         </tr>
 
     </form>
-    <%}
-    } else {
+    <%} %>
+   <% } else {
         //almindelig User goes here
         List<ShopItem> cakes = new ArrayList();
         cakes = (ArrayList) session.getAttribute("cakeList");

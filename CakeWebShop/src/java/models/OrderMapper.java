@@ -140,5 +140,20 @@ public class OrderMapper {
         }
         return result;
     }
+    
+    public boolean isOrderCompleted(int orderId) throws SQLException{
+        //If query return a result... order is incomplete.
+        String query = "SELECT * FROM orderlines WHERE orderid = ? AND orderLineProduced = 0";
+        
+        PreparedStatement ps = db.getConnection().prepareStatement(query); 
+        ps.setInt(1, orderId);
+        
+        ResultSet rs = ps.executeQuery();
+        
+        if(rs.next())  {
+            return false;
+        }
+        return true;
+    }
 
 }

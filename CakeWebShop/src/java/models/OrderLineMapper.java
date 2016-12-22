@@ -90,22 +90,24 @@ public class OrderLineMapper {
 
     public List<OrderLine> getInCompleteOrderLines() throws SQLException {
         String query = "SELECT * FROM orderlines LEFT JOIN orders"
-                + "ON orderlines WHERE orderid = orderlines.orderid and orderInShoppingCart = 1 ";
-
-        PreparedStatement ps = db.getConnection().prepareStatement(query);
-
-        ResultSet rs = ps.executeQuery();
-
+                + "ON orderlines WHERE orderid = orders.orderid and orders.orderInShoppingCart = 1 ";
         List<OrderLine> orderLines = new ArrayList();
+        try {
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
 
-        while (rs.next()) {
-            int orderLineid = rs.getInt("orderLineid");
-            int orderid = rs.getInt("orderid");
-            int shopItemid = rs.getInt("shopItemid");
-            int numOfItems = rs.getInt("numberOfItems");
-            double itemPrice = rs.getDouble("itemPrice");
+            ResultSet rs = ps.executeQuery();
 
-            orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
+            while (rs.next()) {
+                int orderLineid = rs.getInt("orderLineid");
+                int orderid = rs.getInt("orderid");
+                int shopItemid = rs.getInt("shopItemid");
+                int numOfItems = rs.getInt("numberOfItems");
+                double itemPrice = rs.getDouble("itemPrice");
+
+                orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return orderLines;
@@ -164,9 +166,9 @@ public class OrderLineMapper {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
             if (this.itemAlreadyOnOrder(itemId) && fromHome) {
                 ps.setInt(1, numOfItems + this.getItemCount(itemId, orderId));
-            }else{
-                 ps.setInt(1, numOfItems);
-            }           
+            } else {
+                ps.setInt(1, numOfItems);
+            }
             ps.setInt(2, itemId);
 
             ps.executeUpdate();

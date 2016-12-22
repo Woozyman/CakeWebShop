@@ -128,7 +128,7 @@ public class CartController extends HttpServlet {
                 orderId = order.getOrderId();
                 //if item is already in cart. add it to existing orderline
                 if (lineMapper.itemAlreadyOnOrder(itemId)) {
-                    lineMapper.updateOrderLine(itemId, numOfItems, orderId);
+                    lineMapper.updateOrderLine(itemId, numOfItems, orderId, true);
                 } else {
                     orderLine = new OrderLine(orderId, itemId, numOfItems, currentPrice);
 
@@ -147,7 +147,7 @@ public class CartController extends HttpServlet {
             order = (Order) session.getAttribute("order");
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
             if (user != null) {
-                lineMapper.updateOrderLine(id, numOfItems, order.getOrderId());
+                lineMapper.updateOrderLine(id, numOfItems, order.getOrderId(), false);
             } else {
                 List<OrderLine> lines = (List<OrderLine>) session.getAttribute("orderLines");
 

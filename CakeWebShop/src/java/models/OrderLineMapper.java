@@ -156,16 +156,17 @@ public class OrderLineMapper {
         return false;
     }
 
-    public void updateOrderLine(int itemId, int numOfItems, int orderId) {
+    public void updateOrderLine(int itemId, int numOfItems, int orderId, boolean fromHome) {
 
         String query = "UPDATE orderlines SET numberOfItems = ? WHERE shopItemid = ?";
 
         try {
             PreparedStatement ps = db.getConnection().prepareStatement(query);
-            if (this.itemAlreadyOnOrder(itemId)) {
+            if (this.itemAlreadyOnOrder(itemId) && fromHome) {
                 ps.setInt(1, numOfItems + this.getItemCount(itemId, orderId));
-            }
-            ps.setInt(1, numOfItems);
+            }else{
+                 ps.setInt(1, numOfItems);
+            }           
             ps.setInt(2, itemId);
 
             ps.executeUpdate();

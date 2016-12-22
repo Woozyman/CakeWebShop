@@ -180,7 +180,7 @@ public class AccountController extends HttpServlet {
         for (OrderLine lineItem : currentcart.getOrderLines()) {
             lineItem.setOrderId(orderId);
             if (lineMapper.itemAlreadyOnOrder(lineItem.getShopItemId())) {
-                lineMapper.updateOrderLine(lineItem.getShopItemId(), lineItem.getNumberOfItems(), orderId);
+                lineMapper.updateOrderLine(lineItem.getShopItemId(), lineItem.getNumberOfItems(), orderId, true);
             }else{
                 lineMapper.addOrderLine(lineItem);
             }

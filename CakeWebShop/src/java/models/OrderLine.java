@@ -2,7 +2,7 @@ package models;
 
 public class OrderLine {
 
-    private int orderLineId;    //primary key , not in the constructor because mysql assigns id automatically
+    private int orderLineId;    //primary key , not in the constructor because mysql assigns id automatically    
     private int orderId;        //foreign key
     private int numberOfItems;
     private int shopItemId;     //foreign key    
@@ -16,10 +16,22 @@ public class OrderLine {
        this.numberOfItems = numberOfItems;
        this.itemPrice = itemPrice;
     }
+    //for baker to mark orders as baked.
+    public OrderLine(int orderLineId, int orderId, int itemId, int numberOfItems, double itemPrice){
+       this.orderLineId = orderLineId;
+       this.orderId = orderId;
+       this.shopItemId = itemId;
+       this.numberOfItems = numberOfItems;
+       this.itemPrice = itemPrice;
+    }
 
     public int getOrderLineId() {
         return orderLineId;
     }  
+    
+    public void setOrderLineId(int orderLineId) {
+        this.orderLineId = orderLineId;
+    }
 
     public int getOrderId() {
         return orderId;

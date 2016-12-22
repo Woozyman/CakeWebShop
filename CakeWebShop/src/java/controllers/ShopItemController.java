@@ -63,7 +63,6 @@ public class ShopItemController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         int id = Integer.parseInt(request.getParameter("id"));
-        String page = null;
         ShopItemMapper sim = new ShopItemMapper();
         ShopItem item = sim.getItem(id);
         if (action.equals(("edit"))) {
@@ -83,7 +82,7 @@ public class ShopItemController extends HttpServlet {
 
             sim.addItem(item);
 
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("index.jsp");
         } else if (action.equals("updateitem")) {
 
             String name = (String) request.getParameter("itemName");
@@ -101,7 +100,7 @@ public class ShopItemController extends HttpServlet {
             }
             sim.updateItem(item, id);
 
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("index.jsp");
         }
 
     }

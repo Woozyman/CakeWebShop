@@ -118,26 +118,7 @@ public class UserMapper {
         }
         return users;
     }
-/*
-    public boolean authenticateUser(String email, String password) {
-        try {
-            String query = "SELECT email, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                if (rs.getString("password").equals(password)) {
-                    return true;
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return false;
-    }
-*/
    public boolean authenticateUser(String email, String password) throws PasswordStorage.CannotPerformOperationException, PasswordStorage.InvalidHashException {
         try {
             String query = "SELECT email, password FROM users WHERE email = ?";

@@ -14,16 +14,16 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/home.jsp">CakeWebshop</a>
+                    <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.jsp">CakeWebshop</a>
                 </div>
                 <% Cart cart = (Cart) session.getAttribute("cart"); %>
                 <%if (session.getAttribute("userObj") != null) {
                         User user = (User) session.getAttribute("userObj");
                         if (user.getFirstname().equals("admin")) {
         // admin goes here%>        
-                <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/ShopItemController?action=create" method="POST">
-                    <button class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-plus"></span> Create New Shop Item</button>
-                </form>
+                <div class="navbar-nav navbar-right">
+                    <a href="upload.jsp" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-plus"></span> Create New Shop Item</a>
+                </div>
                 <form class="navbar-form navbar-right" action="${pageContext.servletContext.contextPath}/AccountController?action=logout" method="POST">
                     <div class="form-group">
                         <button type="submit" value="logout" class="btn btn-warning navbar-btn"><span class="glyphicon glyphicon-log-out"></span> Log out: <% out.println(user.getFirstname());%></button>

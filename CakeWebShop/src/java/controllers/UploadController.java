@@ -94,19 +94,7 @@ public class UploadController extends HttpServlet {
             String[] fileTypes = new String[]{"image/jpeg", "image/jpg", "image/png"};
                       
             // Upload path // Change to local path of WebApp
-            
-            //String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
-            //String Dir = "/Users/Michael/Desktop/CPHBusiness/05 Webprogrammering ServerSide/NetBeans/CakeWebShop/CakeWebShop/web/images";
-            String Dir = getServletContext().getRealPath("/").replace('\\', '/');
-            
-            if (null != Dir && Dir.length() > 0 ) {
-                int endIndex = Dir.lastIndexOf("CakeWebShop/");
-                if (endIndex != -1) {
-                    Dir = Dir.substring(0, endIndex+12); // not forgot to put check if(endIndex != -1)
-                }
-            } 
-            Dir = Dir+"web/images";
-            //out.println(Dir);
+            String Dir = "E:\\Development\\School\\WebServer\\EksamensProjekt\\CakeWebShop\\CakeWebShop\\web\\images";
             for (FileItem item : files) {
                 String contentType = item.getContentType();
                 boolean saved = false;
@@ -114,10 +102,9 @@ public class UploadController extends HttpServlet {
                 for (String fileType : fileTypes) {
                     if (contentType.equals(fileType)) {
                         File uploadDir = new File(Dir); //Alter to local path to test on localhost
-                        File file = File.createTempFile("img", "." + contentType.substring(6), uploadDir);
+                       // File file = File.createTempFile("img", "." + contentType.substring(6), uploadDir);         
+                        File file = File.createTempFile("img",item.getName(), uploadDir);   
                         
-                      
-                       
                         item.write(file);
                         out.println("File Saved");
                         saved = true;
@@ -127,7 +114,7 @@ public class UploadController extends HttpServlet {
                         newItem.setItemDescription(itemDesc);
                         newItem.setItemPrice(Double.parseDouble(itemPrice));
                         newItem.setItemPicture("images/"+ file.getName());
-                        //out.println(Dir + newItem.getItemPicture());
+
                         ShopItemMapper sim = new ShopItemMapper();
                         sim.addItem(newItem);
 

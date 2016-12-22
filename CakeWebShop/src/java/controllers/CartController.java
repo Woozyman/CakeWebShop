@@ -142,7 +142,7 @@ public class CartController extends HttpServlet {
 
             session.setAttribute("cart", cart);
 
-            // request.getRequestDispatcher("/home.jsp").forward(request, response);
+            // request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else if (action.equals("update")) {
             order = (Order) session.getAttribute("order");
             int numOfItems = Integer.parseInt(request.getParameter("numOfItems"));
@@ -191,7 +191,7 @@ public class CartController extends HttpServlet {
 
             request.getRequestDispatcher("/cart.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
 
     }

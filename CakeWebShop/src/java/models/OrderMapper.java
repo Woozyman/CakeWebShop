@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class OrderMapper {
 
@@ -38,17 +39,52 @@ public class OrderMapper {
         DB_local.closeConnection();
     }
 
-    public void completeOrder(int orderId) {
-
+    public void completeOrder(int orderId) throws ParseException {
+        Time time = new Time();
+        
         try {
-            String query = "UPDATE orders SET orderInShoppingCart=0 WHERE orderId = ?";
+            String query = "UPDATE orders SET orderInShoppingCart=0, orderDate = ?  WHERE orderid = ?";
 
             PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
-            ps.setInt(1, orderId);
+            ps.setInt(2, orderId);
+            ps.setDate(1, time.getSqlDateNow(time.getTimeNow()));
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void setOrderDeliveryDate(int orderId, String date) throws ParseException{
+         Time time = new Time();
+        
+        try {
+            String query = "UPDATE orders SET orderDeliveryDate=? WHERE orderid = ?";
+
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     public void setOrderCompletedDate(int orderId, String date) throws ParseException{
+         Time time = new Time();
+        
+        try {
+            String query = "UPDATE orders SET orderCakeCompletedDate=? WHERE orderid = ?";
+
+            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,6 +136,7 @@ public class OrderMapper {
                 result.setOrderInShoppingCart(orderInShoppingCart);
           
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }

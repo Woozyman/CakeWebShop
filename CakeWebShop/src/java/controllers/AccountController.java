@@ -1,8 +1,11 @@
- package controllers;
+package controllers;
 
 import dataaccess.PasswordStorage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import models.Cart;
 import models.Order;
 import models.OrderLine;
+import models.OrderLineMapper;
 import models.OrderMapper;
 import models.ShopItemMapper;
 import models.User;
@@ -52,6 +56,7 @@ public class AccountController extends HttpServlet {
         String action = request.getParameter("action");
         UserMapper um = new UserMapper();
         ShopItemMapper sim = new ShopItemMapper();
+        OrderLineMapper lineMapper = new OrderLineMapper();
         OrderMapper orm = new OrderMapper();
         if (action.equals("login")) {
 
@@ -81,17 +86,37 @@ public class AccountController extends HttpServlet {
                         if (currenCart == null) {
                             session.setAttribute("cart", oldCart);
                         } else {
-                            currenCart = mergeCarts(oldCart, currenCart);
+                            currenCart = mergeCarts(oldCart, currenCart, unPaidOrderId);
+                            lineMapper.addMultipleOrderLines(currenCart.getOrderLines());
                             session.setAttribute("cart", currenCart);
                         }
+                    } else {
+                        lineMapper = new OrderLineMapper();
+                        Cart currenCart = (Cart) session.getAttribute("cart");
+                        Order newOrder = new Order(um.getUserId(email), null, null, 1);
+                        orm.createOrder(newOrder);
+                        unPaidOrderId = um.getUnpaidOrderId(user);
+                        for (OrderLine line : currenCart.getOrderLines()) {
+                            line.setOrderId(unPaidOrderId);
+                            lineMapper.addOrderLine(line);
+                        }
+                        session.setAttribute("cart", currenCart);
+                        Order sessionOrder = (Order) session.getAttribute("order");
+                        sessionOrder.setUserId(um.getUserId(email));
+                        sessionOrder.setOrderId(unPaidOrderId);
+                        session.setAttribute("order", sessionOrder);
+                        session.setAttribute("orderId", sessionOrder.getOrderId());
                     }
 
-                    response.sendRedirect("home.jsp");
-                } catch (IOException ex) {
+                    response.sendRedirect("index.jsp");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 //User is redirected if login fails.
-                response.sendRedirect("home.jsp");
+                response.sendRedirect("index.jsp");
             }
         } else if (action.equals("logout")) {
             logout(request);
@@ -104,7 +129,7 @@ public class AccountController extends HttpServlet {
             String phonenumber = (String) request.getParameter("PhoneNumber");
             String address = (String) request.getParameter("Address");
             String zip = (String) request.getParameter("Zip");
-            
+
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
             try {
                 um.createUser(user);
@@ -112,17 +137,30 @@ public class AccountController extends HttpServlet {
             } catch (PasswordStorage.CannotPerformOperationException ex) {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("index.jsp");
 
         } else if (action.equals("pay")) {
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Payment Complete, order is in the oven.');");
-            out.println("location='home.jsp';");
+            out.println("location='index.jsp';");
             out.println("</script>");
             out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            orm.completeOrder(orderId);
+            int orderId = 0;
+            try {
+                orderId = Integer.parseInt(request.getParameter("orderid"));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            try {
+                orm.completeOrder(orderId);
+            } catch (ParseException ex) {
+                Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Resetting Shopping Cart
+            session.setAttribute("orderLines", new ArrayList<OrderLine>());
+            session.setAttribute("cart", new Cart((ArrayList<OrderLine>) session.getAttribute("orderLines")));
+
         }
 
     }
@@ -131,11 +169,12 @@ public class AccountController extends HttpServlet {
         request.getSession().invalidate();
     }
 
-    private Cart mergeCarts(Cart oldCart, Cart newCart) {
+    private Cart mergeCarts(Cart oldCart, Cart currentcart, int orderId) {
 
         Cart mergedCart = oldCart;
 
-        for (OrderLine lineItem : newCart.getOrderLines()) {
+        for (OrderLine lineItem : currentcart.getOrderLines()) {
+            lineItem.setOrderId(orderId);
             mergedCart.addItemToCart(lineItem);
         }
 

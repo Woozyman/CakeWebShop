@@ -89,8 +89,9 @@ public class OrderLineMapper {
     }
 
     public List<OrderLine> getInCompleteOrderLines() throws SQLException {
-        String query = "SELECT * FROM orderlines LEFT JOIN orders"
-                + "ON orderlines WHERE orderid = orderlines.orderid and orderInShoppingCart = 1 ";
+        String query = "SELECT * FROM orderlines LEFT JOIN orders\n" +
+                       "ON orderLines.orderid = orders.orderid \n" +
+                       "WHERE orderInShoppingCart = 1";
 
         PreparedStatement ps = db.getConnection().prepareStatement(query);
 

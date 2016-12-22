@@ -67,7 +67,9 @@ public class UploadController extends HttpServlet {
         String itemPrice = "";
 
         if (!ServletFileUpload.isMultipartContent(request)) {
-            out.println("Nothing Uploaded");
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Nothing Uploaded');");
+            out.println("</script>");
             return;
         }
 
@@ -106,7 +108,9 @@ public class UploadController extends HttpServlet {
                         File file = File.createTempFile("img",item.getName(), uploadDir);   
                         
                         item.write(file);
-                        out.println("File Saved");
+                        out.println("<script type=\"text/javascript\">");
+                        out.println("alert('File Saved');");
+                        out.println("</script>");
                         saved = true;
 
                         ShopItem newItem = new ShopItem();
@@ -123,15 +127,24 @@ public class UploadController extends HttpServlet {
                 }
 
                 if (!saved) {
-                    out.println("Only .png and .jpg files are supported\n You Selected: " + contentType);
+                    out.println("<script type=\"text/javascript\">");
+                    out.println("alert('"+ "Only .png and .jpg files are supported\n You Selected: " + contentType +"');");
+                    out.println("</script>");
+            
                 }
 
             }
 
         } catch (FileUploadException e) {
-            out.println("upload failed: " + e.getMessage());
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('"+ "upload failed: " + e.getMessage() +"');");
+            out.println("</script>");
+            
         } catch (Exception e) {
-            out.println("Can't save file: " + e.getMessage());
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('"+ "Can't save file: " + e.getMessage() +"');");
+            out.println("</script>");
+            
         }
 
     }

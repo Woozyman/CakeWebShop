@@ -170,7 +170,9 @@ public class AccountController extends HttpServlet {
     }
 
     private void logout(HttpServletRequest request) {
-        request.getSession().invalidate();
+        HttpSession session = request.getSession();
+        session.invalidate();
+        request.getRequestDispatcher("/HomeController");
     }
 
     private Cart mergeCarts(Cart currentcart, int orderId) {

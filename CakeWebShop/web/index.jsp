@@ -51,7 +51,7 @@
         <tr>
             <td><a href="#"><img width="200" src="${pageContext.servletContext.contextPath}/<%= sim.getItem(lineItem.getShopItemId()).getItemPicture() %>"></a></td>
             <td><%= sim.getItem(lineItem.getShopItemId()).getItemName() %></td>
-            <td><%= sim.getItem(lineItem.getShopItemId()).getItemPrice() %></td>
+            <td><%= sim.getItem(lineItem.getShopItemId()).getItemPrice() * lineItem.getNumberOfItems() %></td>
             <td><%= sim.getItem(lineItem.getShopItemId()).getItemDescription() %></td>
             <td><input type="submit" value="Mark as Baked"></td>
         </tr>

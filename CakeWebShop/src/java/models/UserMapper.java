@@ -44,7 +44,7 @@ public class UserMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -68,7 +68,7 @@ public class UserMapper {
                 user = new User(firstname, lastname, emailAddr, phone, address, zip, password);
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         }
         return user;
     }
@@ -88,7 +88,7 @@ public class UserMapper {
             result = rs.getInt("userid");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
             Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, e);
         }
         db.closeConnection();
@@ -114,7 +114,7 @@ public class UserMapper {
                 users.add(user);
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         }
         return users;
     }
@@ -133,7 +133,7 @@ public class UserMapper {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
             return false;
         }
         return false;

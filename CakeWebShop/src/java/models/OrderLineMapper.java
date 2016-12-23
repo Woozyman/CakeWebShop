@@ -29,7 +29,7 @@ public class OrderLineMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
         db.closeConnection();
@@ -56,7 +56,7 @@ public class OrderLineMapper {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
     }
@@ -82,7 +82,7 @@ public class OrderLineMapper {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         db.closeConnection();
         return orderLines;
@@ -109,7 +109,7 @@ public class OrderLineMapper {
             orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
         }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
         return orderLines;
@@ -133,7 +133,7 @@ public class OrderLineMapper {
 
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
         db.closeConnection();
@@ -153,7 +153,7 @@ public class OrderLineMapper {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
 
         db.closeConnection();
@@ -175,7 +175,7 @@ public class OrderLineMapper {
 
             ps.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         db.closeConnection();
     }
@@ -195,7 +195,7 @@ public class OrderLineMapper {
             }
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         return result;
     }

@@ -20,7 +20,7 @@ public class DB_raspberry {
             Class.forName(DRIVER);
             conn = (Connection) DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException | SQLException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         }
         return conn;
     }
@@ -31,7 +31,7 @@ public class DB_raspberry {
                 conn.close();
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         }
     }
 }

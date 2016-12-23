@@ -34,7 +34,7 @@ public class OrderMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         DB_local.closeConnection();
     }
@@ -52,7 +52,7 @@ public class OrderMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
     
@@ -68,7 +68,7 @@ public class OrderMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
     
@@ -84,7 +84,7 @@ public class OrderMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -136,7 +136,7 @@ public class OrderMapper {
                 result.setOrderInShoppingCart(orderInShoppingCart);
           
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
         return result;
     }

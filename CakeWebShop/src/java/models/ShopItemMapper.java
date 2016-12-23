@@ -39,7 +39,7 @@ public class ShopItemMapper {
             ps.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 

@@ -113,13 +113,13 @@ public class AccountController extends HttpServlet {
                             session.setAttribute("order", sessionOrder);
                             session.setAttribute("orderId", sessionOrder.getOrderId());
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            e.getMessage();
                         }
                     }
 
                     response.sendRedirect("index.jsp");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.getMessage();
                 }
             } else {
                 //User is redirected if login fails.
@@ -198,7 +198,7 @@ public class AccountController extends HttpServlet {
             try {
                 orderId = Integer.parseInt(request.getParameter("orderid"));
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                e.getMessage();
             }
             try {
                 orm.completeOrder(orderId);

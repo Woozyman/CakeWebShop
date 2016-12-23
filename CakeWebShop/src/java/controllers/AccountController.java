@@ -136,7 +136,7 @@ public class AccountController extends HttpServlet {
                 errors.put("Email", "Please write a valid Email Address");
             }
             String password = (String) request.getParameter("Password");
-            if (password.length() < 5) {
+            if (password.length() < 8) {
                 errors.put("Password", "Please write a valid password");
             }
             String password2 = (String) request.getParameter("Password2");
@@ -156,23 +156,22 @@ public class AccountController extends HttpServlet {
                 errors.put("PhoneNumber", "Please write a valid Phone number");
             }
             String address = (String) request.getParameter("Address");
-            if (address.length() < 20) {
-                errors.put("Address", "Please write a valid first name");
+            if (address.length() < 40) {
+                errors.put("Address", "Please write a valid address");
             }
             String zip = (String) request.getParameter("Zip");
             if (zip.length() < 4 && zip.length() > 6) {
-                errors.put("Zip", "Please write a valid first name");
+                errors.put("Zip", "Please write valid zip code");
             }
             
             if (errors.isEmpty()) {
-            // No errors, redirect to Amtrak.
-            // response.sendRedirect("FormResult.jsp?"+firstname);
+            
            
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
             
              try {
                 um.createUser(user);
-                //Implement Mapping of order in cart when user registers with items in it... orderlines must be updated with userid and orderid.
+               
             } catch (PasswordStorage.CannotPerformOperationException ex) {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -182,11 +181,7 @@ public class AccountController extends HttpServlet {
             // Put errors in request scope and forward back to JSP.
             request.setAttribute("errors", errors);
             request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
-        }
-
-           
-           
-
+        }  
         } else if (action.equals("pay")) {
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");

@@ -40,7 +40,9 @@
     </form>
     <%          }
     } else if (user.getFirstname().equals("baker")) {
-//Baker goes here
+//Baker goes here %>
+<th>Amount</th>
+<% 
         OrderLineMapper lineMapper = new OrderLineMapper();
         List<OrderLine> orderLines = lineMapper.getInCompleteOrderLines();
         ShopItemMapper sim = new ShopItemMapper();
@@ -53,6 +55,7 @@
             <td><%= sim.getItem(lineItem.getShopItemId()).getItemName() %></td>
             <td><%= sim.getItem(lineItem.getShopItemId()).getItemPrice() * lineItem.getNumberOfItems() %></td>
             <td><%= sim.getItem(lineItem.getShopItemId()).getItemDescription() %></td>
+            <td><%= lineItem.getNumberOfItems() %></td>
             <td><input type="submit" value="Mark as Baked"></td>
         </tr>
 

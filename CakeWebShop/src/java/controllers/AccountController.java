@@ -6,8 +6,11 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -87,14 +90,14 @@ public class AccountController extends HttpServlet {
                             session.setAttribute("cart", oldCart);
                         } else {
                             currenCart = mergeCarts(currenCart, unPaidOrderId);
-                           // lineMapper.addMultipleOrderLines(currenCart.getOrderLines());
+                            // lineMapper.addMultipleOrderLines(currenCart.getOrderLines());
                             session.setAttribute("cart", currenCart);
                         }
                     } else {
                         lineMapper = new OrderLineMapper();
                         Cart currenCart = (Cart) session.getAttribute("cart");
                         Order newOrder = new Order(um.getUserId(email), null, null, 1);
-                        orm.createOrder(newOrder);                        
+                        orm.createOrder(newOrder);
                         unPaidOrderId = um.getUnpaidOrderId(user);
                         newOrder.setOrderId(unPaidOrderId);
                         session.setAttribute("order", newOrder);
@@ -105,10 +108,10 @@ public class AccountController extends HttpServlet {
                         session.setAttribute("cart", currenCart);
                         Order sessionOrder = (Order) session.getAttribute("order");
                         try {
-                        sessionOrder.setUserId(um.getUserId(email));
-                        sessionOrder.setOrderId(unPaidOrderId);
-                        session.setAttribute("order", sessionOrder);
-                        session.setAttribute("orderId", sessionOrder.getOrderId());
+                            sessionOrder.setUserId(um.getUserId(email));
+                            sessionOrder.setOrderId(unPaidOrderId);
+                            session.setAttribute("order", sessionOrder);
+                            session.setAttribute("orderId", sessionOrder.getOrderId());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -126,22 +129,63 @@ public class AccountController extends HttpServlet {
             logout(request);
             response.sendRedirect("/CakeWebShop");
         } else if (action.equals("register")) {
-            String email = (String) request.getParameter("Email");
-            String password = (String) request.getParameter("Password");
-            String firstname = (String) request.getParameter("FirstName");
-            String lastname = (String) request.getParameter("LastName");
-            String phonenumber = (String) request.getParameter("PhoneNumber");
-            String address = (String) request.getParameter("Address");
-            String zip = (String) request.getParameter("Zip");
+            Map<String, String> errors = new HashMap<String, String>();
 
+            String email = (String) request.getParameter("Email");
+            if (email.length() < 10) {
+                errors.put("Email", "Please write a valid Email Address");
+            }
+            String password = (String) request.getParameter("Password");
+            if (password.length() < 5) {
+                errors.put("Password", "Please write a valid password");
+            }
+            String password2 = (String) request.getParameter("Password2");
+            if (!password2.equals(password)) {
+                errors.put("Password2", "Password does not match");
+            }
+            String firstname = (String) request.getParameter("FirstName");
+            if (firstname.length() < 3) {
+                errors.put("FirstName", "Please write a valid first name");
+            }
+            String lastname = (String) request.getParameter("LastName");
+            if (lastname.length() < 3) {
+                errors.put("LastName", "Please write a valid last name");
+            }
+            String phonenumber = (String) request.getParameter("PhoneNumber");
+            if (phonenumber.length() < 8) {
+                errors.put("PhoneNumber", "Please write a valid Phone number");
+            }
+            String address = (String) request.getParameter("Address");
+            if (address.length() < 20) {
+                errors.put("Address", "Please write a valid first name");
+            }
+            String zip = (String) request.getParameter("Zip");
+            if (zip.length() < 4 && zip.length() > 6) {
+                errors.put("Zip", "Please write a valid first name");
+            }
+            
+            if (errors.isEmpty()) {
+            // No errors, redirect to Amtrak.
+            // response.sendRedirect("FormResult.jsp?"+firstname);
+           
             User user = new User(firstname, lastname, email, phonenumber, address, zip, password);
-            try {
+            
+             try {
                 um.createUser(user);
                 //Implement Mapping of order in cart when user registers with items in it... orderlines must be updated with userid and orderid.
             } catch (PasswordStorage.CannotPerformOperationException ex) {
                 Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             }
             response.sendRedirect("index.jsp");
+
+        } else {
+            // Put errors in request scope and forward back to JSP.
+            request.setAttribute("errors", errors);
+            request.getRequestDispatcher("/formRegistration.jsp").forward(request, response);
+        }
+
+           
+           
 
         } else if (action.equals("pay")) {
             PrintWriter out = response.getWriter();
@@ -176,21 +220,20 @@ public class AccountController extends HttpServlet {
     }
 
     private Cart mergeCarts(Cart currentcart, int orderId) {
-       
+
         OrderLineMapper lineMapper = new OrderLineMapper();
         //Update orderLine in database
         for (OrderLine lineItem : currentcart.getOrderLines()) {
             lineItem.setOrderId(orderId);
             if (lineMapper.itemAlreadyOnOrder(lineItem.getShopItemId())) {
                 lineMapper.updateOrderLine(lineItem.getShopItemId(), lineItem.getNumberOfItems(), orderId, true);
-            }else{
+            } else {
                 lineMapper.addOrderLine(lineItem);
             }
-        }     
-        
-        Cart mergedCart = new Cart(lineMapper.getOrderLines(orderId));       
-        
-        
+        }
+
+        Cart mergedCart = new Cart(lineMapper.getOrderLines(orderId));
+
         return mergedCart;
     }
 

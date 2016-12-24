@@ -25,7 +25,7 @@ public class OrderMapper {
             String query = "INSERT INTO orders (userId, orderDate, orderDeliveryDate, orderInShoppingCart)"
                     + "VALUES(?,?,?,?)"; //The integers below corresponds to these '?' parameters.
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, userId);
             ps.setDate(2, orderDate);
             ps.setDate(3, orderDeliveryDate);
@@ -45,7 +45,7 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderInShoppingCart=0, orderDate = ?  WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(2, orderId);
             ps.setDate(1, time.getSqlDateNow(time.getTimeNow()));
 
@@ -62,7 +62,7 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderDeliveryDate=? WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            PreparedStatement ps = db.getConnection().prepareStatement(query);           
             ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
 
             ps.executeUpdate();
@@ -78,7 +78,7 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderCakeCompletedDate=? WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            PreparedStatement ps = db.getConnection().prepareStatement(query);           
             ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
 
             ps.executeUpdate();
@@ -92,7 +92,7 @@ public class OrderMapper {
         try {
             String query = "SELECT orderId FROM orders WHERE orderId = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ps.setInt(1, orderId);
 
@@ -116,7 +116,7 @@ public class OrderMapper {
         Order result = new Order();
         try {
             String query = "SELECT * FROM orders WHERE orderid = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();

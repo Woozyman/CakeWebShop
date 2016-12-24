@@ -52,7 +52,7 @@ public class UserMapper {
         User user = null;
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
@@ -99,7 +99,7 @@ public class UserMapper {
         List<User> users = new ArrayList();
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -122,7 +122,7 @@ public class UserMapper {
    public boolean authenticateUser(String email, String password) throws PasswordStorage.CannotPerformOperationException, PasswordStorage.InvalidHashException {
         try {
             String query = "SELECT email, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 

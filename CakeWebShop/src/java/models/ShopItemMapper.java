@@ -30,7 +30,7 @@ public class ShopItemMapper {
 
             String query = "INSERT INTO shopItems(itemName, itemDescription, itemPrice, itemPicture) VALUES(?,?,?,?)";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, desc);
             ps.setDouble(3, price);
@@ -54,7 +54,7 @@ public class ShopItemMapper {
             String query = "UPDATE shopItems SET itemName=?, itemDescription=?, itemPicture=?, "
                     + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, descrip);
             ps.setString(3, pic);
@@ -77,7 +77,7 @@ public class ShopItemMapper {
             try {
                 String query = "SET discontinueDate=? WHERE itemid = ? ";
 
-                PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+                PreparedStatement ps = db.getConnection().prepareStatement(query);
                 ps.setDate(1, discontinuedDate);
                 ps.setInt(2, item.getItemId());
 
@@ -93,7 +93,7 @@ public class ShopItemMapper {
         try {
             String query = "SET discontinueDate=null WHERE itemid = ? ";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, item.getItemId());
 
             int result = ps.executeUpdate();
@@ -109,7 +109,7 @@ public class ShopItemMapper {
                 + "WHERE itemid = ? ";
 
         try {
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
             boolean result = ps.execute(); //Returns true if result is a ResultSet and false if no result
@@ -133,7 +133,7 @@ public class ShopItemMapper {
 
         try {
             String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopItems";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 

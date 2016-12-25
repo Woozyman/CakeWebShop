@@ -9,10 +9,10 @@ import java.text.ParseException;
 
 public class OrderMapper {
 
-    private static DB_local db;
+    private DB_local db;
 
     public OrderMapper() {
-        OrderMapper.db = new DB_local();
+        this.db = new DB_local();
     }
 
     public void createOrder(Order order) {

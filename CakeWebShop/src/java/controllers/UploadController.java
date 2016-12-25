@@ -98,7 +98,7 @@ public class UploadController extends HttpServlet {
 
             // Upload path // Change to local path of WebApp
             //String Dir = "/Users/Michael/Desktop/CPHBusiness/05 Webprogrammering ServerSide/NetBeans/CakeWebShop/CakeWebShop/web/images";
-            String Dir = "local PATH TO /images folder in Project";
+            String Dir = "/var/lib/tomcat8/webapps/CakeWebShop/images";
             boolean saved = false;
 
             for (FileItem item : files) {

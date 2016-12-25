@@ -1,22 +1,22 @@
 package models;
 
 import dataaccess.DB_local;
+import dataaccess.DB_raspberry;
 import dataaccess.PasswordStorage;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserMapper {
 
-    private DB_local db;
+    private DB_raspberry db;
 
     public UserMapper() {
-        this.db = new DB_local();
+        this.db = new DB_raspberry();
     }
 
     public void createUser(User user) throws PasswordStorage.CannotPerformOperationException {

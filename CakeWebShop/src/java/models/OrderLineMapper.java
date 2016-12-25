@@ -1,6 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
+import dataaccess.DB_raspberry;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +10,10 @@ import java.util.List;
 
 public class OrderLineMapper {
 
-    private DB_local db;
+    private DB_raspberry db;
 
     public OrderLineMapper() {
-        this.db = new DB_local();
+        this.db = new DB_raspberry();
     }
 
     public void addOrderLine(OrderLine orderLine) {

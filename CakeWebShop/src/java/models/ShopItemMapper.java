@@ -1,6 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
+import dataaccess.DB_raspberry;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,11 +14,11 @@ import java.util.List;
 
 public class ShopItemMapper {
 
-    private DB_local db;
+    private DB_raspberry db;
     private Cart cart;
 
     public ShopItemMapper() {
-        this.db = new DB_local();
+        this.db = new DB_raspberry();
         this.cart = new Cart();
     }
 

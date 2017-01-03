@@ -4,14 +4,12 @@ package controllers;
 import dataaccess.PasswordStorage;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -100,19 +98,19 @@ public class AccountController extends HttpServlet {
                         Order newOrder = new Order(um.getUserId(email), null, null, 1);
                         orm.createOrder(newOrder);
                         unPaidOrderId = um.getUnpaidOrderId(user);
-                        newOrder.setOrderId(unPaidOrderId);
-                        session.setAttribute("order", newOrder);
+                        newOrder.setOrderId(unPaidOrderId);                           
                         for (OrderLine line : currenCart.getOrderLines()) {
                             line.setOrderId(unPaidOrderId);
                             lineMapper.addOrderLine(line);
                         }
-                        session.setAttribute("cart", currenCart);
-                        Order sessionOrder = (Order) session.getAttribute("order");
+                        newOrder = orm.getOrder(unPaidOrderId);
+                        session.setAttribute("order", newOrder);
+                        session.setAttribute("cart", currenCart);                        
                         try {
-                            sessionOrder.setUserId(um.getUserId(email));
-                            sessionOrder.setOrderId(unPaidOrderId);
-                            session.setAttribute("order", sessionOrder);
-                            session.setAttribute("orderId", sessionOrder.getOrderId());
+                            newOrder.setUserId(um.getUserId(email));
+                            newOrder.setOrderId(unPaidOrderId);
+                            session.setAttribute("order", newOrder);
+                            session.setAttribute("orderId", newOrder.getOrderId());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -128,7 +126,7 @@ public class AccountController extends HttpServlet {
             }
         } else if (action.equals("logout")) {
             logout(request);
-            response.sendRedirect("/CakeWebShop");
+            response.sendRedirect("/CakeWebShop/index.jsp");
         } else if (action.equals("register")) {
             Map<String, String> errors = new HashMap<String, String>();
 
@@ -157,7 +155,7 @@ public class AccountController extends HttpServlet {
                 errors.put("PhoneNumber", "Please write a valid Phone number");
             }
             String address = (String) request.getParameter("Address");
-            if (address.length() < 40) {
+            if (address.length() < 15) {
                 errors.put("Address", "Please write a valid address");
             }
             String zip = (String) request.getParameter("Zip");
@@ -211,8 +209,7 @@ public class AccountController extends HttpServlet {
 
     private void logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.invalidate();
-        request.getRequestDispatcher("/HomeController");
+        session.invalidate();       
     }
 
     private Cart mergeCarts(Cart currentcart, int orderId) {

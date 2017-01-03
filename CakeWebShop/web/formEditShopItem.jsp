@@ -15,7 +15,7 @@
     <input type="date" name="discontinuedDate" value="<% try {%>
            <%= item.getDiscontinuedDate() %><%
         } catch (NullPointerException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
            %>"/>
     <input type="submit" name="updateItem" value="Update"/>

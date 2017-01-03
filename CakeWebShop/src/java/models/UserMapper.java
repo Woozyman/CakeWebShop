@@ -1,7 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
-import dataaccess.DB_raspberry;
+import dataaccess.ClearDB;
 import dataaccess.PasswordStorage;
 import java.util.List;
 import java.sql.PreparedStatement;
@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 
 public class UserMapper {
 
-    private DB_raspberry db;
+    private ClearDB db;
 
     public UserMapper() {
-        this.db = new DB_raspberry();
+        this.db = new ClearDB();
     }
 
     public void createUser(User user) throws PasswordStorage.CannotPerformOperationException {
@@ -44,7 +44,7 @@ public class UserMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class UserMapper {
         User user = null;
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
@@ -88,7 +88,7 @@ public class UserMapper {
             result = rs.getInt("userid");
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
             Logger.getLogger(UserMapper.class.getName()).log(Level.SEVERE, null, e);
         }
         db.closeConnection();
@@ -99,7 +99,7 @@ public class UserMapper {
         List<User> users = new ArrayList();
         try {
             String query = "SELECT firstname, lastname, email, phone, address, zip, password FROM users";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -122,7 +122,7 @@ public class UserMapper {
    public boolean authenticateUser(String email, String password) throws PasswordStorage.CannotPerformOperationException, PasswordStorage.InvalidHashException {
         try {
             String query = "SELECT email, password FROM users WHERE email = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 

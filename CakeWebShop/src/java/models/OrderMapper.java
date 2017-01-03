@@ -1,6 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
+import dataaccess.ClearDB;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +10,10 @@ import java.text.ParseException;
 
 public class OrderMapper {
 
-    private static DB_local db;
+    private ClearDB db;
 
     public OrderMapper() {
-        OrderMapper.db = new DB_local();
+        this.db = new ClearDB();
     }
 
     public void createOrder(Order order) {
@@ -25,7 +26,7 @@ public class OrderMapper {
             String query = "INSERT INTO orders (userId, orderDate, orderDeliveryDate, orderInShoppingCart)"
                     + "VALUES(?,?,?,?)"; //The integers below corresponds to these '?' parameters.
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, userId);
             ps.setDate(2, orderDate);
             ps.setDate(3, orderDeliveryDate);
@@ -34,7 +35,8 @@ public class OrderMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            
+            System.out.println(e.getMessage());
         }
         DB_local.closeConnection();
     }
@@ -45,14 +47,14 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderInShoppingCart=0, orderDate = ?  WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(2, orderId);
             ps.setDate(1, time.getSqlDateNow(time.getTimeNow()));
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
     
@@ -62,13 +64,13 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderDeliveryDate=? WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            PreparedStatement ps = db.getConnection().prepareStatement(query);           
             ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
     
@@ -78,13 +80,13 @@ public class OrderMapper {
         try {
             String query = "UPDATE orders SET orderCakeCompletedDate=? WHERE orderid = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);           
+            PreparedStatement ps = db.getConnection().prepareStatement(query);           
             ps.setDate(1, time.getSqlDateNow(time.getTime(date)));
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -92,7 +94,7 @@ public class OrderMapper {
         try {
             String query = "SELECT orderId FROM orders WHERE orderId = ?";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ps.setInt(1, orderId);
 
@@ -116,7 +118,7 @@ public class OrderMapper {
         Order result = new Order();
         try {
             String query = "SELECT * FROM orders WHERE orderid = ?";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -136,7 +138,7 @@ public class OrderMapper {
                 result.setOrderInShoppingCart(orderInShoppingCart);
           
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return result;
     }

@@ -1,7 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
-import dataaccess.DB_raspberry;
+import dataaccess.ClearDB;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class ShopItemMapper {
 
-    private DB_raspberry db;
+    private ClearDB db;
     private Cart cart;
 
     public ShopItemMapper() {
-        this.db = new DB_raspberry();
+        this.db = new ClearDB();
         this.cart = new Cart();
     }
 
@@ -31,7 +31,7 @@ public class ShopItemMapper {
 
             String query = "INSERT INTO shopItems(itemName, itemDescription, itemPrice, itemPicture) VALUES(?,?,?,?)";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, desc);
             ps.setDouble(3, price);
@@ -40,7 +40,7 @@ public class ShopItemMapper {
             ps.execute();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public class ShopItemMapper {
             String query = "UPDATE shopItems SET itemName=?, itemDescription=?, itemPicture=?, "
                     + "itemPrice=?, discontinuedDate=? WHERE itemid=? ";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, name);
             ps.setString(2, descrip);
             ps.setString(3, pic);
@@ -78,7 +78,7 @@ public class ShopItemMapper {
             try {
                 String query = "SET discontinueDate=? WHERE itemid = ? ";
 
-                PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+                PreparedStatement ps = db.getConnection().prepareStatement(query);
                 ps.setDate(1, discontinuedDate);
                 ps.setInt(2, item.getItemId());
 
@@ -94,12 +94,13 @@ public class ShopItemMapper {
         try {
             String query = "SET discontinueDate=null WHERE itemid = ? ";
 
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, item.getItemId());
 
-            int result = ps.executeUpdate();
+            ps.executeUpdate();
 
         } catch (SQLException e) {
+            e.getMessage();
         }
     }
 
@@ -110,7 +111,7 @@ public class ShopItemMapper {
                 + "WHERE itemid = ? ";
 
         try {
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setInt(1, id);
 
             boolean result = ps.execute(); //Returns true if result is a ResultSet and false if no result
@@ -125,6 +126,7 @@ public class ShopItemMapper {
             }
 
         } catch (SQLException e) {
+            e.getMessage();
         }
         return item;
     }
@@ -134,7 +136,7 @@ public class ShopItemMapper {
 
         try {
             String query = "SELECT itemid, itemName, itemPicture, itemDescription, itemPrice, discontinuedDate FROM shopItems";
-            PreparedStatement ps = DB_local.getConnection().prepareStatement(query);
+            PreparedStatement ps = db.getConnection().prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 
@@ -156,6 +158,7 @@ public class ShopItemMapper {
             }
 
         } catch (SQLException e) {
+            e.getMessage();
         }
 
         return shopItems;

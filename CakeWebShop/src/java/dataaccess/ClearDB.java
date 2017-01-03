@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DB_raspberry {
+public class ClearDB {
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://192.168.0.8:3306/cakeWebShop";
-    private static final String USER = "testuser";
-    private static final String PASSWORD = "cphWEB2016";
+    private static final String URL = "eu-cdbr-azure-north-e.cloudapp.net";
+    private static final String USER = "b5d2060bd7b20b";
+    private static final String PASSWORD = "b7d9734d";
 
     private static Connection conn = null;
 

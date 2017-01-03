@@ -42,7 +42,7 @@ public class ShopItem {
             discontinuedDate = new Date(formatter.parse(this.discontinuedDate).getTime());
 
         } catch (ParseException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         return discontinuedDate;

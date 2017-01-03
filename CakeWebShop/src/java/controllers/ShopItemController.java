@@ -43,7 +43,7 @@ public class ShopItemController extends HttpServlet {
             item = sim.getItem(id);
 
         } catch (NumberFormatException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         } finally {
             if (action.equals("details")) {
                 request.setAttribute("item", item);
@@ -125,7 +125,7 @@ public class ShopItemController extends HttpServlet {
                 }
 
             } catch (SQLException e) {
-                e.getMessage();
+                System.out.println(e.getMessage());
             } catch (ParseException ex) {
                 Logger.getLogger(ShopItemController.class.getName()).log(Level.SEVERE, null, ex);
             }

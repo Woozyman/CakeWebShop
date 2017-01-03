@@ -1,7 +1,7 @@
 package models;
 
 import dataaccess.DB_local;
-import dataaccess.DB_raspberry;
+import dataaccess.ClearDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +10,10 @@ import java.util.List;
 
 public class OrderLineMapper {
 
-    private DB_raspberry db;
+    private ClearDB db;
 
     public OrderLineMapper() {
-        this.db = new DB_raspberry();
+        this.db = new ClearDB();
     }
 
     public void addOrderLine(OrderLine orderLine) {
@@ -30,7 +30,7 @@ public class OrderLineMapper {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         db.closeConnection();
@@ -57,7 +57,7 @@ public class OrderLineMapper {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
@@ -83,7 +83,7 @@ public class OrderLineMapper {
             }
 
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         db.closeConnection();
         return orderLines;
@@ -110,7 +110,7 @@ public class OrderLineMapper {
             orderLines.add(new OrderLine(orderLineid, orderid, shopItemid, numOfItems, itemPrice));
         }
         } catch (SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         return orderLines;
@@ -134,7 +134,7 @@ public class OrderLineMapper {
 
             ps.execute();
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         db.closeConnection();
@@ -154,7 +154,7 @@ public class OrderLineMapper {
                 return true;
             }
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
         db.closeConnection();
@@ -176,7 +176,7 @@ public class OrderLineMapper {
 
             ps.executeUpdate();
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         db.closeConnection();
     }
@@ -196,7 +196,7 @@ public class OrderLineMapper {
             }
             return result;
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return result;
     }
